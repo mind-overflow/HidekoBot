@@ -14,6 +14,8 @@ public class HidekoBot
     private static String standardInviteLink = "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
     private static String botUserId;
 
+    private static final String version = "0.0.1";
+
     public static void main(String[] args)
     {
 
@@ -45,9 +47,13 @@ public class HidekoBot
         botUserId = jda.getSelfUser().getId();
         standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
 
+        // print the bot logo.
+        logger.log("Ready!\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
+
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 5);
         logger.log("Invite Link: " + standardInviteLink, 5);
+
 
 
     }

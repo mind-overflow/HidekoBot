@@ -8,6 +8,15 @@ import java.util.concurrent.TimeUnit;
 public class Logger
 {
 
+    // cosmetic string to print on startup.
+    private String logo =
+            "██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░\n" +
+            "██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗\n" +
+            "███████║██║██║░░██║█████╗░░█████═╝░██║░░██║\n" +
+            "██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║\n" +
+            "██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝\n" +
+            "╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░";
+
     // objects that we need to have for a properly formatted message
     private String className;
     private final String format = "[%date% %time%] [%class%] %message%";
@@ -27,7 +36,7 @@ public class Logger
         LocalDateTime now = LocalDateTime.now();
         String currentDate = dateFormatter.format(now);
         String currentTime = timeFormatter.format(now);
-        System.out.println(format
+        logRaw(format
                 .replace("%date%", currentDate)
                 .replace("%time%", currentTime)
                 .replace("%class%", className)
@@ -50,4 +59,16 @@ public class Logger
         }, delay, TimeUnit.SECONDS);
 
     }
+
+    // avoid formatting the text and print whatever is passed.
+    public void logRaw(String message)
+    {
+        System.out.println(message);
+    }
+
+    public String getLogo()
+    {
+        return logo;
+    }
+
 }
