@@ -5,9 +5,12 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
+import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HidekoBot
 {
@@ -15,6 +18,8 @@ public class HidekoBot
     private static String standardInviteLink = "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
     private static String botUserId;
     private static final String version = "0.0.1"; // we should probably find a way to make this consistent with Maven
+
+    private static JDA jda;
 
 
     // create a logger instance for ease of use
@@ -30,20 +35,30 @@ public class HidekoBot
             return;
         }
 
+        // load token from args
         botToken = args[0];
 
-        JDABuilder jdaBuilder;
-        JDA jda;
+        // if there are more than 1 args, then iterate through them because we have additional things to do
+        if(args.length > 1) {
+            List<String> argsList = new ArrayList<>();
+            for(int i = 1; i < args.length; i++)
+            { argsList.add(args[i]); }
+
+            if(argsList.contains("verbose")) Configuration.setVerbose(true);
+        }
 
         try
         {
             // try to create the bot object and authenticate it with discord.
-            jdaBuilder = JDABuilder.createDefault(botToken);
+            JDABuilder jdaBuilder = JDABuilder.createDefault(botToken);
             jdaBuilder.setActivity(Activity.playing("the piano"));
 
-            jdaBuilder.enableIntents(GatewayIntent.MESSAGE_CONTENT,
+            // enable necessary intents.
+            jdaBuilder.enableIntents(
+                    GatewayIntent.MESSAGE_CONTENT,
                     GatewayIntent.DIRECT_MESSAGES,
-                    GatewayIntent.GUILD_MESSAGES);
+                    GatewayIntent.GUILD_MESSAGES
+            );
 
             jda = jdaBuilder.build().awaitReady();
         } catch (LoginException | InterruptedException e)
@@ -56,6 +71,10 @@ public class HidekoBot
         botUserId = jda.getSelfUser().getId();
         standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
 
+        // register listeners
+        jda.addEventListener(new MessageListener());
+        if(Configuration.isVerbose()) jda.addEventListener(new MessageLogger());
+
         // print the bot logo.
         logger.log("Ready!\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
 
@@ -63,9 +82,10 @@ public class HidekoBot
         logger.log("Bot User ID: " + botUserId, 4);
         logger.log("Invite Link: " + standardInviteLink, 5);
 
-        // register listeners
-        jda.addEventListener(new MessageListener());
-
+    }
+    public static JDA getAPI()
+    {
+        return jda;
     }
 
 }
