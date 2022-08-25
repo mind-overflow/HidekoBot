@@ -7,7 +7,8 @@ Download a prebuilt JAR file or build it from source, then run it with:
 ```bash
 java -jar HidekoBot.jar botToken
 ```
-Where `HidekoBot.jar` is the executable archive and `botToken` is your bot token passed as an argument.
+Where `HidekoBot.jar` is the executable archive and `botToken` is your bot token passed as an argument.  
+*Note: Java 16 or later is required.*
   
 ## Initial setup  
   
