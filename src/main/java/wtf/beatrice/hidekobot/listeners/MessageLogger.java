@@ -1,5 +1,6 @@
 package wtf.beatrice.hidekobot.listeners;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -43,5 +44,13 @@ public class MessageLogger extends ListenerAdapter
                 .replace("%message%", message);
 
         logger.log(toLog);
+
+        if(!event.getMessage().getAttachments().isEmpty())
+        {
+            for(Message.Attachment atch : event.getMessage().getAttachments())
+            {
+                logger.log(atch.getUrl());
+            }
+        }
     }
 }
