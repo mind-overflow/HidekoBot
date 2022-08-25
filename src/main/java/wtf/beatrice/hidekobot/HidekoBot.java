@@ -31,20 +31,24 @@ public class HidekoBot
 
         try
         {
+            // try to create the bot object and authenticate it with discord.
             jdaBuilder = JDABuilder.createDefault(botToken);
             jdaBuilder.setActivity(Activity.playing("the piano"));
             jda = jdaBuilder.build();
         } catch (LoginException e)
         {
-            logger.log(e.getMessage());
-            return;
+            logger.log(e.getMessage()); // print the error message, omit the stack trace.
+            return; // if we failed connecting and authenticating, then quit.
         }
-        
+
+        // find the bot's user id and generate an invite-link.
         botUserId = jda.getSelfUser().getId();
         standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
 
-        logger.log("Bot User ID: " + botUserId);
-        logger.log("Invite Link: " + standardInviteLink);
+        // log the invite-link to console so noob users can just click on it.
+        logger.log("Bot User ID: " + botUserId, 10);
+        logger.log("Invite Link: " + standardInviteLink, 10);
+
 
     }
 

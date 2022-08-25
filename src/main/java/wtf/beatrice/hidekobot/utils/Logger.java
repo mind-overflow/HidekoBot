@@ -2,6 +2,9 @@ package wtf.beatrice.hidekobot.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Logger
 {
@@ -27,5 +30,19 @@ public class Logger
                 .replace("%date%", currentTime)
                 .replace("%class%", className)
                 .replace("%message%", message));
+    }
+
+    // log a message to console after delaying it (in seconds).
+    public void log(String message, int delay)
+    {
+        Executors.newSingleThreadScheduledExecutor().schedule(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                log(message);
+            }
+        }, delay, TimeUnit.SECONDS);
+
     }
 }
