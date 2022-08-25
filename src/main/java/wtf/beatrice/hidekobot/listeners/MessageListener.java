@@ -1,18 +1,17 @@
 package wtf.beatrice.hidekobot.listeners;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.GuildMessageChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.RestAction;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MessageListener extends ListenerAdapter
 {
@@ -23,6 +22,13 @@ public class MessageListener extends ListenerAdapter
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
         String eventMessage = event.getMessage().getContentDisplay();
+
+        if(eventMessage.equalsIgnoreCase("hideko"))
+        {
+            MessageChannel channel = event.getChannel();
+            channel.sendMessage("Hello there! :sparkles:").queue();
+            return;
+        }
 
         if(eventMessage.equalsIgnoreCase("ping"))
         {
