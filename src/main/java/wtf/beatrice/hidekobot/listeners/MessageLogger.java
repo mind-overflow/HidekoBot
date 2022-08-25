@@ -21,7 +21,7 @@ public class MessageLogger extends ListenerAdapter
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
         String toLog = "";
-        String userName = event.getAuthor().getName();
+        String userName = event.getAuthor().getAsTag();
         String message = event.getMessage().getContentDisplay();
 
         if(event.getChannel() instanceof TextChannel)
