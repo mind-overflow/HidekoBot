@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
@@ -51,7 +52,6 @@ public class HidekoBot
         {
             // try to create the bot object and authenticate it with discord.
             JDABuilder jdaBuilder = JDABuilder.createDefault(botToken);
-            jdaBuilder.setActivity(Activity.playing("the piano"));
 
             // enable necessary intents.
             jdaBuilder.enableIntents(
@@ -74,6 +74,10 @@ public class HidekoBot
         // register listeners
         jda.addEventListener(new MessageListener());
         if(Configuration.isVerbose()) jda.addEventListener(new MessageLogger());
+
+        // set the bot's status
+        jda.getPresence().setStatus(OnlineStatus.ONLINE);
+        jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
         // print the bot logo.
         logger.log("Ready!\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
