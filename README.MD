@@ -12,5 +12,5 @@ Where `HidekoBot.jar` is the executable archive and `botToken` is your bot token
   
 ## Initial setup  
   
-After starting the bot up successfully, it will print an invite-link in your console. Click on the link to add your bot
+After successfully starting the bot up, it will print an invite-link in your console. Click on the link to add your bot
 to any server with the correct permissions already set-up.

@@ -9,12 +9,14 @@ import javax.security.auth.login.LoginException;
 
 public class HidekoBot
 {
-    private static Logger logger = new Logger(HidekoBot.class);
     private static String botToken;
     private static String standardInviteLink = "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
     private static String botUserId;
+    private static final String version = "0.0.1"; // we should probably find a way to make this consistent with Maven
 
-    private static final String version = "0.0.1";
+
+    // create a logger instance for ease of use
+    private static final Logger logger = new Logger(HidekoBot.class);
 
     public static void main(String[] args)
     {
@@ -53,9 +55,6 @@ public class HidekoBot
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 5);
         logger.log("Invite Link: " + standardInviteLink, 5);
-
-
-
     }
 
 }
