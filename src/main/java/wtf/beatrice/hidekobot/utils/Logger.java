@@ -47,16 +47,8 @@ public class Logger
     public void log(String message, int delay)
     {
         // create a new scheduled executor with an anonymous runnable...
-        Executors.newSingleThreadScheduledExecutor().schedule(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                // log the message
-                log(message);
-            }
-            //... after waiting X seconds.
-        }, delay, TimeUnit.SECONDS);
+        //... after waiting <delay> seconds.
+        Executors.newSingleThreadScheduledExecutor().schedule(() -> log(message), delay, TimeUnit.SECONDS);
 
     }
 
