@@ -46,8 +46,8 @@ public class HidekoBot
         standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
 
         // log the invite-link to console so noob users can just click on it.
-        logger.log("Bot User ID: " + botUserId, 10);
-        logger.log("Invite Link: " + standardInviteLink, 10);
+        logger.log("Bot User ID: " + botUserId, 5);
+        logger.log("Invite Link: " + standardInviteLink, 5);
 
 
     }
