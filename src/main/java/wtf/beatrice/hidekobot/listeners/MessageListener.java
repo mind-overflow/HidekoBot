@@ -22,14 +22,16 @@ public class MessageListener extends ListenerAdapter
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
+        String eventMessage = event.getMessage().getContentDisplay();
 
-        if(event.getMessage().getContentDisplay().equalsIgnoreCase("ping"))
+        if(eventMessage.equalsIgnoreCase("ping"))
         {
             MessageChannel channel = event.getChannel();
             channel.sendMessage("Pong!").queue();
+            return;
         }
 
-        if(event.getMessage().getContentDisplay().equalsIgnoreCase("flip a coin"))
+        if(eventMessage.equalsIgnoreCase("flip a coin"))
         {
             MessageChannel channel = event.getChannel();
 
@@ -44,33 +46,41 @@ public class MessageListener extends ListenerAdapter
             }
 
             channel.sendMessage(msg).queue();
+            return;
         }
 
-
-        if(event.getMessage().getContentDisplay().equalsIgnoreCase("clear the chat"))
+        if(eventMessage.toLowerCase().matches("^clear \\d+ messages$"))
         {
             MessageChannel channel = event.getChannel();
-            int count = 10;
-            int delay = 300;
+
+            if(!(channel instanceof GuildMessageChannel))
+            {
+                channel.sendMessage("Sorry! I can't delete messages here.").queue();
+                return;
+            }
+
+            //only keep numbers
+            eventMessage = eventMessage.replaceAll("[^\\d]", "");
+
+            int deleteCount = Integer.parseInt(eventMessage);
+            if(deleteCount < 2 || deleteCount > 98)
+            {
+                channel.sendMessage("I can't delete that amount of messages!").queue();
+                return;
+            }
 
             Message warn = channel.sendMessage("Clearing...").complete();
 
-            MessageHistory.MessageRetrieveAction action = channel.getHistoryBefore(event.getMessage().getIdLong(), count);
+            MessageHistory.MessageRetrieveAction action = channel.getHistoryBefore(event.getMessage().getIdLong(), deleteCount);
             List<Message> messagesUnmodifiable = action.complete().getRetrievedHistory();
             List<Message> messages = new ArrayList<>(messagesUnmodifiable);
             messages.add(warn);
             messages.add(event.getMessage());
-            for(Message msg : messages)
-            {
-                //... after waiting X seconds.
-                Executors.newSingleThreadScheduledExecutor().schedule(() ->
-                {
-                    logger.log(msg.getContentDisplay());
-                    msg.delete().complete();
-                }, delay, TimeUnit.MILLISECONDS);
 
-                delay += 500;
-            }
+            //more than 2 messages, less than 100 for this method
+            ((GuildMessageChannel) channel).deleteMessages(messages).queue();
+
+            return;
         }
     }
 }
