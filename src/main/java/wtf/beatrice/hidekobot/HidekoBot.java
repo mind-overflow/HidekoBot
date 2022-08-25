@@ -16,7 +16,8 @@ import java.util.List;
 public class HidekoBot
 {
     private static String botToken;
-    private static String standardInviteLink = "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
+    private static String standardInviteLink =
+            "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
     private static String botUserId;
     private static final String version = "0.0.1"; // we should probably find a way to make this consistent with Maven
 
