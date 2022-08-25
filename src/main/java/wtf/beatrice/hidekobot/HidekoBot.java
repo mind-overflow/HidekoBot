@@ -11,6 +11,8 @@ public class HidekoBot
 {
     private static Logger logger = new Logger(HidekoBot.class);
     private static String botToken;
+    private static String standardInviteLink = "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
+    private static String botUserId;
 
     public static void main(String[] args)
     {
@@ -35,7 +37,14 @@ public class HidekoBot
         } catch (LoginException e)
         {
             logger.log(e.getMessage());
+            return;
         }
+        
+        botUserId = jda.getSelfUser().getId();
+        standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
+
+        logger.log("Bot User ID: " + botUserId);
+        logger.log("Invite Link: " + standardInviteLink);
 
     }
 
