@@ -6,6 +6,14 @@ public class RandomUtil
 {
     private static final Random random = new Random();
 
+
+    /**
+     * Returns a random integer picked in a range.
+     *
+     * @param min the minimum value (inclusive)
+     * @param max the maximum value (inclusive)
+     * @return a random number in range [min; max]
+     */
     public static int getRandomNumber(int min, int max)
     {
         if(min == max) return min; // dumbass

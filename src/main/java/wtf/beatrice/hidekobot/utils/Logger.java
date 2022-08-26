@@ -30,7 +30,11 @@ public class Logger
         className = logClass.getSimpleName();
     }
 
-    // log a message to console, with our chosen format
+    /**
+     * Logs a message to console, following a specific format.
+     *
+     * @param message the message to log
+     */
     public void log(String message)
     {
         LocalDateTime now = LocalDateTime.now();
@@ -43,7 +47,12 @@ public class Logger
                 .replace("%message%", message));
     }
 
-    // log a message to console after delaying it (in seconds).
+    /**
+     * Logs a message to console, after delaying it.
+     *
+     * @param message the message to log
+     * @param delay the time to wait before logging, in seconds
+     */
     public void log(String message, int delay)
     {
         // create a new scheduled executor with an anonymous runnable...
@@ -52,12 +61,21 @@ public class Logger
 
     }
 
-    // avoid formatting the text and print whatever is passed.
+    /**
+     * Prints a message to console without any formatting.
+     *
+     * @param message the message to log
+     */
     public void logRaw(String message)
     {
         System.out.println(message);
     }
 
+    /**
+     * Returns ASCII art saying the bot name.
+     *
+     * @return a String containing the logo
+     */
     public String getLogo()
     {
         return logo;
