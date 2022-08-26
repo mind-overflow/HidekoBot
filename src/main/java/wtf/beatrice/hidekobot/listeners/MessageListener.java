@@ -94,6 +94,7 @@ public class MessageListener extends ListenerAdapter
             MessageChannel channel = event.getChannel();
 
             channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
+            logger.log("WARNING! Shutting down!");
 
             Executors.newSingleThreadScheduledExecutor().schedule(() ->
             {
