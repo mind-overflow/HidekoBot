@@ -94,10 +94,10 @@ public class MessageListener extends ListenerAdapter
             MessageChannel channel = event.getChannel();
 
             channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
-            logger.log("WARNING! Shutting down!");
 
             Executors.newSingleThreadScheduledExecutor().schedule(() ->
             {
+                logger.log("WARNING! Shutting down!");
                 HidekoBot.getAPI().shutdown();
                 System.exit(0);
             }, 5, TimeUnit.SECONDS);
