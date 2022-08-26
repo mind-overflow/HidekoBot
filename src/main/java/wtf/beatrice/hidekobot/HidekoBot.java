@@ -71,7 +71,7 @@ public class HidekoBot
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
-        // if there are more than 1 args, then iterate through them because we have additional things to do.
+        // if there is more than 1 arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
         if(args.length > 1) {
             List<String> argsList = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
@@ -80,7 +80,7 @@ public class HidekoBot
         }
 
         // print the bot logo.
-        logger.log("Ready!\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
+        logger.log("\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
 
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 3);
