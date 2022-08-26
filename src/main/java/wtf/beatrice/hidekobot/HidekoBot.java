@@ -11,6 +11,7 @@ import wtf.beatrice.hidekobot.utils.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HidekoBot
@@ -73,9 +74,7 @@ public class HidekoBot
         // if there are more than 1 args, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
         if(args.length > 1) {
-            List<String> argsList = new ArrayList<>();
-            for(int i = 1; i < args.length; i++)
-            { argsList.add(args[i]); }
+            List<String> argsList = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
 
             if(argsList.contains("verbose")) Configuration.setVerbose(true);
         }
