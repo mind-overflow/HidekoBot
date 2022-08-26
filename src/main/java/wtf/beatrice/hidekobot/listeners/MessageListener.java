@@ -120,5 +120,22 @@ public class MessageListener extends ListenerAdapter
 
             return;
         }
+
+        if(eventMessage.equalsIgnoreCase("hideko verbose"))
+        {
+            MessageChannel channel = event.getChannel();
+
+            boolean verbose = Configuration.isVerbose();
+
+            String msg = verbose ? "off" : "on";
+            msg = "Turning verbosity " + msg + "!";
+
+            Configuration.setVerbose(!verbose);
+
+            channel.sendMessage(msg).queue();
+            logger.log(msg);
+
+            return;
+        }
     }
 }

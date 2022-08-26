@@ -40,15 +40,6 @@ public class HidekoBot
         // load token from args
         botToken = args[0];
 
-        // if there are more than 1 args, then iterate through them because we have additional things to do
-        if(args.length > 1) {
-            List<String> argsList = new ArrayList<>();
-            for(int i = 1; i < args.length; i++)
-            { argsList.add(args[i]); }
-
-            if(argsList.contains("verbose")) Configuration.setVerbose(true);
-        }
-
         try
         {
             // try to create the bot object and authenticate it with discord.
@@ -74,11 +65,20 @@ public class HidekoBot
 
         // register listeners
         jda.addEventListener(new MessageListener());
-        if(Configuration.isVerbose()) jda.addEventListener(new MessageLogger());
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
+
+        // if there are more than 1 args, then iterate through them because we have additional things to do.
+        // we are doing this at the end because we might need the API to be already initialized for some things.
+        if(args.length > 1) {
+            List<String> argsList = new ArrayList<>();
+            for(int i = 1; i < args.length; i++)
+            { argsList.add(args[i]); }
+
+            if(argsList.contains("verbose")) Configuration.setVerbose(true);
+        }
 
         // print the bot logo.
         logger.log("Ready!\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
