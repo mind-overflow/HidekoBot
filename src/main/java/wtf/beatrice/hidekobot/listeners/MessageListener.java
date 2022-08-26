@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
@@ -22,6 +23,21 @@ public class MessageListener extends ListenerAdapter
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
         String eventMessage = event.getMessage().getContentDisplay();
+
+
+        if(eventMessage.equalsIgnoreCase("hideko pause"))
+        {
+            MessageChannel channel = event.getChannel();
+
+            boolean paused = Configuration.isPaused();
+            String msg = paused ? ":white_check_mark: Resuming normal activity!" : ":pause_button: Pausing!";
+            Configuration.setPaused(!paused);
+            channel.sendMessage(msg).queue();
+
+            return;
+        }
+
+        if(Configuration.isPaused()) return;
 
         if(eventMessage.equalsIgnoreCase("hideko"))
         {
