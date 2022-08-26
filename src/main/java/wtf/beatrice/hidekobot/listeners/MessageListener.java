@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
 
@@ -83,6 +84,18 @@ public class MessageListener extends ListenerAdapter
             //more than 2 messages, less than 100 for this method
             ((TextChannel) channel).deleteMessages(messages).queue();
 
+            return;
+        }
+
+
+        if(eventMessage.equalsIgnoreCase("hideko die"))
+        {
+            MessageChannel channel = event.getChannel();
+
+            channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
+
+            HidekoBot.getAPI().shutdown();
+            System.exit(0);
             return;
         }
     }
