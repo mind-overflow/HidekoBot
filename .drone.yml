@@ -10,4 +10,5 @@ steps:
     image: maven:3-eclipse-temurin-16
     commands:
       - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - mvn javadoc:javadoc
       - mvn test -B
