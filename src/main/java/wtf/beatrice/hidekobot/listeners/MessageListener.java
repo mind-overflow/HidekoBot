@@ -1,9 +1,6 @@
 package wtf.beatrice.hidekobot.listeners;
 
-import net.dv8tion.jda.api.entities.GuildMessageChannel;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -59,14 +56,14 @@ public class MessageListener extends ListenerAdapter
         {
             MessageChannel channel = event.getChannel();
 
-            if(!(channel instanceof GuildMessageChannel))
+            if(!(channel instanceof TextChannel))
             {
                 channel.sendMessage("Sorry! I can't delete messages here.").queue();
                 return;
             }
 
             //only keep numbers
-            eventMessage = eventMessage.replaceAll("[^\\d]", "");
+            eventMessage = eventMessage.replaceAll("\\D", "");
 
             int deleteCount = Integer.parseInt(eventMessage);
             if(deleteCount < 2 || deleteCount > 98)
@@ -84,7 +81,7 @@ public class MessageListener extends ListenerAdapter
             messages.add(event.getMessage());
 
             //more than 2 messages, less than 100 for this method
-            ((GuildMessageChannel) channel).deleteMessages(messages).queue();
+            ((TextChannel) channel).deleteMessages(messages).queue();
 
             return;
         }
