@@ -30,7 +30,7 @@ public class MessageListener extends ListenerAdapter
             MessageChannel channel = event.getChannel();
 
             boolean paused = Configuration.isPaused();
-            String msg = paused ? ":white_check_mark: Resuming normal activity!" : ":pause_button: Pausing!";
+            String msg = paused ? ":white_check_mark: Resuming normal activity!" : ":pause_button: Pausing operation!";
             Configuration.setPaused(!paused);
             channel.sendMessage(msg).queue();
 
