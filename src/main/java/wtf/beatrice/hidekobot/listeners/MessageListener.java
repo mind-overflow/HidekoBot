@@ -10,6 +10,8 @@ import wtf.beatrice.hidekobot.utils.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MessageListener extends ListenerAdapter
 {
@@ -87,15 +89,18 @@ public class MessageListener extends ListenerAdapter
             return;
         }
 
-
         if(eventMessage.equalsIgnoreCase("hideko die"))
         {
             MessageChannel channel = event.getChannel();
 
             channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
 
-            HidekoBot.getAPI().shutdown();
-            System.exit(0);
+            Executors.newSingleThreadScheduledExecutor().schedule(() ->
+            {
+                HidekoBot.getAPI().shutdown();
+                System.exit(0);
+            }, 5, TimeUnit.SECONDS);
+
             return;
         }
     }
