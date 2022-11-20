@@ -23,7 +23,7 @@ public class HidekoBot
     private static String standardInviteLink =
             "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
     private static String botUserId;
-    private static final String version = "0.0.1"; // we should probably find a way to make this consistent with Maven
+    private static final String version = "0.0.2-slash"; // we should probably find a way to make this consistent with Maven
 
     private static JDA jda;
 
