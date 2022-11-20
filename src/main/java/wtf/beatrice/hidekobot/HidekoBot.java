@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
+import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
@@ -64,16 +65,8 @@ public class HidekoBot
         String botUserId = jda.getSelfUser().getId();
         Configuration.setBotApplicationId(botUserId);
 
-        // register listeners
-        jda.addEventListener(new MessageListener());
-        jda.addEventListener(new SlashCommandListener());
+        boolean forceUpdateCommands = false;
 
-        // update slash commands (delayed)
-        Executors.newSingleThreadScheduledExecutor().schedule(SlashCommandsUtil::updateSlashCommands, 1, TimeUnit.SECONDS);
-
-        // set the bot's status
-        jda.getPresence().setStatus(OnlineStatus.ONLINE);
-        jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
         // if there is more than 1 arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
@@ -81,7 +74,22 @@ public class HidekoBot
             List<String> argsList = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
 
             if(argsList.contains("verbose")) Configuration.setVerbose(true);
+            if(argsList.contains("refresh")) forceUpdateCommands = true;
         }
+
+        // register listeners
+        jda.addEventListener(new MessageListener());
+        jda.addEventListener(new SlashCommandListener());
+        jda.addEventListener(new SlashCommandCompleter());
+
+        // update slash commands (delayed)
+        final boolean finalForceUpdateCommands = forceUpdateCommands;
+        Executors.newSingleThreadScheduledExecutor().schedule(() ->
+                SlashCommandsUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
+
+        // set the bot's status
+        jda.getPresence().setStatus(OnlineStatus.ONLINE);
+        jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
         // print the bot logo.
         logger.log("\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);

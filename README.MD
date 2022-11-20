@@ -10,7 +10,8 @@ java -jar HidekoBot.jar <botToken> [additional parameters]
 Where `HidekoBot.jar` is the executable archive and `<botToken>` is your bot token passed as an argument.  
   
 Additionally available parameters are:
-  - **verbose**:  log every message that the bot receives. Very spammy and performance heavy.
+  - **verbose**: log every message that the bot receives. Very spammy and performance heavy.
+  - **refresh**: force refresh the bot's commands. 
 
 *Note: Java 16 or later is required.*
   
