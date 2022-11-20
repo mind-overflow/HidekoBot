@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
+import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class HidekoBot
 {
     private static String botToken;
     private static String standardInviteLink =
-            "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot&permissions=8";
+            "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
     private static String botUserId;
     private static final String version = "0.0.1"; // we should probably find a way to make this consistent with Maven
 
@@ -66,6 +68,10 @@ public class HidekoBot
 
         // register listeners
         jda.addEventListener(new MessageListener());
+        jda.addEventListener(new SlashCommandListener());
+
+        // update slash commands
+        SlashCommandsUtil.updateSlashCommands(jda);
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
