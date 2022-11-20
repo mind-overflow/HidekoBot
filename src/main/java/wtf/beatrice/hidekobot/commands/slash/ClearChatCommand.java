@@ -4,9 +4,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -134,17 +137,28 @@ public class ClearChatCommand
                 }
             }
 
-            // log having deleted the messages.
+
+            Button deleteButton = Button.danger("clear_delete", "Delete").withEmoji(Emoji.fromUnicode("❌"));
+
+            // log having deleted the messages (or not).
             if(deleted < 1)
             {
-                replyInteraction.editOriginal("\uD83D\uDE22 Couldn't clear any message!").queue();
+                replyInteraction.editOriginal("\uD83D\uDE22 Couldn't clear any message!")
+                        .setActionRow(deleteButton).queue();
             } else if(deleted == 1)
             {
-                replyInteraction.editOriginal("✂ Cleared 1 message!").queue();
+                replyInteraction.editOriginal("✂ Cleared 1 message!")
+                        .setActionRow(deleteButton).queue();
             } else {
-                replyInteraction.editOriginal("✂ Cleared " + deleted + " messages!").queue();
+                replyInteraction.editOriginal("✂ Cleared " + deleted + " messages!")
+                        .setActionRow(deleteButton).queue();
             }
         }
+    }
 
+    public void deleteButton(ButtonInteractionEvent event)
+    {
+        // todo: permissions check
+        event.getInteraction().getMessage().delete().queue();
     }
 }
