@@ -43,7 +43,6 @@ public class ExpiredMessageRunner implements Runnable {
 
         for(String messageId : expiringMessages)
         {
-            logger.log("ID: " + messageId);
             String expiryTimestamp = databaseManager.getQueuedExpiringMessageExpiryDate(messageId);
             if(expiryTimestamp == null || expiryTimestamp.equals("")) continue; //todo: idk count it as expired already?
 
