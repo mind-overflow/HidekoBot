@@ -20,6 +20,9 @@ public class SlashCommandsUtil
 
     static List<CommandData> allCommands = new ArrayList<>()
     {{
+        add(Commands.slash("avatar", "Get someone's profile picture.")
+                .addOption(OptionType.USER, "user", "User you want to grab the avatar of.")
+                .addOption(OptionType.INTEGER, "size", "The size of the returned image."));
         add(Commands.slash("die", "Stop the bot's process")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         add(Commands.slash("clear", "Clear the current channel's chat.")
