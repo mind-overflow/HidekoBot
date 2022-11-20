@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.listeners;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.slashcommands.*;
+import wtf.beatrice.hidekobot.commands.slash.*;
 
 public class SlashCommandListener extends ListenerAdapter
 {

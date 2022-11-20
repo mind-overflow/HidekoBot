@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.slashcommands;
+package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;

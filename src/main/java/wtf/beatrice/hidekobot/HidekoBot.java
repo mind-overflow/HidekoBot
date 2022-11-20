@@ -65,8 +65,8 @@ public class HidekoBot
         String botUserId = jda.getSelfUser().getId();
         Configuration.setBotApplicationId(botUserId);
 
+        // store if we have to force refresh commands despite no apparent changes.
         boolean forceUpdateCommands = false;
-
 
         // if there is more than 1 arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
