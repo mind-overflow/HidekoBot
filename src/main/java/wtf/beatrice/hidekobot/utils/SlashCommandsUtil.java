@@ -17,6 +17,7 @@ public class SlashCommandsUtil
     static List<CommandData> allCommands = new ArrayList<>()
     {{
         add(Commands.slash("ping", "Test if the bot is responsive."));
+        add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
     }};
 
     public static void updateSlashCommands(JDA jdaInstance)
