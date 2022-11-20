@@ -1,18 +1,11 @@
 package wtf.beatrice.hidekobot.listeners;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Configuration;
-import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.utils.Logger;
-import wtf.beatrice.hidekobot.utils.RandomUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MessageListener extends ListenerAdapter
 {
