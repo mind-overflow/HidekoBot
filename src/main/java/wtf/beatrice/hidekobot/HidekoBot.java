@@ -6,17 +6,21 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
+import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
+import wtf.beatrice.hidekobot.utils.ExpiredMessageRunner;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class HidekoBot
@@ -92,6 +96,30 @@ public class HidekoBot
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
+
+        // connect to database
+        logger.log("Connecting to database...");
+        String dbFilePath = System.getProperty("user.dir") + File.separator + "db.sqlite"; // in current directory
+        DatabaseManager dbManager = new DatabaseManager(dbFilePath);
+        if(dbManager.connect() && dbManager.initDb())
+        {
+            logger.log("Database connection initialized!");
+            Configuration.setDatabaseManagerInstance(dbManager);
+
+            // load data here...
+
+            logger.log("Database data loaded into memory!");
+        } else {
+            logger.log("Error initializing database connection!");
+        }
+
+        // start scheduled runnables
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        ExpiredMessageRunner task = new ExpiredMessageRunner();
+        int initDelay = 5;
+        int periodicDelay = 5;
+        scheduler.scheduleAtFixedRate(task, initDelay, periodicDelay, TimeUnit.SECONDS);
+
 
         // print the bot logo.
         logger.log("\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);

@@ -1,16 +1,22 @@
 package wtf.beatrice.hidekobot;
 
+import org.jetbrains.annotations.Nullable;
+import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 
 public class Configuration
 {
 
 
+    private static DatabaseManager dbManager = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
 
     // todo: allow people to set their own user id
     private static final long botOwnerId = 979809420714332260L;
+
+    private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
+    private final static long expiryTimeSeconds = 60L;
 
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
@@ -94,5 +100,36 @@ public class Configuration
     public static String getInviteUrl() {
         return defaultInviteLink.replace("%userid%", botApplicationId);
     }
+
+    /**
+     * Set the already fully-initialized DatabaseManager instance, ready to be accessed and used.
+     *
+     * @param databaseManagerInstance the fully-initialized DatabaseManager instance.
+     */
+    public static void setDatabaseManagerInstance(DatabaseManager databaseManagerInstance)
+    {
+        dbManager = databaseManagerInstance;
+    }
+
+    /**
+     * Get the fully-initialized DatabaseManager instance, ready to be used.
+     *
+     * @return the DatabaseManager instance.
+     */
+    public static @Nullable DatabaseManager getDatabaseManager() { return dbManager; }
+
+    /**
+     * Get the DateTimeFormatter string for parsing the expired messages timestamp.
+     *
+     * @return the String of the DateTimeFormatter format.
+     */
+    public static String getExpiryTimestampFormat(){ return  expiryTimestampFormat; }
+
+    /**
+     * Get the amount of seconds after which a message expires.
+     *
+     * @return long value of the expiry seconds.
+     */
+    public static long getExpiryTimeSeconds() { return expiryTimeSeconds; }
 
 }
