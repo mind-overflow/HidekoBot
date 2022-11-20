@@ -1,7 +1,10 @@
 package wtf.beatrice.hidekobot.utils;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import wtf.beatrice.hidekobot.HidekoBot;
@@ -19,6 +22,9 @@ public class SlashCommandsUtil
     {{
         add(Commands.slash("ping", "Test if the bot is responsive."));
         add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
+        add(Commands.slash("clear", "Clear the current channel's chat.")
+                .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
     }};
 
     public static void updateSlashCommands()
