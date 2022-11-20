@@ -22,7 +22,7 @@ public class SlashCommandsUtil
     {{
         add(Commands.slash("avatar", "Get someone's profile picture.")
                 .addOption(OptionType.USER, "user", "User you want to grab the avatar of.")
-                .addOption(OptionType.INTEGER, "size", "The size of the returned image."));
+                .addOption(OptionType.INTEGER, "size", "The size of the returned image.", false, true));
         add(Commands.slash("die", "Stop the bot's process")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         add(Commands.slash("clear", "Clear the current channel's chat.")
@@ -33,7 +33,7 @@ public class SlashCommandsUtil
         add(Commands.slash("ping", "Test if the bot is responsive."));
     }};
 
-    public static void updateSlashCommands()
+    public static void updateSlashCommands(boolean force)
     {
         JDA jdaInstance = HidekoBot.getAPI();
 
@@ -42,62 +42,69 @@ public class SlashCommandsUtil
 
         boolean update = false;
 
-        // for each command that we have already registered...
-        for(Command currRegCmd : registeredCommands)
+        if(force)
         {
-            boolean found = false;
-
-            // iterate through all "recognized" commands
-            for(CommandData cmdData : allCommands)
-            {
-                // if we find the same command...
-                if(cmdData.getName().equals(currRegCmd.getName()))
-                {
-                    // quit the loop since we found it.
-                    found = true;
-                    break;
-                }
-            }
-
-            // if no match was found, we need to send an updated command list because
-            // an old command was probably removed.
-            if(!found)
-            {
-                update = true;
-
-                // quit the loop since we only need to trigger this once.
-                break;
-            }
-        }
-
-        // if an update is not already queued...
-        if(!update)
+            update = true;
+        } else
         {
-            // for each "recognized" valid command
-            for(CommandData currCmdData : allCommands)
+
+            // for each command that we have already registered...
+            for(Command currRegCmd : registeredCommands)
             {
                 boolean found = false;
 
-                // iterate through all already registered commands.
-                for(Command cmd : registeredCommands)
+                // iterate through all "recognized" commands
+                for(CommandData cmdData : allCommands)
                 {
-                    // if this command was already registered...
-                    if(cmd.getName().equals(currCmdData.getName()))
+                    // if we find the same command...
+                    if(cmdData.getName().equals(currRegCmd.getName()))
                     {
-                        // quit the loop since we found a match.
+                        // quit the loop since we found it.
                         found = true;
                         break;
                     }
                 }
 
                 // if no match was found, we need to send an updated command list because
-                // a new command was probably added.
+                // an old command was probably removed.
                 if(!found)
                 {
                     update = true;
 
                     // quit the loop since we only need to trigger this once.
                     break;
+                }
+            }
+
+            // if an update is not already queued...
+            if(!update)
+            {
+                // for each "recognized" valid command
+                for(CommandData currCmdData : allCommands)
+                {
+                    boolean found = false;
+
+                    // iterate through all already registered commands.
+                    for(Command cmd : registeredCommands)
+                    {
+                        // if this command was already registered...
+                        if(cmd.getName().equals(currCmdData.getName()))
+                        {
+                            // quit the loop since we found a match.
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // if no match was found, we need to send an updated command list because
+                    // a new command was probably added.
+                    if(!found)
+                    {
+                        update = true;
+
+                        // quit the loop since we only need to trigger this once.
+                        break;
+                    }
                 }
             }
         }

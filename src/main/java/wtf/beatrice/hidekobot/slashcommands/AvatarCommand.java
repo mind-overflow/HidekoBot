@@ -11,7 +11,7 @@ import java.awt.*;
 public class AvatarCommand
 {
     // discord api returns a broken image if you don't use specific sizes (powers of 2), so we limit it to these
-    private final int[] acceptedSizes = { 16, 32, 64, 128, 256, 512, 1024 };
+    public static final int[] acceptedSizes = { 16, 32, 64, 128, 256, 512, 1024 };
 
     public AvatarCommand(@NotNull SlashCommandInteractionEvent event)
     {
