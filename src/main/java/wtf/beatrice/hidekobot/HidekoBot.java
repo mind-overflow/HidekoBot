@@ -11,7 +11,6 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
 
-import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +57,7 @@ public class HidekoBot
             );
 
             jda = jdaBuilder.build().awaitReady();
-        } catch (LoginException | InterruptedException e)
+        } catch (Exception e)
         {
             logger.log(e.getMessage()); // print the error message, omit the stack trace.
             shutdown(); // if we failed connecting and authenticating, then quit.
