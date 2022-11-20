@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
@@ -51,7 +52,11 @@ public class SlashCommandListener extends ListenerAdapter
                 return;
             }
 
-            int toDeleteAmount = event.getOption("amount").getAsInt(); // not null because the int arg is required
+            /* get the amount from the command args.
+             NULL should not be possible because we specified them as mandatory,
+             but apparently the mobile app doesn't care and still sends the command if you omit the args. */
+            OptionMapping amountMapping = event.getOption("amount");
+            int toDeleteAmount = amountMapping == null ? 1 : amountMapping.getAsInt();
 
             if(toDeleteAmount <= 0)
             {
