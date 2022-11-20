@@ -59,7 +59,7 @@ public class SlashCommandListener extends ListenerAdapter
             }
             else {
                 // answer by saying that the operation has begun.
-                InteractionHook replyInteraction = event.reply("Clearing...").complete();
+                InteractionHook replyInteraction = event.reply("\uD83D\uDEA7 Clearing...").complete();
 
                 // int to keep track of how many messages we deleted.
                 int deleted = 0;
@@ -146,8 +146,8 @@ public class SlashCommandListener extends ListenerAdapter
                             a less efficient way that triggers rate-limiting very quickly. */
                             } catch (Exception e)
                             {
-                                replyInteraction.editOriginal("Sorry, it seems like there was an issue! " + e.getMessage()).queue();
-                                return;
+                                replyInteraction.editOriginal("\uD83D\uDE22 Sorry, it seems like there was an issue! " + e.getMessage()).queue();
+                                return; // warning: this quits everything.
                             }
                         }
 
@@ -159,23 +159,14 @@ public class SlashCommandListener extends ListenerAdapter
                 // log having deleted the messages.
                 if(deleted < 1)
                 {
-                    replyInteraction.editOriginal("Couldn't clear any message!").queue();
+                    replyInteraction.editOriginal("\uD83D\uDE22 Couldn't clear any message!").queue();
                 } else if(deleted == 1)
                 {
-                    replyInteraction.editOriginal("Cleared 1 message!").queue();
+                    replyInteraction.editOriginal("✂ Cleared 1 message!").queue();
                 } else {
-                    replyInteraction.editOriginal("Cleared " + deleted + " messages!").queue();
+                    replyInteraction.editOriginal("✂ Cleared " + deleted + " messages!").queue();
                 }
             }
-
-            /*MessageHistory.MessageRetrieveAction action = channel.getHistoryBefore(event.getInteraction().getIdLong(), toDeleteAmount);
-            List<Message> messages = action.complete().getRetrievedHistory();
-
-            //more than 2 messages, less than 100 for this method
-            ((TextChannel) channel).deleteMessages(messages).queue();
-
-            // announce having cleared the messages.
-            replyInteraction.editOriginal("Cleared " + toDeleteAmount + " messages!").queue();*/
 
         }
 
