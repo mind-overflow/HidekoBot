@@ -20,11 +20,13 @@ public class SlashCommandsUtil
 
     static List<CommandData> allCommands = new ArrayList<>()
     {{
-        add(Commands.slash("ping", "Test if the bot is responsive."));
-        add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
+        add(Commands.slash("die", "Stop the bot's process")
+                .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         add(Commands.slash("clear", "Clear the current channel's chat.")
                 .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
+        add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
+        add(Commands.slash("ping", "Test if the bot is responsive."));
     }};
 
     public static void updateSlashCommands()

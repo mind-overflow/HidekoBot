@@ -53,17 +53,6 @@ public class MessageListener extends ListenerAdapter
             return;
         }
 
-        if(eventMessage.equalsIgnoreCase("hideko die"))
-        {
-            MessageChannel channel = event.getChannel();
-
-            channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
-
-            Executors.newSingleThreadScheduledExecutor().schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
-
-            return;
-        }
-
         if(eventMessage.equalsIgnoreCase("hideko verbose"))
         {
             MessageChannel channel = event.getChannel();

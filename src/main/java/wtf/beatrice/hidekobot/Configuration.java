@@ -11,6 +11,9 @@ public class Configuration
     private static boolean paused = false;
     private static String prefix = ".";
 
+    // todo: allow people to set their own user id
+    private static final long botOwnerId = 979809420714332260L;
+
 
     /**
      * Checks if the bot has been started with the verbose argument.
@@ -60,5 +63,7 @@ public class Configuration
      * @param p a boolean specifying if the bot should be paused
      */
     public static void setPaused(boolean p) { paused = p; }
+
+    public static long getBotOwnerId() { return botOwnerId; }
 
 }

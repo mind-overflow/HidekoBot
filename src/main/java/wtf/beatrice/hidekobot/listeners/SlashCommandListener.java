@@ -10,10 +10,14 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SlashCommandListener extends ListenerAdapter
 {
@@ -24,6 +28,17 @@ public class SlashCommandListener extends ListenerAdapter
         if (event.getName().equals("ping"))
         {
             event.reply("Pong!").queue();
+        }
+
+        else if (event.getName().equals("die"))
+        {
+            if(Configuration.getBotOwnerId() != event.getMember().getIdLong())
+            {
+                event.reply("Sorry, only the bot owner can run this command!").setEphemeral(true).queue();
+            } else {
+                event.reply("Going to sleep! Cya :sparkles:").queue();
+                Executors.newSingleThreadScheduledExecutor().schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
+            }
         }
 
         else if (event.getName().equals("coinflip"))
