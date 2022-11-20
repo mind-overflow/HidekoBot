@@ -71,40 +71,6 @@ public class MessageListener extends ListenerAdapter
             return;
         }
 
-        if(eventMessage.toLowerCase().matches("^clear \\d+ messages$"))
-        {
-            MessageChannel channel = event.getChannel();
-
-            if(!(channel instanceof TextChannel))
-            {
-                channel.sendMessage("Sorry! I can't delete messages here.").queue();
-                return;
-            }
-
-            //only keep numbers
-            eventMessage = eventMessage.replaceAll("\\D", "");
-
-            int deleteCount = Integer.parseInt(eventMessage);
-            if(deleteCount < 2 || deleteCount > 98)
-            {
-                channel.sendMessage("I can't delete that amount of messages!").queue();
-                return;
-            }
-
-            Message warn = channel.sendMessage("Clearing...").complete();
-
-            MessageHistory.MessageRetrieveAction action = channel.getHistoryBefore(event.getMessage().getIdLong(), deleteCount);
-            List<Message> messagesUnmodifiable = action.complete().getRetrievedHistory();
-            List<Message> messages = new ArrayList<>(messagesUnmodifiable);
-            messages.add(warn);
-            messages.add(event.getMessage());
-
-            //more than 2 messages, less than 100 for this method
-            ((TextChannel) channel).deleteMessages(messages).queue();
-
-            return;
-        }
-
         if(eventMessage.equalsIgnoreCase("hideko die"))
         {
             MessageChannel channel = event.getChannel();
