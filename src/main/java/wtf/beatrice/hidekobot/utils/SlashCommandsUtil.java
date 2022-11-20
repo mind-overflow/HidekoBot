@@ -31,6 +31,67 @@ public class SlashCommandsUtil
     {
         JDA jdaInstance = HidekoBot.getAPI();
 
+        // get all the already registered commands
+        List<Command> registeredCommands = jdaInstance.retrieveCommands().complete();
+
+        boolean update = false;
+
+        // for each command that we have already registered...
+        for(Command currRegCmd : registeredCommands)
+        {
+
+            // iterate through all "recognized" commands
+            for(CommandData cmdData : allCommands)
+            {
+                // if we find the same command...
+                if(cmdData.getName().equals(currRegCmd.getName()))
+                {
+                    // quit the loop since we found it.
+                    break;
+                }
+            }
+
+            // if no match was found, we need to send an updated command list because
+            // an old command was probably removed.
+            update = true;
+        }
+
+        // if an update is not already queued...
+        if(!update)
+        {
+            // for each "recognized" valid command
+            for(CommandData currCmdData : allCommands)
+            {
+
+                // iterate through all already registered commands.
+                for(Command cmd : registeredCommands)
+                {
+                    // if this command was already registered...
+                    if(cmd.getName().equals(currCmdData.getName()))
+                    {
+                        // quit the loop since we found a match.
+                        break;
+                    }
+                }
+
+                // if no match was found, we need to send an updated command list because
+                // a new command was probably added.
+                update = true;
+            }
+        }
+        
+        logger.log("Found " + registeredCommands.size() + " commands.");
+
+        if(update)
+        {
+            // send updated command list.
+            jdaInstance.updateCommands().addCommands(allCommands).queue();
+            logger.log("Commands updated. New total: " + allCommands.size() + ".");
+        }
+
+
+
+        /*
         List<CommandData> toAdd = new ArrayList<>();
         List<Command> toDelete = new ArrayList<>();
 
@@ -97,5 +158,7 @@ public class SlashCommandsUtil
         jdaInstance.updateCommands().addCommands(toAdd).queue();
         logger.log("Registered " + toAdd.size() + " new commands.");
 
+
+         */
     }
 }
