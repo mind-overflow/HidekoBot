@@ -145,7 +145,7 @@ public class ClearChatCommand
                 }
 
 
-                Button deleteButton = Button.danger("clear_delete", "Delete").withEmoji(Emoji.fromUnicode("❌"));
+                Button deleteButton = Button.danger("clear_delete", "Dismiss").withEmoji(Emoji.fromUnicode("❌"));
 
                 WebhookMessageEditAction<Message> webhookMessageEditAction;
 
@@ -167,8 +167,10 @@ public class ClearChatCommand
                 String replyMessageId = message.getId();
                 String replyChannelId = message.getChannel().getId();
                 String replyGuildId = message.getGuild().getId();
+                String userId = event.getUser().getId();
 
                 Configuration.getDatabaseManager().queueDisabling(replyGuildId, replyChannelId, replyMessageId);
+                Configuration.getDatabaseManager().trackRanCommandReply(replyGuildId, replyChannelId, replyMessageId, userId);
 
             }
         }).start();
@@ -177,6 +179,14 @@ public class ClearChatCommand
 
     public void deleteButton(ButtonInteractionEvent event)
     {
-        event.getInteraction().getMessage().delete().queue();
+
+        if(!(Configuration.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        {
+            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
+        } else
+        {
+            event.getInteraction().getMessage().delete().queue();
+        }
+
     }
 }

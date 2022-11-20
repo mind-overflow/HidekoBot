@@ -95,6 +95,60 @@ public class DatabaseManager
         return true;
     }
 
+    public boolean trackRanCommandReply(String guildId, String channelId, String messageId, String userId)
+    {
+        String query = "INSERT INTO command_runners " +
+                "(guild_id, channel_id, message_id, user_id) VALUES " +
+                " (?, ?, ?, ?);";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, guildId);
+            preparedStatement.setString(2, channelId);
+            preparedStatement.setString(3, messageId);
+            preparedStatement.setString(4, userId);
+
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isUserTrackedFor(String userId, String messageId)
+    {
+        String trackedUserId = getTrackedReplyUserId(messageId);
+        if(trackedUserId == null) return false;
+        return userId.equals(trackedUserId);
+    }
+
+    public String getTrackedReplyUserId(String messageId)
+    {
+        String query = "SELECT user_id " +
+                "FROM command_runners " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("user_id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public boolean queueDisabling(String guildId, String channelId, String messageId)
     {
         LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(Configuration.getExpiryTimeSeconds());
