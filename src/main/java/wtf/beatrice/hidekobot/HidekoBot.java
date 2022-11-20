@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class HidekoBot
 {
     private static String botToken;
-    private static final String version = "0.0.2-slash"; // we should probably find a way to make this consistent with Maven
+    private static final String version = "0.1.0-slash"; // we should probably find a way to make this consistent with Maven
 
     private static JDA jda;
 
