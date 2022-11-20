@@ -1,9 +1,12 @@
 package wtf.beatrice.hidekobot.slashcommands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
 
 public class AvatarCommand
 {
@@ -15,7 +18,7 @@ public class AvatarCommand
         event.deferReply().queue();
 
         User user;
-        int size;
+        int resolution;
 
         OptionMapping userArg = event.getOption("user");
         if(userArg != null)
@@ -28,24 +31,54 @@ public class AvatarCommand
         OptionMapping sizeArg = event.getOption("size");
         if(sizeArg != null)
         {
-            size = sizeArg.getAsInt();
+            resolution = sizeArg.getAsInt();
 
             // method to find closest value to accepted values
-            int distance = Math.abs(acceptedSizes[0] - size);
+            int distance = Math.abs(acceptedSizes[0] - resolution);
             int idx = 0;
             for(int c = 1; c < acceptedSizes.length; c++){
-                int cdistance = Math.abs(acceptedSizes[c] - size);
+                int cdistance = Math.abs(acceptedSizes[c] - resolution);
                 if(cdistance < distance){
                     idx = c;
                     distance = cdistance;
                 }
             }
-            size = acceptedSizes[idx];
+            resolution = acceptedSizes[idx];
 
         } else {
-            size = 512;
+            resolution = 512;
         }
 
-        event.getHook().sendMessage(user.getEffectiveAvatar().getUrl(size)).queue();
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        {
+            embedBuilder.setColor(Color.PINK);
+            embedBuilder.setAuthor(event.getUser().getAsTag(), null, event.getUser().getEffectiveAvatarUrl());
+            embedBuilder.setTitle(user.getAsTag() + "'s profile picture");
+
+            embedBuilder.addField("Current resolution", resolution + " × " + resolution, false);
+
+            StringBuilder links = new StringBuilder();
+            for(int pos = 0; pos < acceptedSizes.length; pos++)
+            {
+                int currSize = acceptedSizes[pos];
+
+                String currLink = user.getEffectiveAvatar().getUrl(currSize);
+
+                links.append("[").append(currSize).append("px](").append(currLink).append(")");
+                if(pos+1 != acceptedSizes.length)
+                {
+                    links.append(" | ");
+                }
+            }
+
+            embedBuilder.addField("Available resolutions", links.toString(), false);
+
+
+
+            embedBuilder.setImage(user.getEffectiveAvatar().getUrl(resolution));
+        }
+
+        event.getHook().editOriginalEmbeds(embedBuilder.build()).queue();
     }
 }
