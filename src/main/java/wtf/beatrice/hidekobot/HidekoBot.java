@@ -20,9 +20,6 @@ import java.util.concurrent.TimeUnit;
 public class HidekoBot
 {
     private static String botToken;
-    private static String standardInviteLink =
-            "https://discord.com/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
-    private static String botUserId;
     private static final String version = "0.0.2-slash"; // we should probably find a way to make this consistent with Maven
 
     private static JDA jda;
@@ -64,8 +61,8 @@ public class HidekoBot
         }
 
         // find the bot's user id and generate an invite-link.
-        botUserId = jda.getSelfUser().getId();
-        standardInviteLink = standardInviteLink.replace("%userid%", botUserId);
+        String botUserId = jda.getSelfUser().getId();
+        Configuration.seBotUserId(botUserId);
 
         // register listeners
         jda.addEventListener(new MessageListener());
@@ -94,7 +91,7 @@ public class HidekoBot
 
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 3);
-        logger.log("Invite Link: " + standardInviteLink, 4);
+        logger.log("Invite Link: " + Configuration.getInviteUrl(), 4);
 
     }
     public static JDA getAPI()

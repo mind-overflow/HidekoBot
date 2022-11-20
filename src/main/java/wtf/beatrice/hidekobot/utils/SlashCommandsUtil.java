@@ -26,6 +26,7 @@ public class SlashCommandsUtil
                 .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
         add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
+        add(Commands.slash("invite", "Get an invite link for the bot."));
         add(Commands.slash("ping", "Test if the bot is responsive."));
     }};
 

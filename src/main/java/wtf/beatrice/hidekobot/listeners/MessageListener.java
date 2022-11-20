@@ -20,7 +20,7 @@ public class MessageListener extends ListenerAdapter
         if(eventMessage.equalsIgnoreCase("hideko"))
         {
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("Hello there! :sparkles:").queue();
+            channel.sendMessage("Hello there! ✨").queue();
             return;
         }
 
