@@ -5,13 +5,12 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.Configuration;
 
 import java.awt.*;
 
 public class AvatarCommand
 {
-    // discord api returns a broken image if you don't use specific sizes (powers of 2), so we limit it to these
-    public static final int[] acceptedSizes = { 16, 32, 64, 128, 256, 512, 1024 };
 
     public AvatarCommand(@NotNull SlashCommandInteractionEvent event)
     {
@@ -19,6 +18,9 @@ public class AvatarCommand
 
         User user;
         int resolution;
+
+        int[] acceptedSizes = Configuration.getSupportedAvatarResolutions();
+
 
         OptionMapping userArg = event.getOption("user");
         if(userArg != null)

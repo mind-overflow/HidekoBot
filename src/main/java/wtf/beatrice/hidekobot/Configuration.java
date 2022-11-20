@@ -17,6 +17,16 @@ public class Configuration
 
     private static String botApplicationId = "";
 
+    // discord api returns a broken image if you don't use specific sizes (powers of 2), so we limit it to these
+    private static final int[] supportedAvatarResolutions = { 16, 32, 64, 128, 256, 512, 1024 };
+
+    /**
+     * Get an array of all the Discord-supported avatar resolutions.
+     * Discord's API returns a broken image if you don't use specific sizes (powers of 2).
+     *
+     * @return array of supported resolutions.
+     */
+    public static int[] getSupportedAvatarResolutions() { return supportedAvatarResolutions; }
 
     /**
      * Checks if the bot has been started with the verbose argument.
