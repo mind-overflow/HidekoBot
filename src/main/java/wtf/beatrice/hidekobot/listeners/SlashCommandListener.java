@@ -12,12 +12,12 @@ public class SlashCommandListener extends ListenerAdapter
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event)
     {
         switch (event.getName().toLowerCase()) {
-            case "avatar" -> new AvatarCommand(event);
-            case "clear" -> new ClearChatCommand(event);
-            case "coinflip" -> new CoinFlipCommand(event);
-            case "die" -> new DieCommand(event);
-            case "invite" -> new InviteCommand(event);
-            case "ping" -> new PingCommand(event);
+            case "avatar" -> new AvatarCommand().runSlashCommand(event);
+            case "clear" -> new ClearChatCommand().runSlashCommand(event);
+            case "coinflip" -> new CoinFlipCommand().runSlashCommand(event);
+            case "die" -> new DieCommand().runSlashCommand(event);
+            case "invite" -> new InviteCommand().runSlashCommand(event);
+            case "ping" -> new PingCommand().runSlashCommand(event);
         }
     }
 }

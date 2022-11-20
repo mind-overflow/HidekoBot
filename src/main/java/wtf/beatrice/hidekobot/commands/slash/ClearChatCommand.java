@@ -15,7 +15,7 @@ import java.util.List;
 public class ClearChatCommand
 {
 
-    public ClearChatCommand(@NotNull SlashCommandInteractionEvent event)
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         MessageChannel channel = event.getChannel();
 
@@ -39,10 +39,10 @@ public class ClearChatCommand
             // answer by saying that the operation has begun.
             InteractionHook replyInteraction = event.reply("\uD83D\uDEA7 Clearing...").complete();
 
-            // int to keep track of how many messages we deleted.
+            // int to keep track of how many messages we actually deleted.
             int deleted = 0;
 
-            int limit = 95; //discord limits this method to range 2-100. we set it to 95 to be safe..
+            int limit = 95; //discord limits this method to range 2-100. we set it to 95 to be safe.
 
             // increase the count by 1, because we technically aren't clearing the first ID ever
             // which is actually the slash command's ID and not a message.

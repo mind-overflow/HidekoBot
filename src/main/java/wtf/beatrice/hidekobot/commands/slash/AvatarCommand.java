@@ -12,7 +12,7 @@ import java.awt.*;
 public class AvatarCommand
 {
 
-    public AvatarCommand(@NotNull SlashCommandInteractionEvent event)
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         event.deferReply().queue();
 

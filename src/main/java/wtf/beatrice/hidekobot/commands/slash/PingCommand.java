@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PingCommand
 {
-    public PingCommand(@NotNull SlashCommandInteractionEvent event)
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         event.reply("Pong!").queue();
     }

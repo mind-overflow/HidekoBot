@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
+import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
@@ -81,6 +82,7 @@ public class HidekoBot
         jda.addEventListener(new MessageListener());
         jda.addEventListener(new SlashCommandListener());
         jda.addEventListener(new SlashCommandCompleter());
+        jda.addEventListener(new ButtonInteractionListener());
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;

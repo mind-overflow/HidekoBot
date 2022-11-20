@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class DieCommand
 {
 
-    public DieCommand(@NotNull SlashCommandInteractionEvent event)
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         if(Configuration.getBotOwnerId() != event.getMember().getIdLong())
         {

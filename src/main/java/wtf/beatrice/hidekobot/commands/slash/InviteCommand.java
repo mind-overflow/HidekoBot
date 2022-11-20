@@ -8,7 +8,7 @@ import wtf.beatrice.hidekobot.Configuration;
 
 public class InviteCommand
 {
-    public InviteCommand(@NotNull SlashCommandInteractionEvent event)
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         ReplyCallbackAction reply = event.reply("Here's your link ✨ " + Configuration.getInviteUrl());
 
