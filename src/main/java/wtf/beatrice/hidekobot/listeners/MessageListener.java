@@ -111,12 +111,7 @@ public class MessageListener extends ListenerAdapter
 
             channel.sendMessage("Going to sleep! Cya :sparkles:").queue();
 
-            Executors.newSingleThreadScheduledExecutor().schedule(() ->
-            {
-                logger.log("WARNING! Shutting down!");
-                HidekoBot.getAPI().shutdown();
-                System.exit(0);
-            }, 5, TimeUnit.SECONDS);
+            Executors.newSingleThreadScheduledExecutor().schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
 
             return;
         }

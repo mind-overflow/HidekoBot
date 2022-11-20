@@ -5,8 +5,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import sun.misc.Signal;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
-import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
@@ -15,6 +15,8 @@ import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class HidekoBot
 {
@@ -70,8 +72,8 @@ public class HidekoBot
         jda.addEventListener(new MessageListener());
         jda.addEventListener(new SlashCommandListener());
 
-        // update slash commands
-        SlashCommandsUtil.updateSlashCommands(jda);
+        // update slash commands (delayed)
+        Executors.newSingleThreadScheduledExecutor().schedule(SlashCommandsUtil::updateSlashCommands, 5, TimeUnit.SECONDS);
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
@@ -88,6 +90,9 @@ public class HidekoBot
         // print the bot logo.
         logger.log("\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
 
+        // register shutdown interrupt signal listener for proper shutdown.
+        Signal.handle(new Signal("INT"), signal -> shutdown());
+
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 3);
         logger.log("Invite Link: " + standardInviteLink, 4);
@@ -96,6 +101,13 @@ public class HidekoBot
     public static JDA getAPI()
     {
         return jda;
+    }
+
+    public static void shutdown()
+    {
+        logger.log("WARNING! Shutting down!");
+        jda.shutdown();
+        System.exit(0);
     }
 
 }
