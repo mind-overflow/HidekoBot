@@ -54,8 +54,9 @@ public class AvatarCommand
         // embed processing
         {
             embedBuilder.setColor(Color.PINK);
-            embedBuilder.setAuthor(event.getUser().getAsTag(), null, event.getUser().getEffectiveAvatarUrl());
-            embedBuilder.setTitle(user.getAsTag() + "'s profile picture");
+            embedBuilder.setTitle("Profile picture");
+
+            embedBuilder.addField("User", "<@" + user.getId() + ">", false);
 
             embedBuilder.addField("Current resolution", resolution + " × " + resolution, false);
 
