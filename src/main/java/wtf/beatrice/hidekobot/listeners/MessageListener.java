@@ -53,24 +53,6 @@ public class MessageListener extends ListenerAdapter
             return;
         }
 
-        if(eventMessage.equalsIgnoreCase("flip a coin"))
-        {
-            MessageChannel channel = event.getChannel();
-
-            int rand = RandomUtil.getRandomNumber(0, 1);
-            String msg;
-
-            if(rand == 1)
-            {
-                msg = ":coin: It's **Heads**!";
-            } else {
-                msg = "It's **Tails**! :coin:";
-            }
-
-            channel.sendMessage(msg).queue();
-            return;
-        }
-
         if(eventMessage.equalsIgnoreCase("hideko die"))
         {
             MessageChannel channel = event.getChannel();
