@@ -8,8 +8,6 @@ public class Configuration
 
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
-    private static boolean paused = false;
-    private static String prefix = ".";
 
     // todo: allow people to set their own user id
     private static final long botOwnerId = 979809420714332260L;
@@ -50,20 +48,10 @@ public class Configuration
     }
 
     /**
-     * Checks if the bot has paused all operation.
+     * Get the bot owner's profile id.
      *
-     * @return a boolean which is true if the bot is currently paused
+     * @return a long of the account's id
      */
-    public static boolean isPaused() { return paused; }
-
-    /**
-     * Set the bot in paused or unpaused state.
-     * Paused means that it will not reply to anything expect the unpause command.
-     *
-     * @param p a boolean specifying if the bot should be paused
-     */
-    public static void setPaused(boolean p) { paused = p; }
-
     public static long getBotOwnerId() { return botOwnerId; }
 
 }

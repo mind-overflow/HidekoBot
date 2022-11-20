@@ -17,21 +17,6 @@ public class MessageListener extends ListenerAdapter
     {
         String eventMessage = event.getMessage().getContentDisplay();
 
-
-        if(eventMessage.equalsIgnoreCase("hideko pause"))
-        {
-            MessageChannel channel = event.getChannel();
-
-            boolean paused = Configuration.isPaused();
-            String msg = paused ? ":white_check_mark: Resuming normal activity!" : ":pause_button: Pausing operation!";
-            Configuration.setPaused(!paused);
-            channel.sendMessage(msg).queue();
-
-            return;
-        }
-
-        if(Configuration.isPaused()) return;
-
         if(eventMessage.equalsIgnoreCase("hideko"))
         {
             MessageChannel channel = event.getChannel();
