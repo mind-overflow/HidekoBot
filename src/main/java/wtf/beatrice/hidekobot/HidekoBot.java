@@ -61,7 +61,7 @@ public class HidekoBot
         } catch (LoginException | InterruptedException e)
         {
             logger.log(e.getMessage()); // print the error message, omit the stack trace.
-            return; // if we failed connecting and authenticating, then quit.
+            shutdown(); // if we failed connecting and authenticating, then quit.
         }
 
         // find the bot's user id and generate an invite-link.
@@ -73,7 +73,7 @@ public class HidekoBot
         jda.addEventListener(new SlashCommandListener());
 
         // update slash commands (delayed)
-        Executors.newSingleThreadScheduledExecutor().schedule(SlashCommandsUtil::updateSlashCommands, 5, TimeUnit.SECONDS);
+        Executors.newSingleThreadScheduledExecutor().schedule(SlashCommandsUtil::updateSlashCommands, 1, TimeUnit.SECONDS);
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
@@ -106,7 +106,7 @@ public class HidekoBot
     public static void shutdown()
     {
         logger.log("WARNING! Shutting down!");
-        jda.shutdown();
+        if(jda != null) jda.shutdown();
         System.exit(0);
     }
 
