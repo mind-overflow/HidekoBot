@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 
 import java.util.ArrayList;
@@ -20,8 +21,10 @@ public class SlashCommandsUtil
         add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
     }};
 
-    public static void updateSlashCommands(JDA jdaInstance)
+    public static void updateSlashCommands()
     {
+        JDA jdaInstance = HidekoBot.getAPI();
+
         List<CommandData> toAdd = new ArrayList<>();
         List<Command> toDelete = new ArrayList<>();
 
