@@ -39,6 +39,7 @@ public class SlashCommandsUtil
         // for each command that we have already registered...
         for(Command currRegCmd : registeredCommands)
         {
+            boolean found = false;
 
             // iterate through all "recognized" commands
             for(CommandData cmdData : allCommands)
@@ -47,13 +48,20 @@ public class SlashCommandsUtil
                 if(cmdData.getName().equals(currRegCmd.getName()))
                 {
                     // quit the loop since we found it.
+                    found = true;
                     break;
                 }
             }
 
             // if no match was found, we need to send an updated command list because
             // an old command was probably removed.
-            update = true;
+            if(!found)
+            {
+                update = true;
+
+                // quit the loop since we only need to trigger this once.
+                break;
+            }
         }
 
         // if an update is not already queued...
@@ -62,6 +70,7 @@ public class SlashCommandsUtil
             // for each "recognized" valid command
             for(CommandData currCmdData : allCommands)
             {
+                boolean found = false;
 
                 // iterate through all already registered commands.
                 for(Command cmd : registeredCommands)
@@ -70,16 +79,23 @@ public class SlashCommandsUtil
                     if(cmd.getName().equals(currCmdData.getName()))
                     {
                         // quit the loop since we found a match.
+                        found = true;
                         break;
                     }
                 }
 
                 // if no match was found, we need to send an updated command list because
                 // a new command was probably added.
-                update = true;
+                if(!found)
+                {
+                    update = true;
+
+                    // quit the loop since we only need to trigger this once.
+                    break;
+                }
             }
         }
-        
+
         logger.log("Found " + registeredCommands.size() + " commands.");
 
         if(update)
