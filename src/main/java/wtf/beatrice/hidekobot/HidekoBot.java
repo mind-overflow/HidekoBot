@@ -60,9 +60,9 @@ public class HidekoBot
             shutdown(); // if we failed connecting and authenticating, then quit.
         }
 
-        // find the bot's user id and generate an invite-link.
+        // find the bot's user/application id
         String botUserId = jda.getSelfUser().getId();
-        Configuration.seBotUserId(botUserId);
+        Configuration.setBotApplicationId(botUserId);
 
         // register listeners
         jda.addEventListener(new MessageListener());

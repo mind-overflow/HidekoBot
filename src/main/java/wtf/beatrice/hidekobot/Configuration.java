@@ -15,7 +15,7 @@ public class Configuration
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
 
-    private static String botUserId = "";
+    private static String botApplicationId = "";
 
 
     /**
@@ -59,15 +59,30 @@ public class Configuration
      */
     public static long getBotOwnerId() { return botOwnerId; }
 
-    public static void seBotUserId(String id)
+    /**
+     * Set the bot's application id.
+     *
+     * @param id the bot's application id
+     */
+    public static void setBotApplicationId(String id)
     {
-        botUserId = id;
+        botApplicationId = id;
     }
 
-    public static String getBotUserId() { return botUserId; }
+    /**
+     * Get the bot's application id
+     *
+     * @return a string of the bot's application id
+     */
+    public static String getBotApplicationId() { return botApplicationId; }
 
+    /**
+     * Function to generate an invite link for the bot
+     *
+     * @return a string containing the invite link
+     */
     public static String getInviteUrl() {
-        return defaultInviteLink.replace("%userid%", botUserId);
+        return defaultInviteLink.replace("%userid%", botApplicationId);
     }
 
 }

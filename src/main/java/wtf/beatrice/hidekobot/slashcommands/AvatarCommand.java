@@ -51,6 +51,7 @@ public class AvatarCommand
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
+        // embed processing
         {
             embedBuilder.setColor(Color.PINK);
             embedBuilder.setAuthor(event.getUser().getAsTag(), null, event.getUser().getEffectiveAvatarUrl());
@@ -58,6 +59,7 @@ public class AvatarCommand
 
             embedBuilder.addField("Current resolution", resolution + " × " + resolution, false);
 
+            // string builder to create a string that links to all available resolutions
             StringBuilder links = new StringBuilder();
             for(int pos = 0; pos < acceptedSizes.length; pos++)
             {
@@ -66,7 +68,7 @@ public class AvatarCommand
                 String currLink = user.getEffectiveAvatar().getUrl(currSize);
 
                 links.append("[").append(currSize).append("px](").append(currLink).append(")");
-                if(pos+1 != acceptedSizes.length)
+                if(pos + 1 != acceptedSizes.length) // don't add a separator on the last iteration
                 {
                     links.append(" | ");
                 }
