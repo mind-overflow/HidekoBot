@@ -16,6 +16,8 @@ public class Configuration
     private static final long botOwnerId = 979809420714332260L;
 
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
+
+    // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
     private final static long expiryTimeSeconds = 60L;
 
     private final static String defaultInviteLink =
