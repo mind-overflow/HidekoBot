@@ -34,7 +34,10 @@ public class BotInfoCommand
             if(botAvatarUrl != null) embedBuilder.setThumbnail(botAvatarUrl);
 
             // help field
-            embedBuilder.addField("Getting started", "Type `/help` for help!", false);
+            long ownerId = Cache.getBotOwnerId();
+            embedBuilder.addField("Getting started",
+                    "This instance is run by <@" + ownerId + ">.\nType `/help` for help! ",
+                    false);
 
             // commands list field
             StringBuilder commandsListBuilder = new StringBuilder();
