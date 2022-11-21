@@ -18,9 +18,8 @@ public class Configuration
     private static DatabaseManager dbManager = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
-
-    // todo: allow people to set their own user id
-    private static final long botOwnerId = 979809420714332260L;
+    private static final long botMaintainerId = 979809420714332260L;
+    private static long botOwnerId = 0L;
 
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
@@ -97,6 +96,14 @@ public class Configuration
      * @return a long of the account's id
      */
     public static long getBotOwnerId() { return botOwnerId; }
+
+    /**
+     * Get the bot maintainer's profile id.
+     *
+     * @return a long of the account's id
+     */
+    
+    public static long getBotMaintainerId() { return botMaintainerId; }
 
     /**
      * Set the bot's application id.

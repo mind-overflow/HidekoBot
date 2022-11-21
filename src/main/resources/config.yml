@@ -1,0 +1,8 @@
+bot-settings:
+  bot-token: 'paste-token-here'
+  bot-owner-id: 'paste_your_user_id_here'
+  bot-color: 'PINK'
+system-settings:
+  heartbeat:
+    enabled: false
+    link: 'https://your-heartbeat-api.com/api/push/apikey?status=up&msg=OK&ping='

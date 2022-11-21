@@ -67,9 +67,9 @@ public class BotInfoCommand
             DecimalFormat ramMBFormatter = new DecimalFormat("#.##");
             embedBuilder.addField("RAM Usage", ramMBFormatter.format(usedRamMB) + " MB", true);
 
-            // author field
-            String authorMention = "<@" + Configuration.getBotOwnerId() + ">";
-            embedBuilder.addField("Author", authorMention, true);
+            // developer field
+            String developerMention = "<@" + Configuration.getBotMaintainerId() + ">";
+            embedBuilder.addField("Maintainer", developerMention, true);
 
             // uptime field
             embedBuilder.addField("Uptime", FormatUtil.getNiceUptime(), true);
