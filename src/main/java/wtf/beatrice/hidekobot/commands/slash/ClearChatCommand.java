@@ -187,6 +187,5 @@ public class ClearChatCommand
         {
             event.getInteraction().getMessage().delete().queue();
         }
-
     }
 }
