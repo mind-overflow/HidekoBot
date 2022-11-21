@@ -18,7 +18,7 @@ public class ButtonInteractionListener extends ListenerAdapter
             case "coinflip_reflip" -> new CoinFlipCommand().buttonReFlip(event);
 
             // clearchat command
-            case "clear_delete" -> new ClearChatCommand().deleteButton(event);
+            case "clear_dismiss" -> new ClearChatCommand().dismissMessage(event);
 
         }
 

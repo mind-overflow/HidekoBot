@@ -145,7 +145,7 @@ public class ClearChatCommand
                 }
 
 
-                Button deleteButton = Button.danger("clear_delete", "Dismiss").withEmoji(Emoji.fromUnicode("❌"));
+                Button dismissButton = Button.danger("clear_dismiss", "Dismiss").withEmoji(Emoji.fromUnicode("❌"));
 
                 WebhookMessageEditAction<Message> webhookMessageEditAction;
 
@@ -161,7 +161,7 @@ public class ClearChatCommand
                 }
 
                 Message message = webhookMessageEditAction
-                        .setActionRow(deleteButton)
+                        .setActionRow(dismissButton)
                         .complete();
 
                 String replyMessageId = message.getId();
@@ -177,7 +177,7 @@ public class ClearChatCommand
 
     }
 
-    public void deleteButton(ButtonInteractionEvent event)
+    public void dismissMessage(ButtonInteractionEvent event)
     {
 
         if(!(Configuration.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
