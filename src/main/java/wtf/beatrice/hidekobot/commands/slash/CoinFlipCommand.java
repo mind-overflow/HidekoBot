@@ -62,7 +62,7 @@ public class CoinFlipCommand
     private void trackAndRestrict(Message replyMessage, User user)
     {
         String replyMessageId = replyMessage.getId();
-        String replyChannelId = replyMessage.getId();
+        String replyChannelId = replyMessage.getChannel().getId();
         String replyGuildId = replyMessage.getGuild().getId();
         String userId = user.getId();
 

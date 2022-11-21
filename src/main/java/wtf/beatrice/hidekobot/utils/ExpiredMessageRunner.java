@@ -43,6 +43,9 @@ public class ExpiredMessageRunner implements Runnable {
 
         for(String messageId : expiringMessages)
         {
+
+            if(Configuration.isVerbose()) logger.log("expired check: " + messageId);
+
             String expiryTimestamp = databaseManager.getQueuedExpiringMessageExpiryDate(messageId);
             if(expiryTimestamp == null || expiryTimestamp.equals("")) continue; //todo: idk count it as expired already?
 
@@ -50,6 +53,7 @@ public class ExpiredMessageRunner implements Runnable {
             LocalDateTime expiryDate = LocalDateTime.parse(expiryTimestamp, formatter);
             if(now.isAfter(expiryDate))
             {
+                if(Configuration.isVerbose()) logger.log("expired: " + messageId);
                 disableExpired(messageId);
             }
         }
@@ -73,6 +77,7 @@ public class ExpiredMessageRunner implements Runnable {
         RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
 
 
+        if(Configuration.isVerbose()) logger.log("cleaning up: " + messageId);
 
         retrieveAction.queue(
 
