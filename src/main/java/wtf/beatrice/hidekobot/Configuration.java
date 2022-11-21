@@ -37,7 +37,7 @@ public class Configuration
     private static final String botName = "HidekoBot";
     private static final Color botColor = Color.PINK;
 
-    private static final List<Command> registeredCommands = new ArrayList<>();
+    private static List<Command> registeredCommands = new ArrayList<>();
 
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
@@ -184,7 +184,7 @@ public class Configuration
                 .sorted(Comparator.comparing(Command::getName))
                 .toList();
 
-        registeredCommands.addAll(tempList);
+        registeredCommands = new ArrayList<>(tempList);
     }
 
     /**

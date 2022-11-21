@@ -125,6 +125,9 @@ public class SlashCommandUtil
         }
 
         // cache the registered commands.
+        // note that if this is the first time the bot runs after updating commands,
+        // this will probably still return the previous configuration because the discord api
+        // needs to propagate. this is why we also set up a command updater task (ExpiredMessageTask).
         Configuration.setRegisteredCommands(jdaInstance.retrieveCommands().complete());
     }
 }

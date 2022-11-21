@@ -11,6 +11,7 @@ import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
+import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
@@ -90,7 +91,7 @@ public class HidekoBot
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
-        Executors.newSingleThreadScheduledExecutor().schedule(() ->
+        Executors.newSingleThreadScheduledExecutor().schedule(() -> // todo: try-with-resources
                 SlashCommandUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
 
         // set the bot's status
@@ -114,11 +115,11 @@ public class HidekoBot
         }
 
         // start scheduled runnables
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        ExpiredMessageTask task = new ExpiredMessageTask();
-        int initDelay = 5;
-        int periodicDelay = 5;
-        scheduler.scheduleAtFixedRate(task, initDelay, periodicDelay, TimeUnit.SECONDS);
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
+        ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask();
+        scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
+        CommandsUpdateTask commandsUpdateTask = new CommandsUpdateTask();
+        scheduler.scheduleAtFixedRate(commandsUpdateTask, 10, 300, TimeUnit.SECONDS); //every 5 minutes
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());
