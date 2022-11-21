@@ -17,6 +17,7 @@ public class SlashCommandListener extends ListenerAdapter
             case "clear" -> new ClearChatCommand().runSlashCommand(event);
             case "coinflip" -> new CoinFlipCommand().runSlashCommand(event);
             case "die" -> new DieCommand().runSlashCommand(event);
+            case "help" -> new HelpCommand().runSlashCommand(event);
             case "invite" -> new InviteCommand().runSlashCommand(event);
             case "ping" -> new PingCommand().runSlashCommand(event);
         }
