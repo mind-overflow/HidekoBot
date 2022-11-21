@@ -21,10 +21,9 @@ public class HeartBeatTask implements Runnable
     @Override
     public void run()
     {
-        String apiKey = Cache.getHeartBeatApiKey();
-        if(apiKey == null || apiKey.isEmpty()) return;
-
         String urlString = Cache.getFullHeartBeatLink();
+        if(urlString == null || urlString.isEmpty()) return;
+
         try {
 
             URL heartbeatUrl = new URL(urlString);
@@ -46,7 +45,7 @@ public class HeartBeatTask implements Runnable
             }
 
         } catch (IOException e) {
-            logger.log("Error while trying to push heartbeat: " + e.getMessage());
+            logger.log("Error while trying to push heartbeat: " + e.getMessage() + ", " + e.getCause().getMessage());
         }
 
     }

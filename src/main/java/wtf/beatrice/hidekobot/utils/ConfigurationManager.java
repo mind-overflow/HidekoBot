@@ -127,9 +127,9 @@ public class ConfigurationManager
 
     private void loadConfig(LinkedHashMap<String, Object> configurationEntries)
     {
-        configurationEntries.putAll(configurationEntries);
+        this.configurationEntries.putAll(configurationEntries);
     }
-    private Object getConfigValue(String key)
+    public Object getConfigValue(String key)
     {
         return configurationEntries.get(key);
     }

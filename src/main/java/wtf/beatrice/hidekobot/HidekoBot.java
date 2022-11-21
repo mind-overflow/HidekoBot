@@ -29,26 +29,28 @@ import java.util.concurrent.TimeUnit;
 
 public class HidekoBot
 {
-    private static String botToken;
-
     private static JDA jda;
 
-
-    // create a logger instance for ease of use
     private static final Logger logger = new Logger(HidekoBot.class);
 
     public static void main(String[] args)
     {
 
-        // check if bot token was specified as a startup argument
-        if(args.length < 1)
+        // load configuration
+        logger.log("Loading configuration...");
+        String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
+        ConfigurationManager configurationManager = new ConfigurationManager(configFilePath);
+        configurationManager.initConfig();
+        Cache.setConfigManager(configurationManager);
+        logger.log("Configuration loaded!");
+
+        String botToken = Cache.getBotToken();
+        if(botToken == null || botToken.isEmpty())
         {
-            logger.log("Please specify your bot token!");
+            logger.log("Invalid bot token!");
+            shutdown();
             return;
         }
-
-        // load token from args
-        botToken = args[0];
 
         try
         {
@@ -79,19 +81,18 @@ public class HidekoBot
         // if there is more than 1 arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
         if(args.length > 1) {
-            List<String> argsList = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
+            List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
+
+            // NOTE: do not replace with enhanced for, since we might need
+            // to know what position we're at or do further elaboration of the string.
+            // we were using this for api key parsing in the past.
             for(int i = 0; i < argsList.size(); i++)
             {
                 String arg = argsList.get(i);
 
                 if(arg.equals("verbose")) Cache.setVerbose(true);
                 if(arg.equals("refresh")) forceUpdateCommands = true;
-                if(arg.startsWith("heartbeat="))
-                {
-                    String apiKey = arg.replaceAll(".*=", ""); //remove the "heartbeat=" part
-                    Cache.setHeartBeatApiKey(apiKey);
-                }
             }
 
         }
@@ -110,13 +111,6 @@ public class HidekoBot
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
-
-
-        // load configuration
-        String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
-        ConfigurationManager configurationManager = new ConfigurationManager(configFilePath);
-        configurationManager.initConfig();
-        Cache.setConfigManager(configurationManager);
 
         // connect to database
         logger.log("Connecting to database...");

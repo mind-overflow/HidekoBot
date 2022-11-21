@@ -13,7 +13,7 @@ public class DieCommand
 
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        if(Cache.getBotOwnerId() != event.getMember().getIdLong())
+        if(Cache.getBotOwnerId() != event.getUser().getIdLong())
         {
             event.reply("Sorry, only the bot owner can run this command!").setEphemeral(true).queue();
         } else {

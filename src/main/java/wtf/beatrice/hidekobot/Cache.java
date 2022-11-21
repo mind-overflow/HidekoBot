@@ -5,8 +5,10 @@ import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.utils.ConfigurationManager;
+import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,13 +17,13 @@ import java.util.List;
 public class Cache
 {
 
+
+    private static final Logger logger = new Logger(Cache.class);
     private static ConfigurationManager configManager = null;
     private static DatabaseManager dbManager = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
     private static final long botMaintainerId = 979809420714332260L;
-    private static long botOwnerId = 0L;
-
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
@@ -30,16 +32,10 @@ public class Cache
     // used to count eg. uptime
     private static LocalDateTime startupTime;
 
-    // todo: allow people to set their own url
-    private static final String heartbeatLink = "https://status.beatrice.wtf/api/push/%apikey%?status=up&msg=OK&ping=";
-    private static String heartbeatApiKey = "";
-
     private final static String execPath = System.getProperty("user.dir");
 
     private static final String botVersion = "0.1.5-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
-    private static final Color botColor = Color.PINK;
-
     private static List<Command> registeredCommands = new ArrayList<>();
 
     private final static String defaultInviteLink =
@@ -97,7 +93,19 @@ public class Cache
      *
      * @return a long of the account's id
      */
-    public static long getBotOwnerId() { return botOwnerId; }
+    public static long getBotOwnerId() {
+        return configManager == null ? 0L : (Long) configManager.getConfigValue("bot-owner-id");
+    }
+
+
+    /**
+     * Get the bot's token.
+     *
+     * @return a String of the bot's token.
+     */
+    public static String getBotToken() {
+        return configManager == null ? null : (String) configManager.getConfigValue("bot-token");
+    }
 
     /**
      * Get the bot maintainer's profile id.
@@ -179,7 +187,20 @@ public class Cache
      *
      * @return the Color object.
      */
-    public static Color getBotColor() { return botColor; }
+    public static Color getBotColor() {
+        Color defaultColor = Color.PINK;
+        if(configManager == null) return defaultColor;
+        String colorName = (String) configManager.getConfigValue("bot-color");
+
+        Color color = null;
+        try {
+            Field field = Color.class.getField(colorName);
+            color = (Color)field.get(null);
+        } catch (Exception e) {
+            logger.log("Unknown color: " + colorName);
+        }
+        return color == null ? defaultColor : color;
+    }
 
     /**
      * Set the list of registered commands. They will be sorted alphabetically.
@@ -225,18 +246,12 @@ public class Cache
     public static LocalDateTime getStartupTime() { return startupTime; }
 
     public static String getFullHeartBeatLink() {
-        return heartbeatLink.replace("%apikey%", heartbeatApiKey);
+        return configManager == null ? null : (String) configManager.getConfigValue("heartbeat-link");
     }
     //todo javadocs
-    public static void setHeartBeatApiKey(String key) {
-        heartbeatApiKey = key;
-    }
-    public static String getHeartBeatApiKey() {
-        return heartbeatApiKey;
-    }
     public static String getExecPath() { return execPath; }
 
-    public static ConfigurationManager getConfigurationManager()
+    private static ConfigurationManager getConfigurationManager()
     { return configManager; }
 
     public static void setConfigManager(ConfigurationManager configurationManager)
