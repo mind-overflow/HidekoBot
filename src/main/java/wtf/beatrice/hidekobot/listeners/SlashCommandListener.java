@@ -13,6 +13,7 @@ public class SlashCommandListener extends ListenerAdapter
     {
         switch (event.getName().toLowerCase()) {
             case "avatar" -> new AvatarCommand().runSlashCommand(event);
+            case "botinfo" -> new BotInfoCommand().runSlashCommand(event);
             case "clear" -> new ClearChatCommand().runSlashCommand(event);
             case "coinflip" -> new CoinFlipCommand().runSlashCommand(event);
             case "die" -> new DieCommand().runSlashCommand(event);

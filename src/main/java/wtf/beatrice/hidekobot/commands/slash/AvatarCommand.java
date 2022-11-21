@@ -7,13 +7,12 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Configuration;
 
-import java.awt.*;
-
 public class AvatarCommand
 {
 
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
+        // defer reply because this might take a moment
         event.deferReply().queue();
 
         User user;
@@ -55,7 +54,7 @@ public class AvatarCommand
 
         // embed processing
         {
-            embedBuilder.setColor(Color.PINK);
+            embedBuilder.setColor(Configuration.getBotColor());
             embedBuilder.setTitle("Profile picture");
 
             embedBuilder.addField("User", "<@" + user.getId() + ">", false);

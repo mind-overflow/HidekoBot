@@ -1,8 +1,15 @@
 package wtf.beatrice.hidekobot;
 
+import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
+
+import java.awt.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Configuration
 {
@@ -19,6 +26,16 @@ public class Configuration
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
     private final static long expiryTimeSeconds = 60L;
+
+    // used to count eg. uptime
+    private static LocalDateTime startupTime;
+
+
+    private static final String botVersion = "0.1.1-slash"; // we should probably find a way to make this consistent with Maven
+    private static final String botName = "HidekoBot";
+    private static final Color botColor = Color.PINK;
+
+    private static final List<Command> registeredCommands = new ArrayList<>();
 
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
@@ -133,5 +150,65 @@ public class Configuration
      * @return long value of the expiry seconds.
      */
     public static long getExpiryTimeSeconds() { return expiryTimeSeconds; }
+
+
+    public static String getBotName() { return botName; };
+
+    /**
+     * Get the bot's version.
+     *
+     * @return a String of the bot version.
+     */
+    public static String getBotVersion() { return botVersion; }
+
+    /**
+     * Get the bot's global color.
+     *
+     * @return the Color object.
+     */
+    public static Color getBotColor() { return botColor; }
+
+    /**
+     * Set the list of registered commands. They will be sorted alphabetically.
+     *
+     * @param commands a list of registered commands.
+     */
+    public static void setRegisteredCommands(List<Command> commands)
+    {
+
+        // sort alphabetically by field getName()
+        List<Command> tempList = commands
+                .stream()
+                .sorted(Comparator.comparing(Command::getName))
+                .toList();
+
+        registeredCommands.addAll(tempList);
+    }
+
+    /**
+     * Get a list of all bot registered commands, sorted alphabetically.
+     *
+     * @return a copy of the List.
+     */
+    public static List<Command> getRegisteredCommands()
+    {
+        return new ArrayList<>(registeredCommands);
+    }
+
+    /**
+     * Set the bot's startup time. Generally only used at boot time.
+     *
+     * @param time a LocalDateTime of the startup moment.
+     */
+    public static void setStartupTime(LocalDateTime time)
+    { startupTime = time; }
+
+
+    /**
+     * Get the time of when the bot was started up.
+     *
+     * @return a LocalDateTime object of the startup instant.
+     */
+    public static LocalDateTime getStartupTime() { return startupTime; }
 
 }

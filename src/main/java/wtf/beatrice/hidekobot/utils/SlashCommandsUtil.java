@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 
@@ -23,7 +24,8 @@ public class SlashCommandsUtil
         add(Commands.slash("avatar", "Get someone's profile picture.")
                 .addOption(OptionType.USER, "user", "User you want to grab the avatar of.")
                 .addOption(OptionType.INTEGER, "size", "The size of the returned image.", false, true));
-        add(Commands.slash("die", "Stop the bot's process")
+        add(Commands.slash("botinfo", "Get info about the bot."));
+        add(Commands.slash("die", "Stop the bot's process.")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         add(Commands.slash("clear", "Clear the current channel's chat.")
                 .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
@@ -118,76 +120,7 @@ public class SlashCommandsUtil
             logger.log("Commands updated. New total: " + allCommands.size() + ".");
         }
 
-
-
-        /*
-        List<CommandData> toAdd = new ArrayList<>();
-        List<Command> toDelete = new ArrayList<>();
-
-        List<Command> registeredCommands = jdaInstance.retrieveCommands().complete();
-
-        // for each command that we have already registered...
-        for(Command currRegCmd : registeredCommands)
-        {
-            // queue it for removal.
-            boolean toRemove = true;
-
-            // iterate through all "recognized" commands
-            for(CommandData cmdData : allCommands)
-            {
-                // if we find the same command...
-                if(cmdData.getName().equals(currRegCmd.getName()))
-                {
-                    // then don't remove it
-                    toRemove = false;
-                    // and quit the loop since we found it.
-                    break;
-                }
-            }
-
-            // if no match was found, queue this command for removal.
-            if(toRemove) toDelete.add(currRegCmd);
-
-        }
-
-        // for each "recognized" valid command
-        for(CommandData currCmdData : allCommands)
-        {
-            // queue it for registration.
-            boolean toRegister = true;
-
-            // iterate through all already registered commands.
-            for(Command cmd : registeredCommands)
-            {
-                // if this command was already registered...
-                if(cmd.getName().equals(currCmdData.getName()))
-                {
-                    // flag that we don't need to register it
-                    toRegister = false;
-                    // and quit the loop since we found a match.
-                    break;
-                }
-            }
-
-            // if no match was found, queue this command for registration.
-            if(toRegister) toAdd.add(currCmdData);
-        }
-
-        logger.log("Found " + registeredCommands.size() + " commands.");
-
-        // remove all commands queued for removal.
-        for(Command cmd : toDelete)
-        {
-            jdaInstance.deleteCommandById(cmd.getId()).queue();
-        }
-
-        logger.log("Deleted " + toDelete.size() + " commands.");
-
-        // register all new commands.
-        jdaInstance.updateCommands().addCommands(toAdd).queue();
-        logger.log("Registered " + toAdd.size() + " new commands.");
-
-
-         */
+        // cache the registered commands.
+        Configuration.setRegisteredCommands(jdaInstance.retrieveCommands().complete());
     }
 }

@@ -16,6 +16,7 @@ import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 public class HidekoBot
 {
     private static String botToken;
-    private static final String version = "0.1.1-slash"; // we should probably find a way to make this consistent with Maven
 
     private static JDA jda;
 
@@ -120,12 +120,15 @@ public class HidekoBot
         int periodicDelay = 5;
         scheduler.scheduleAtFixedRate(task, initDelay, periodicDelay, TimeUnit.SECONDS);
 
-
-        // print the bot logo.
-        logger.log("\n\n" + logger.getLogo() + "\nv" + version + " - bot is ready!\n", 2);
-
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());
+
+        // set startup time.
+        Configuration.setStartupTime(LocalDateTime.now());
+
+        // print the bot logo.
+        logger.log("\n\n" + logger.getLogo() + "\nv" + Configuration.getBotVersion() + " - bot is ready!\n", 2);
+
 
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 3);
