@@ -14,6 +14,7 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
+import wtf.beatrice.hidekobot.utils.ConfigurationUtil;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
 
@@ -110,9 +111,16 @@ public class HidekoBot
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
+
+        // load configuration
+        String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
+        ConfigurationUtil configurationUtil = new ConfigurationUtil(configFilePath);
+        configurationUtil.initConfig();
+
+
         // connect to database
         logger.log("Connecting to database...");
-        String dbFilePath = System.getProperty("user.dir") + File.separator + "db.sqlite"; // in current directory
+        String dbFilePath = Cache.getExecPath() + File.separator + "db.sqlite"; // in current directory
         DatabaseManager dbManager = new DatabaseManager(dbFilePath);
         if(dbManager.connect() && dbManager.initDb())
         {

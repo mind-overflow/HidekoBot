@@ -33,6 +33,7 @@ public class Cache
     private static final String heartbeatLink = "https://status.beatrice.wtf/api/push/%apikey%?status=up&msg=OK&ping=";
     private static String heartbeatApiKey = "";
 
+    private final static String execPath = System.getProperty("user.dir");
 
     private static final String botVersion = "0.1.5-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
@@ -232,5 +233,6 @@ public class Cache
     public static String getHeartBeatApiKey() {
         return heartbeatApiKey;
     }
+    public static String getExecPath() { return execPath; }
 
 }
