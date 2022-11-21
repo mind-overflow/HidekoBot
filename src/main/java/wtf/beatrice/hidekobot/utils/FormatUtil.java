@@ -6,12 +6,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class TimeUtil
+public class FormatUtil
 {
 
     /**
      * Generate a nicely formatted uptime String that omits unnecessary data
-     * (eg. 0 days, 0 hours, 4 minutes, 32 seconds -> 4m 32s)
+     * (e.g. 0 days, 0 hours, 4 minutes, 32 seconds -> 4m 32s)
      *
      * @return the formatter String
      */

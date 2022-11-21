@@ -20,6 +20,7 @@ public class SlashCommandListener extends ListenerAdapter
             case "help" -> new HelpCommand().runSlashCommand(event);
             case "invite" -> new InviteCommand().runSlashCommand(event);
             case "ping" -> new PingCommand().runSlashCommand(event);
+            case "say" -> new SayCommand().runSlashCommand(event);
         }
     }
 }

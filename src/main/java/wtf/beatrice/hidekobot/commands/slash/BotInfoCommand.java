@@ -6,13 +6,10 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.utils.TimeUtil;
+import wtf.beatrice.hidekobot.utils.FormatUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class BotInfoCommand
@@ -75,12 +72,12 @@ public class BotInfoCommand
             embedBuilder.addField("Author", authorMention, true);
 
             // uptime field
-            embedBuilder.addField("Uptime", TimeUtil.getNiceUptime(), true);
+            embedBuilder.addField("Uptime", FormatUtil.getNiceUptime(), true);
 
             // issue tracker field
             embedBuilder.addField("Support",
                     "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot/issues)",
-                    true);
+                    true); //todo: we should probably make this a final field in the config class
         }
 
         event.getHook().editOriginalEmbeds(embedBuilder.build()).queue();

@@ -38,8 +38,8 @@ public class ClearChatCommand
         /* get the amount from the command args.
          NULL should not be possible because we specified them as mandatory,
          but apparently the mobile app doesn't care and still sends the command if you omit the args. */
-            OptionMapping amountMapping = event.getOption("amount");
-            int toDeleteAmount = amountMapping == null ? 1 : amountMapping.getAsInt();
+            OptionMapping amountOption = event.getOption("amount");
+            int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
 
             if(toDeleteAmount <= 0)
             {

@@ -34,6 +34,9 @@ public class SlashCommandUtil
         add(Commands.slash("help", "Get general help on the bot."));
         add(Commands.slash("invite", "Get an invite link for the bot."));
         add(Commands.slash("ping", "Test if the bot is responsive."));
+        add(Commands.slash("say", "Make the bot say something.")
+                .addOption(OptionType.STRING, "text", "The message to send.", true, false)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
     }};
 
     public static void updateSlashCommands(boolean force)
