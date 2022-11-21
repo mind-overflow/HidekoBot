@@ -13,6 +13,7 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
+import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
 
@@ -79,8 +80,19 @@ public class HidekoBot
         if(args.length > 1) {
             List<String> argsList = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
 
-            if(argsList.contains("verbose")) Configuration.setVerbose(true);
-            if(argsList.contains("refresh")) forceUpdateCommands = true;
+            for(int i = 0; i < argsList.size(); i++)
+            {
+                String arg = argsList.get(i);
+
+                if(arg.equals("verbose")) Configuration.setVerbose(true);
+                if(arg.equals("refresh")) forceUpdateCommands = true;
+                if(arg.startsWith("heartbeat="))
+                {
+                    String apiKey = arg.replaceAll(".*=", ""); //remove the "heartbeat=" part
+                    Configuration.setHeartBeatApiKey(apiKey);
+                }
+            }
+
         }
 
         // register listeners
@@ -120,6 +132,8 @@ public class HidekoBot
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
         CommandsUpdateTask commandsUpdateTask = new CommandsUpdateTask();
         scheduler.scheduleAtFixedRate(commandsUpdateTask, 10, 300, TimeUnit.SECONDS); //every 5 minutes
+        HeartBeatTask heartBeatTask = new HeartBeatTask();
+        scheduler.scheduleAtFixedRate(heartBeatTask, 10, 30, TimeUnit.SECONDS); //every 30 seconds
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());

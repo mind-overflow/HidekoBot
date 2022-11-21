@@ -30,6 +30,10 @@ public class Configuration
     // used to count eg. uptime
     private static LocalDateTime startupTime;
 
+    // todo: allow people to set their own url
+    private static final String heartbeatLink = "https://status.beatrice.wtf/api/push/%apikey%?status=up&msg=OK&ping=";
+    private static String heartbeatApiKey = "";
+
 
     private static final String botVersion = "0.1.4-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
@@ -210,5 +214,16 @@ public class Configuration
      * @return a LocalDateTime object of the startup instant.
      */
     public static LocalDateTime getStartupTime() { return startupTime; }
+
+    public static String getFullHeartBeatLink() {
+        return heartbeatLink.replace("%apikey%", heartbeatApiKey);
+    }
+    //todo javadocs
+    public static void setHeartBeatApiKey(String key) {
+        heartbeatApiKey = key;
+    }
+    public static String getHeartBeatApiKey() {
+        return heartbeatApiKey;
+    }
 
 }
