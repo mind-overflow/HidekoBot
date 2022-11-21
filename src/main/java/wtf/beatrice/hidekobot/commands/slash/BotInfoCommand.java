@@ -79,7 +79,7 @@ public class BotInfoCommand
 
             // issue tracker field
             embedBuilder.addField("Support",
-                    "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot)",
+                    "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot/issues)",
                     true);
         }
 
