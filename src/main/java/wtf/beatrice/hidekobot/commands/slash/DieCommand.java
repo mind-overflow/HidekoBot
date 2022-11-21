@@ -2,7 +2,7 @@ package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 
 import java.util.concurrent.Executors;
@@ -13,7 +13,7 @@ public class DieCommand
 
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        if(Configuration.getBotOwnerId() != event.getMember().getIdLong())
+        if(Cache.getBotOwnerId() != event.getMember().getIdLong())
         {
             event.reply("Sorry, only the bot owner can run this command!").setEphemeral(true).queue();
         } else {

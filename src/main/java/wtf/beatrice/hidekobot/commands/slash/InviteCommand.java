@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 
 public class InviteCommand
@@ -29,17 +29,17 @@ public class InviteCommand
 
         //embed processing
         {
-            embedBuilder.setColor(Configuration.getBotColor());
+            embedBuilder.setColor(Cache.getBotColor());
             String avatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
             if(avatarUrl != null) embedBuilder.setThumbnail(avatarUrl);
             embedBuilder.setTitle("Invite");
             embedBuilder.appendDescription("Click on the button below to invite " +
-                    Configuration.getBotName() +
+                    Cache.getBotName() +
                     " to your server!");
         }
 
-        String inviteUrl = Configuration.getInviteUrl();
-        Button inviteButton = Button.link(inviteUrl, "Invite " + Configuration.getBotName())
+        String inviteUrl = Cache.getInviteUrl();
+        Button inviteButton = Button.link(inviteUrl, "Invite " + Cache.getBotName())
                 .withEmoji(Emoji.fromUnicode("\uD83C\uDF1F"));
 
         WebhookMessageEditAction<Message> reply =

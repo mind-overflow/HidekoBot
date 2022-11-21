@@ -1,6 +1,6 @@
 package wtf.beatrice.hidekobot.runnables;
 
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.io.IOException;
@@ -21,10 +21,10 @@ public class HeartBeatTask implements Runnable
     @Override
     public void run()
     {
-        String apiKey = Configuration.getHeartBeatApiKey();
+        String apiKey = Cache.getHeartBeatApiKey();
         if(apiKey == null || apiKey.isEmpty()) return;
 
-        String urlString = Configuration.getFullHeartBeatLink();
+        String urlString = Cache.getFullHeartBeatLink();
         try {
 
             URL heartbeatUrl = new URL(urlString);
@@ -38,7 +38,7 @@ public class HeartBeatTask implements Runnable
             if(200 <= responseCode && responseCode < 300)
             {
                 // only log ok response codes when verbosity is enabled
-                if(Configuration.isVerbose()) logger.log("Heartbeat response code: " + responseCode);
+                if(Cache.isVerbose()) logger.log("Heartbeat response code: " + responseCode);
             }
             else
             {

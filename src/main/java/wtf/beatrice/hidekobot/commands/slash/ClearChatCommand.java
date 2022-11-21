@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,8 +165,8 @@ public class ClearChatCommand
                         .setActionRow(dismissButton)
                         .complete();
 
-                Configuration.getDatabaseManager().queueDisabling(message);
-                Configuration.getDatabaseManager().trackRanCommandReply(message, event.getUser());
+                Cache.getDatabaseManager().queueDisabling(message);
+                Cache.getDatabaseManager().trackRanCommandReply(message, event.getUser());
 
             }
         }).start();
@@ -176,7 +176,7 @@ public class ClearChatCommand
     public void dismissMessage(ButtonInteractionEvent event)
     {
 
-        if(!(Configuration.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if(!(Cache.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
         } else

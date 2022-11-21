@@ -1,6 +1,6 @@
 package wtf.beatrice.hidekobot.utils;
 
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class FormatUtil
     public static String getNiceUptime()
     {
         LocalDateTime now = LocalDateTime.now();
-        long uptimeSeconds = ChronoUnit.SECONDS.between(Configuration.getStartupTime(), now);
+        long uptimeSeconds = ChronoUnit.SECONDS.between(Cache.getStartupTime(), now);
         Duration uptime = Duration.ofSeconds(uptimeSeconds);
         long seconds = uptime.toSecondsPart();
         long minutes = uptime.toMinutesPart();

@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.commands.slash;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 
 public class HelpCommand
 {
@@ -17,7 +17,7 @@ public class HelpCommand
 
         // embed processing
         {
-            embedBuilder.setColor(Configuration.getBotColor());
+            embedBuilder.setColor(Cache.getBotColor());
             embedBuilder.setTitle("Help");
 
         }

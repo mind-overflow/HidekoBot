@@ -70,7 +70,7 @@ public class HidekoBot
 
         // find the bot's user/application id
         String botUserId = jda.getSelfUser().getId();
-        Configuration.setBotApplicationId(botUserId);
+        Cache.setBotApplicationId(botUserId);
 
         // store if we have to force refresh commands despite no apparent changes.
         boolean forceUpdateCommands = false;
@@ -84,12 +84,12 @@ public class HidekoBot
             {
                 String arg = argsList.get(i);
 
-                if(arg.equals("verbose")) Configuration.setVerbose(true);
+                if(arg.equals("verbose")) Cache.setVerbose(true);
                 if(arg.equals("refresh")) forceUpdateCommands = true;
                 if(arg.startsWith("heartbeat="))
                 {
                     String apiKey = arg.replaceAll(".*=", ""); //remove the "heartbeat=" part
-                    Configuration.setHeartBeatApiKey(apiKey);
+                    Cache.setHeartBeatApiKey(apiKey);
                 }
             }
 
@@ -117,7 +117,7 @@ public class HidekoBot
         if(dbManager.connect() && dbManager.initDb())
         {
             logger.log("Database connection initialized!");
-            Configuration.setDatabaseManagerInstance(dbManager);
+            Cache.setDatabaseManagerInstance(dbManager);
 
             // load data here...
 
@@ -139,15 +139,15 @@ public class HidekoBot
         Signal.handle(new Signal("INT"), signal -> shutdown());
 
         // set startup time.
-        Configuration.setStartupTime(LocalDateTime.now());
+        Cache.setStartupTime(LocalDateTime.now());
 
         // print the bot logo.
-        logger.log("\n\n" + logger.getLogo() + "\nv" + Configuration.getBotVersion() + " - bot is ready!\n", 2);
+        logger.log("\n\n" + logger.getLogo() + "\nv" + Cache.getBotVersion() + " - bot is ready!\n", 2);
 
 
         // log the invite-link to console so noob users can just click on it.
         logger.log("Bot User ID: " + botUserId, 3);
-        logger.log("Invite Link: " + Configuration.getInviteUrl(), 4);
+        logger.log("Invite Link: " + Cache.getInviteUrl(), 4);
 
     }
     public static JDA getAPI()

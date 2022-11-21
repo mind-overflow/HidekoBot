@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.sql.*;
@@ -82,6 +82,8 @@ public class DatabaseManager
      * --------------------------------------------------------------------------------------------
      *
      */
+
+    //todo: javadocs
 
     public boolean initDb()
     {
@@ -225,9 +227,9 @@ public class DatabaseManager
             guildId = message.getGuild().getId();
         }
 
-        LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(Configuration.getExpiryTimeSeconds());
+        LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(Cache.getExpiryTimeSeconds());
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Configuration.getExpiryTimestampFormat());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Cache.getExpiryTimestampFormat());
         String expiryTimeFormatted = dateTimeFormatter.format(expiryTime);
 
         String query = "INSERT INTO pending_disabled_messages " +

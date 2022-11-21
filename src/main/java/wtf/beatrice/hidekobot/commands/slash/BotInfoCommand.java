@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.utils.FormatUtil;
 
@@ -20,14 +20,14 @@ public class BotInfoCommand
         // defer reply because this might take a moment
         event.deferReply().queue();
 
-        List<Command> registeredCommands = Configuration.getRegisteredCommands();
+        List<Command> registeredCommands = Cache.getRegisteredCommands();
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         // embed processing
         {
-            embedBuilder.setColor(Configuration.getBotColor());
-            embedBuilder.setTitle(Configuration.getBotName());
+            embedBuilder.setColor(Cache.getBotColor());
+            embedBuilder.setTitle(Cache.getBotName());
 
             // thumbnail
             String botAvatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
@@ -53,7 +53,7 @@ public class BotInfoCommand
             embedBuilder.addField("Commands", commandsListBuilder.toString(), false);
 
             // version field
-            embedBuilder.addField("Version", "v" + Configuration.getBotVersion(), true);
+            embedBuilder.addField("Version", "v" + Cache.getBotVersion(), true);
 
             // jvm version field
             String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
@@ -68,7 +68,7 @@ public class BotInfoCommand
             embedBuilder.addField("RAM Usage", ramMBFormatter.format(usedRamMB) + " MB", true);
 
             // developer field
-            String developerMention = "<@" + Configuration.getBotMaintainerId() + ">";
+            String developerMention = "<@" + Cache.getBotMaintainerId() + ">";
             embedBuilder.addField("Maintainer", developerMention, true);
 
             // uptime field

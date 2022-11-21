@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 public class MessageListener extends ListenerAdapter
@@ -35,12 +35,12 @@ public class MessageListener extends ListenerAdapter
         {
             MessageChannel channel = event.getChannel();
 
-            boolean verbose = Configuration.isVerbose();
+            boolean verbose = Cache.isVerbose();
 
             String msg = verbose ? "off" : "on";
             msg = "Turning verbosity " + msg + "!";
 
-            Configuration.setVerbose(!verbose);
+            Cache.setVerbose(!verbose);
 
             channel.sendMessage(msg).queue();
             logger.log(msg);

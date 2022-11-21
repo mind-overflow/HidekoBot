@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.utils.RandomUtil;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class CoinFlipCommand
     public void buttonReFlip(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if(!(Configuration.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if(!(Cache.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -63,8 +63,8 @@ public class CoinFlipCommand
     {
         String replyMessageId = replyMessage.getId();
 
-        Configuration.getDatabaseManager().queueDisabling(replyMessage);
-        Configuration.getDatabaseManager().trackRanCommandReply(replyMessage, user);
+        Cache.getDatabaseManager().queueDisabling(replyMessage);
+        Cache.getDatabaseManager().trackRanCommandReply(replyMessage, user);
     }
 
     private String genRandom()

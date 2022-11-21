@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 
 public class AvatarCommand
 {
@@ -18,7 +18,7 @@ public class AvatarCommand
         User user;
         int resolution;
 
-        int[] acceptedSizes = Configuration.getSupportedAvatarResolutions();
+        int[] acceptedSizes = Cache.getSupportedAvatarResolutions();
 
 
         OptionMapping userArg = event.getOption("user");
@@ -54,7 +54,7 @@ public class AvatarCommand
 
         // embed processing
         {
-            embedBuilder.setColor(Configuration.getBotColor());
+            embedBuilder.setColor(Cache.getBotColor());
             embedBuilder.setTitle("Profile picture");
 
             embedBuilder.addField("User", "<@" + user.getId() + ">", false);

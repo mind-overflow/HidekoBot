@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.requests.RestAction;
-import wtf.beatrice.hidekobot.Configuration;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.utils.Logger;
@@ -26,9 +26,9 @@ public class ExpiredMessageTask implements Runnable {
 
     public ExpiredMessageTask()
     {
-        String format = Configuration.getExpiryTimestampFormat();
+        String format = Cache.getExpiryTimestampFormat();
         formatter = DateTimeFormatter.ofPattern(format);
-        databaseManager = Configuration.getDatabaseManager();
+        databaseManager = Cache.getDatabaseManager();
         logger = new Logger(getClass());
     }
 
@@ -36,10 +36,10 @@ public class ExpiredMessageTask implements Runnable {
     @Override
     public void run() {
 
-        databaseManager = Configuration.getDatabaseManager();
+        databaseManager = Cache.getDatabaseManager();
         if(databaseManager == null) return;
 
-        List<String> expiringMessages = Configuration.getDatabaseManager().getQueuedExpiringMessages();
+        List<String> expiringMessages = Cache.getDatabaseManager().getQueuedExpiringMessages();
         if(expiringMessages == null || expiringMessages.isEmpty()) return;
 
         LocalDateTime now = LocalDateTime.now();
@@ -47,7 +47,7 @@ public class ExpiredMessageTask implements Runnable {
         for(String messageId : expiringMessages)
         {
 
-            if(Configuration.isVerbose()) logger.log("expired check: " + messageId);
+            if(Cache.isVerbose()) logger.log("expired check: " + messageId);
 
             String expiryTimestamp = databaseManager.getQueuedExpiringMessageExpiryDate(messageId);
             if(expiryTimestamp == null || expiryTimestamp.equals("")) // if missing timestamp
@@ -62,7 +62,7 @@ public class ExpiredMessageTask implements Runnable {
             LocalDateTime expiryDate = LocalDateTime.parse(expiryTimestamp, formatter);
             if(now.isAfter(expiryDate))
             {
-                if(Configuration.isVerbose()) logger.log("expired: " + messageId);
+                if(Cache.isVerbose()) logger.log("expired: " + messageId);
                 disableExpired(messageId);
             }
         }
@@ -127,7 +127,7 @@ public class ExpiredMessageTask implements Runnable {
         RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
 
 
-        if(Configuration.isVerbose()) logger.log("cleaning up: " + messageId);
+        if(Cache.isVerbose()) logger.log("cleaning up: " + messageId);
 
         retrieveAction.queue(
 
