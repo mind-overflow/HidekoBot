@@ -31,7 +31,7 @@ public class ClearChatCommand
 
             if(!(channel instanceof TextChannel))
             {
-                event.reply("Sorry! I can't delete messages here.").queue();
+                event.reply("\uD83D\uDE22 Sorry! I can't delete messages here.").queue();
                 return;
             }
 
@@ -43,7 +43,7 @@ public class ClearChatCommand
 
             if(toDeleteAmount <= 0)
             {
-                event.reply("Sorry, I can't delete that amount of messages!").queue();
+                event.reply("\uD83D\uDE22 Sorry, I can't delete that amount of messages!").queue();
             }
             else {
                 // answer by saying that the operation has begun.
@@ -134,7 +134,7 @@ public class ClearChatCommand
                         a less efficient way that triggers rate-limiting very quickly. */
                             } catch (Exception e)
                             {
-                                replyInteraction.editOriginal("\uD83D\uDE22 Sorry, it seems like there was an issue! " + e.getMessage()).queue();
+                                replyInteraction.editOriginal("\uD83D\uDE22 Sorry, I ran into an error! " + e.getMessage()).queue();
                                 return; // warning: this quits everything.
                             }
                         }
