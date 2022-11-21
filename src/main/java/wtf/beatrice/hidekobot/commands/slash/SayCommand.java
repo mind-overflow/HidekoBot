@@ -22,14 +22,14 @@ public class SayCommand
 
         if(textOption == null || messageContent.isEmpty())
         {
-            event.reply("Hey, you have to tell me what to say!")
+            event.reply("\uD83D\uDE20 Hey, you have to tell me what to say!")
                     .setEphemeral(true)
                     .queue();
             return;
         }
 
         channel.sendMessage(messageContent).queue();
-        event.reply("Message sent!")
+        event.reply("Message sent! ✨")
                 .setEphemeral(true)
                 .queue();
     }

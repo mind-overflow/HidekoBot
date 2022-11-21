@@ -145,7 +145,8 @@ public class ClearChatCommand
                 }
 
 
-                Button dismissButton = Button.danger("clear_dismiss", "Dismiss").withEmoji(Emoji.fromUnicode("❌"));
+                Button dismissButton = Button.primary("clear_dismiss", "Dismiss")
+                        .withEmoji(Emoji.fromUnicode("❌"));
 
                 WebhookMessageEditAction<Message> webhookMessageEditAction;
 
