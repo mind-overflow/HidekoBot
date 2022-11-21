@@ -33,7 +33,7 @@ public class Configuration
     private static LocalDateTime startupTime;
 
 
-    private static final String botVersion = "0.1.2-slash"; // we should probably find a way to make this consistent with Maven
+    private static final String botVersion = "0.1.3-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
     private static final Color botColor = Color.PINK;
 
