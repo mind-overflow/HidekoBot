@@ -35,6 +35,9 @@ public class BotInfoCommand
             String botAvatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
             if(botAvatarUrl != null) embedBuilder.setThumbnail(botAvatarUrl);
 
+            // help field
+            embedBuilder.addField("Getting started", "Type `/help` for help!", false);
+
             // commands list field
             StringBuilder commandsListBuilder = new StringBuilder();
             commandsListBuilder.append(registeredCommands.size()).append( " total - ");
@@ -56,6 +59,8 @@ public class BotInfoCommand
 
             // jvm version field
             String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
+            // only keep the important part "v19.0.1" and omit "v19.0.1+10"
+            jvmVersion = jvmVersion.replaceAll("\\+.*", "");
             embedBuilder.addField("JVM Version", "v" + jvmVersion, true);
 
             // used ram field
@@ -91,7 +96,6 @@ public class BotInfoCommand
                     uptimeStringBuilder.append(minutes).append("m ");
                 }
             } else {
-
                 uptimeStringBuilder.append(days).append("d ");
                 uptimeStringBuilder.append(hours).append("h ");
                 uptimeStringBuilder.append(minutes).append("m ");
@@ -100,7 +104,10 @@ public class BotInfoCommand
 
             embedBuilder.addField("Uptime", uptimeStringBuilder.toString(), true);
 
-
+            // issue tracker field
+            embedBuilder.addField("Support",
+                    "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot)",
+                    true);
         }
 
         event.getHook().editOriginalEmbeds(embedBuilder.build()).queue();
