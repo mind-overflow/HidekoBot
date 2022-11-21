@@ -15,8 +15,8 @@ import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
-import wtf.beatrice.hidekobot.utils.Logger;
-import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
+import wtf.beatrice.hidekobot.util.Logger;
+import wtf.beatrice.hidekobot.util.SlashCommandUtil;
 
 import java.io.File;
 import java.time.LocalDateTime;

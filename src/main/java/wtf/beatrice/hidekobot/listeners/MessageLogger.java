@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 public class MessageLogger extends ListenerAdapter
 {

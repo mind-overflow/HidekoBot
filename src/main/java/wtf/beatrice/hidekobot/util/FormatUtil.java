@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.utils;
+package wtf.beatrice.hidekobot.util;
 
 import wtf.beatrice.hidekobot.Cache;
 

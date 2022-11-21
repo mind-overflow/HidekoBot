@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.utils.FormatUtil;
+import wtf.beatrice.hidekobot.util.FormatUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;

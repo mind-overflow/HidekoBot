@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.datasource;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 import java.io.*;
 import java.util.LinkedHashMap;

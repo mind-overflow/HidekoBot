@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;

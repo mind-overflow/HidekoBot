@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.utils;
+package wtf.beatrice.hidekobot.util;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;

@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.utils.RandomUtil;
+import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.List;
 

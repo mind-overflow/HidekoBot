@@ -1,7 +1,7 @@
 package wtf.beatrice.hidekobot.runnables;
 
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

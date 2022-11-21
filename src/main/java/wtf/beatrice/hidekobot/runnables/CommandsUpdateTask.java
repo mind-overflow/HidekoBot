@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.runnables;
 import net.dv8tion.jda.api.JDA;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 public class CommandsUpdateTask  implements Runnable {
 

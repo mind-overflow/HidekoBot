@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
-import wtf.beatrice.hidekobot.utils.Logger;
+import wtf.beatrice.hidekobot.util.Logger;
 
 import java.awt.*;
 import java.lang.reflect.Field;
