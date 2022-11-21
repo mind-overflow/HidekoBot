@@ -39,7 +39,8 @@ public class InviteCommand
         }
 
         String inviteUrl = Configuration.getInviteUrl();
-        Button inviteButton = Button.link(inviteUrl, "Invite " + Configuration.getBotName());
+        Button inviteButton = Button.link(inviteUrl, "Invite " + Configuration.getBotName())
+                .withEmoji(Emoji.fromUnicode("\uD83C\uDF1F"));
 
         WebhookMessageEditAction<Message> reply =
                 event.getHook()
