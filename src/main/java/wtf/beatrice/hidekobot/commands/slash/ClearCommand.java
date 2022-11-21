@@ -17,7 +17,7 @@ import wtf.beatrice.hidekobot.Cache;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClearChatCommand
+public class ClearCommand
 {
 
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)

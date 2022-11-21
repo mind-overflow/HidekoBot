@@ -2,7 +2,7 @@ package wtf.beatrice.hidekobot.listeners;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import wtf.beatrice.hidekobot.commands.slash.ClearChatCommand;
+import wtf.beatrice.hidekobot.commands.slash.ClearCommand;
 import wtf.beatrice.hidekobot.commands.slash.CoinFlipCommand;
 
 public class ButtonInteractionListener extends ListenerAdapter
@@ -18,7 +18,7 @@ public class ButtonInteractionListener extends ListenerAdapter
             case "coinflip_reflip" -> new CoinFlipCommand().buttonReFlip(event);
 
             // clearchat command
-            case "clear_dismiss" -> new ClearChatCommand().dismissMessage(event);
+            case "clear_dismiss" -> new ClearCommand().dismissMessage(event);
 
         }
 
