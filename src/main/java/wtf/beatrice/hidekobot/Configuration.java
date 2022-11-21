@@ -35,7 +35,7 @@ public class Configuration
     private static String heartbeatApiKey = "";
 
 
-    private static final String botVersion = "0.1.4-slash"; // we should probably find a way to make this consistent with Maven
+    private static final String botVersion = "0.1.5-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
     private static final Color botColor = Color.PINK;
 
