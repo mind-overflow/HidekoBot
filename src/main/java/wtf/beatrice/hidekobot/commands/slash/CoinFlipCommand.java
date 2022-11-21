@@ -62,12 +62,9 @@ public class CoinFlipCommand
     private void trackAndRestrict(Message replyMessage, User user)
     {
         String replyMessageId = replyMessage.getId();
-        String replyChannelId = replyMessage.getChannel().getId();
-        String replyGuildId = replyMessage.getGuild().getId();
-        String userId = user.getId();
 
-        Configuration.getDatabaseManager().queueDisabling(replyGuildId, replyChannelId, replyMessageId);
-        Configuration.getDatabaseManager().trackRanCommandReply(replyGuildId, replyChannelId, replyMessageId, userId);
+        Configuration.getDatabaseManager().queueDisabling(replyMessage);
+        Configuration.getDatabaseManager().trackRanCommandReply(replyMessage, user);
     }
 
     private String genRandom()

@@ -1,5 +1,8 @@
 package wtf.beatrice.hidekobot.database;
 
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.utils.Logger;
 
@@ -61,7 +64,24 @@ public class DatabaseManager
         return true;
     }
 
-
+    /*
+     * DB STRUCTURE
+     * TABLE 1: pending_disabled_messages
+     * ----------------------------------------------------------------------------------
+     * | guild_id      | channel_id         | message_id       | expiry_timestamp       |
+     * ----------------------------------------------------------------------------------
+     * |39402849302   | 39402849302        | 39402849302      | 2022-11-20 22:45:53:300 |
+     * ---------------------------------------------------------------------------------
+     *
+     *
+     * TABLE 2: command_runners
+     * --------------------------------------------------------------------------------------------
+     * | guild_id      | channel_id         | message_id       | user_id        | channel_type    |
+     * --------------------------------------------------------------------------------------------
+     * | 39402849302   | 39402849302        | 39402849302      | 39402849302    | PRIVATE         |
+     * --------------------------------------------------------------------------------------------
+     *
+     */
 
     public boolean initDb()
     {
@@ -71,14 +91,15 @@ public class DatabaseManager
                 "guild_id TEXT NOT NULL, " +
                 "channel_id TEXT NOT NULL," +
                 "message_id TEXT NOT NULL," +
-                "expiry_timestamp TEXT NOT NULL" +
+                "expiry_timestamp TEXT NOT NULL " +
                 ");");
 
         newTables.add("CREATE TABLE IF NOT EXISTS command_runners (" +
                 "guild_id TEXT NOT NULL, " +
                 "channel_id TEXT NOT NULL," + // channel the command was run in
                 "message_id TEXT NOT NULL," + // message id of the bot's response
-                "user_id TEXT NOT NULL" + // user who ran the command
+                "user_id TEXT NOT NULL, " + // user who ran the command
+                "channel_type TEXT NOT NULL" + // channel type (PRIVATE, FORUM, ...)
                 ");");
 
         for(String sql : newTables)
@@ -95,11 +116,26 @@ public class DatabaseManager
         return true;
     }
 
-    public boolean trackRanCommandReply(String guildId, String channelId, String messageId, String userId)
+    public boolean trackRanCommandReply(Message message, User user)
     {
+        String userId = user.getId();
+        String guildId;
+
+        ChannelType channelType = message.getChannelType();
+        if(channelType == ChannelType.PRIVATE)
+        {
+            guildId = userId;
+        } else {
+            guildId = message.getGuild().getId();
+        }
+
+        String channelId = message.getChannel().getId();
+        String messageId = message.getId();
+
+
         String query = "INSERT INTO command_runners " +
-                "(guild_id, channel_id, message_id, user_id) VALUES " +
-                " (?, ?, ?, ?);";
+                "(guild_id, channel_id, message_id, user_id, channel_type) VALUES " +
+                " (?, ?, ?, ?, ?);";
 
         try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
         {
@@ -107,6 +143,7 @@ public class DatabaseManager
             preparedStatement.setString(2, channelId);
             preparedStatement.setString(3, messageId);
             preparedStatement.setString(4, userId);
+            preparedStatement.setString(5, channelType.name());
 
             preparedStatement.executeUpdate();
 
@@ -124,6 +161,31 @@ public class DatabaseManager
         String trackedUserId = getTrackedReplyUserId(messageId);
         if(trackedUserId == null) return false;
         return userId.equals(trackedUserId);
+    }
+
+    public ChannelType getTrackedMessageChannelType(String messageId)
+    {
+        String query = "SELECT channel_type " +
+                "FROM command_runners " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                String channelTypeName = resultSet.getString("channel_type");
+                return ChannelType.valueOf(channelTypeName);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
     public String getTrackedReplyUserId(String messageId)
@@ -149,8 +211,20 @@ public class DatabaseManager
         return null;
     }
 
-    public boolean queueDisabling(String guildId, String channelId, String messageId)
+    public boolean queueDisabling(Message message)
     {
+        String messageId = message.getId();
+        String channelId = message.getChannel().getId();
+        String guildId;
+
+        ChannelType channelType = message.getChannelType();
+        if(channelType == ChannelType.PRIVATE)
+        {
+            guildId = "PRIVATE";
+        } else {
+            guildId = message.getGuild().getId();
+        }
+
         LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(Configuration.getExpiryTimeSeconds());
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Configuration.getExpiryTimestampFormat());
@@ -296,25 +370,6 @@ public class DatabaseManager
 
         return null;
     }
-
-    /**
-     * DB STRUCTURE
-     * TABLE 1: pending_disabled_messages
-     * ----------------------------------------------------------------------------------
-     * | guild_id      | channel_id         | message_id       | expiry_timestamp        |
-     * ----------------------------------------------------------------------------------
-     * |39402849302   | 39402849302        | 39402849302      | 2022-11-20 22:45:53:300 |
-     * ----------------------------------------------------------------------------------
-     *
-     *
-     * TABLE 2: command_runners
-     * --------------------------------------------------------------------------
-     * | guild_id      | channel_id         | message_id       | user_id        |
-     * --------------------------------------------------------------------------
-     * | 39402849302   | 39402849302        | 39402849302      | 39402849302    |
-     * --------------------------------------------------------------------------
-     *
-     */
 
 
 }

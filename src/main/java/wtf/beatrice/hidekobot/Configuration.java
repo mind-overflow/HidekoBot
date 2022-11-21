@@ -6,9 +6,7 @@ import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 
 import java.awt.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +25,7 @@ public class Configuration
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
-    private final static long expiryTimeSeconds = 60L;
+    private final static long expiryTimeSeconds = 5L;
 
     // used to count eg. uptime
     private static LocalDateTime startupTime;

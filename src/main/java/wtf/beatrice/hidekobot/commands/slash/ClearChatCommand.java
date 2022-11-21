@@ -165,13 +165,8 @@ public class ClearChatCommand
                         .setActionRow(dismissButton)
                         .complete();
 
-                String replyMessageId = message.getId();
-                String replyChannelId = message.getChannel().getId();
-                String replyGuildId = message.getGuild().getId();
-                String userId = event.getUser().getId();
-
-                Configuration.getDatabaseManager().queueDisabling(replyGuildId, replyChannelId, replyMessageId);
-                Configuration.getDatabaseManager().trackRanCommandReply(replyGuildId, replyChannelId, replyMessageId, userId);
+                Configuration.getDatabaseManager().queueDisabling(message);
+                Configuration.getDatabaseManager().trackRanCommandReply(message, event.getUser());
 
             }
         }).start();
