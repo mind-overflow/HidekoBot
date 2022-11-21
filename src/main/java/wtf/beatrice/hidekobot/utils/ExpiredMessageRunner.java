@@ -47,7 +47,13 @@ public class ExpiredMessageRunner implements Runnable {
             if(Configuration.isVerbose()) logger.log("expired check: " + messageId);
 
             String expiryTimestamp = databaseManager.getQueuedExpiringMessageExpiryDate(messageId);
-            if(expiryTimestamp == null || expiryTimestamp.equals("")) continue; //todo: idk count it as expired already?
+            if(expiryTimestamp == null || expiryTimestamp.equals("")) // if missing timestamp
+            {
+                // count it as already expired
+                databaseManager.untrackExpiredMessage(messageId);
+                // move on to next message
+                continue;
+            }
 
 
             LocalDateTime expiryDate = LocalDateTime.parse(expiryTimestamp, formatter);
@@ -70,9 +76,21 @@ public class ExpiredMessageRunner implements Runnable {
 
 
         Guild guild = HidekoBot.getAPI().getGuildById(guildId);
-        if(guild == null) return; //todo count it as done/solved/removed? we probably got kicked
+        if(guild == null)
+        {
+            // if guild is not found, consider it expired
+            // (server was deleted or bot was kicked)
+            databaseManager.untrackExpiredMessage(messageId);
+            return;
+        }
         TextChannel textChannel = guild.getTextChannelById(channelId);
-        if(textChannel == null) return; //todo count it as done/solved/removed? channel was probably deleted
+        if(textChannel == null)
+        {
+            // if channel is not found, count it as expired
+            // (channel was deleted or bot permissions restricted)
+            databaseManager.untrackExpiredMessage(messageId);
+            return;
+        }
 
         RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
 
@@ -82,7 +100,11 @@ public class ExpiredMessageRunner implements Runnable {
         retrieveAction.queue(
 
                 message -> {
-                    if(message == null) return; //todo count it as done/solved/removed? message was probably deleted
+                    if(message == null)
+                    {
+                        databaseManager.untrackExpiredMessage(messageId);
+                        return;
+                    }
 
                     List<LayoutComponent> components = message.getComponents();
                     List<LayoutComponent> newComponents = new ArrayList<>();
