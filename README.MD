@@ -5,9 +5,10 @@ Hideko is a general-purpose Discord bot.
 ## Startup
 Download a prebuilt JAR file or build it from source, then run it with:
 ```bash
-java -jar HidekoBot.jar <botToken> [additional parameters]
+java -jar HidekoBot.jar [additional parameters]
 ```
-Where `HidekoBot.jar` is the executable archive and `<botToken>` is your bot token passed as an argument.  
+Where `HidekoBot.jar` is the executable archive and `[additional parameters]` are arguments that you can add to
+make the bot change its behavior.
   
 Additionally available parameters are:
   - **verbose**: log every message that the bot receives, plus additional debugging messages. Very spammy and performance heavy.
@@ -17,5 +18,10 @@ Additionally available parameters are:
   
 ## Initial setup  
   
-After successfully starting the bot up, it will print an invite-link in your console. Click on the link to add your bot
-to any server with the correct permissions already set-up.
+Run the startup command once. The bot will generate a `config.yml` file in the directory you were when you ran it.  
+  
+Edit the configuration file and set all values according to your needs.  
+  
+Save the file and start the bot again. If there are no issues, everything will load and it will print an
+invite-link in your console. Click on the link to add your bot to any server with the correct permissions
+already set-up.
