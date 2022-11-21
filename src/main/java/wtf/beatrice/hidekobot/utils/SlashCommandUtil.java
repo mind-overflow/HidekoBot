@@ -14,7 +14,7 @@ import wtf.beatrice.hidekobot.listeners.MessageListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlashCommandsUtil
+public class SlashCommandUtil
 {
 
     private static final Logger logger = new Logger(MessageListener.class);

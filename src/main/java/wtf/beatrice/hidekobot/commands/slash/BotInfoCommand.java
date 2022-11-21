@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.utils.TimeUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
@@ -74,7 +75,7 @@ public class BotInfoCommand
             embedBuilder.addField("Author", authorMention, true);
 
             // uptime field
-            embedBuilder.addField("Uptime", Configuration.getNiceUptime(), true);
+            embedBuilder.addField("Uptime", TimeUtil.getNiceUptime(), true);
 
             // issue tracker field
             embedBuilder.addField("Support",

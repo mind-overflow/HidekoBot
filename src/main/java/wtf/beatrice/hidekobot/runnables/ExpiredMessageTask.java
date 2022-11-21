@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.utils;
+package wtf.beatrice.hidekobot.runnables;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -8,20 +8,21 @@ import net.dv8tion.jda.api.requests.RestAction;
 import wtf.beatrice.hidekobot.Configuration;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.database.DatabaseManager;
+import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpiredMessageRunner implements Runnable {
+public class ExpiredMessageTask implements Runnable {
 
     private final DateTimeFormatter formatter;
     private final Logger logger;
     private DatabaseManager databaseManager;
 
 
-    public ExpiredMessageRunner()
+    public ExpiredMessageTask()
     {
         String format = Configuration.getExpiryTimestampFormat();
         formatter = DateTimeFormatter.ofPattern(format);

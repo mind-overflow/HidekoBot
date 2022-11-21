@@ -11,9 +11,9 @@ import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
-import wtf.beatrice.hidekobot.utils.ExpiredMessageRunner;
+import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.utils.Logger;
-import wtf.beatrice.hidekobot.utils.SlashCommandsUtil;
+import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -91,7 +91,7 @@ public class HidekoBot
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
         Executors.newSingleThreadScheduledExecutor().schedule(() ->
-                SlashCommandsUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
+                SlashCommandUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
@@ -115,7 +115,7 @@ public class HidekoBot
 
         // start scheduled runnables
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        ExpiredMessageRunner task = new ExpiredMessageRunner();
+        ExpiredMessageTask task = new ExpiredMessageTask();
         int initDelay = 5;
         int periodicDelay = 5;
         scheduler.scheduleAtFixedRate(task, initDelay, periodicDelay, TimeUnit.SECONDS);
