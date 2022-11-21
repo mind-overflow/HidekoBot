@@ -45,7 +45,7 @@ public class HeartBeatTask implements Runnable
             }
 
         } catch (IOException e) {
-            logger.log("Error while trying to push heartbeat: " + e.getMessage() + ", " + e.getCause().getMessage());
+            logger.log("Error while trying to push heartbeat: " + e.getMessage());
         }
 
     }
