@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.database.DatabaseManager;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
+import wtf.beatrice.hidekobot.utils.ConfigurationManager;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Cache
 {
 
-
+    private static ConfigurationManager configManager = null;
     private static DatabaseManager dbManager = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
@@ -234,5 +235,11 @@ public class Cache
         return heartbeatApiKey;
     }
     public static String getExecPath() { return execPath; }
+
+    public static ConfigurationManager getConfigurationManager()
+    { return configManager; }
+
+    public static void setConfigManager(ConfigurationManager configurationManager)
+    { configManager = configurationManager; }
 
 }

@@ -14,7 +14,7 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
-import wtf.beatrice.hidekobot.utils.ConfigurationUtil;
+import wtf.beatrice.hidekobot.utils.ConfigurationManager;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
 
@@ -114,9 +114,9 @@ public class HidekoBot
 
         // load configuration
         String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
-        ConfigurationUtil configurationUtil = new ConfigurationUtil(configFilePath);
-        configurationUtil.initConfig();
-
+        ConfigurationManager configurationManager = new ConfigurationManager(configFilePath);
+        configurationManager.initConfig();
+        Cache.setConfigManager(configurationManager);
 
         // connect to database
         logger.log("Connecting to database...");

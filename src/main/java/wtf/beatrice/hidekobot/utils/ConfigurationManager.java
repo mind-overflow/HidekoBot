@@ -7,13 +7,15 @@ import wtf.beatrice.hidekobot.HidekoBot;
 import java.io.*;
 import java.util.LinkedHashMap;
 
-public class ConfigurationUtil
+public class ConfigurationManager
 {
 
+
+    private final LinkedHashMap<String, Object> configurationEntries = new LinkedHashMap<>();
     private final Logger logger;
     private final String configFilePath;
 
-    public ConfigurationUtil(String configFilePath)
+    public ConfigurationManager(String configFilePath)
     {
         this.configFilePath = configFilePath;
         logger = new Logger(getClass());
@@ -114,7 +116,21 @@ public class ConfigurationUtil
                 return;
             }
 
+            // finally, dump all entries to cache.
+            loadConfig(filledEntries);
+        } else {
+            // if no key is missing, just cache all entries and values from filesystem.
+            loadConfig(fsConfigContents);
         }
+    }
 
+
+    private void loadConfig(LinkedHashMap<String, Object> configurationEntries)
+    {
+        configurationEntries.putAll(configurationEntries);
+    }
+    private Object getConfigValue(String key)
+    {
+        return configurationEntries.get(key);
     }
 }
