@@ -38,7 +38,7 @@ public class CoinFlipCommand
     public void buttonReFlip(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if(!(Cache.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if(!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -63,8 +63,8 @@ public class CoinFlipCommand
     {
         String replyMessageId = replyMessage.getId();
 
-        Cache.getDatabaseManager().queueDisabling(replyMessage);
-        Cache.getDatabaseManager().trackRanCommandReply(replyMessage, user);
+        Cache.getDatabaseSource().queueDisabling(replyMessage);
+        Cache.getDatabaseSource().trackRanCommandReply(replyMessage, user);
     }
 
     private String genRandom()

@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
-import wtf.beatrice.hidekobot.database.DatabaseManager;
+import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
@@ -14,7 +14,7 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
-import wtf.beatrice.hidekobot.utils.ConfigurationManager;
+import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.utils.Logger;
 import wtf.beatrice.hidekobot.utils.SlashCommandUtil;
 
@@ -39,9 +39,9 @@ public class HidekoBot
         // load configuration
         logger.log("Loading configuration...");
         String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
-        ConfigurationManager configurationManager = new ConfigurationManager(configFilePath);
-        configurationManager.initConfig();
-        Cache.setConfigManager(configurationManager);
+        ConfigurationSource configurationSource = new ConfigurationSource(configFilePath);
+        configurationSource.initConfig();
+        Cache.setConfigurationSource(configurationSource);
         logger.log("Configuration loaded!");
 
         String botToken = Cache.getBotToken();
@@ -115,11 +115,11 @@ public class HidekoBot
         // connect to database
         logger.log("Connecting to database...");
         String dbFilePath = Cache.getExecPath() + File.separator + "db.sqlite"; // in current directory
-        DatabaseManager dbManager = new DatabaseManager(dbFilePath);
-        if(dbManager.connect() && dbManager.initDb())
+        DatabaseSource databaseSource = new DatabaseSource(dbFilePath);
+        if(databaseSource.connect() && databaseSource.initDb())
         {
             logger.log("Database connection initialized!");
-            Cache.setDatabaseManagerInstance(dbManager);
+            Cache.setDatabaseSourceInstance(databaseSource);
 
             // load data here...
 

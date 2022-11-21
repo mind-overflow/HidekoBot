@@ -1,13 +1,14 @@
-package wtf.beatrice.hidekobot.utils;
+package wtf.beatrice.hidekobot.datasource;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.io.*;
 import java.util.LinkedHashMap;
 
-public class ConfigurationManager
+public class ConfigurationSource
 {
 
 
@@ -15,7 +16,7 @@ public class ConfigurationManager
     private final Logger logger;
     private final String configFilePath;
 
-    public ConfigurationManager(String configFilePath)
+    public ConfigurationSource(String configFilePath)
     {
         this.configFilePath = configFilePath;
         logger = new Logger(getClass());

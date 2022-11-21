@@ -165,8 +165,8 @@ public class ClearChatCommand
                         .setActionRow(dismissButton)
                         .complete();
 
-                Cache.getDatabaseManager().queueDisabling(message);
-                Cache.getDatabaseManager().trackRanCommandReply(message, event.getUser());
+                Cache.getDatabaseSource().queueDisabling(message);
+                Cache.getDatabaseSource().trackRanCommandReply(message, event.getUser());
 
             }
         }).start();
@@ -176,7 +176,7 @@ public class ClearChatCommand
     public void dismissMessage(ButtonInteractionEvent event)
     {
 
-        if(!(Cache.getDatabaseManager().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if(!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
         } else

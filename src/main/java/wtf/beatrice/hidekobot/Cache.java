@@ -2,9 +2,9 @@ package wtf.beatrice.hidekobot;
 
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.database.DatabaseManager;
+import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
-import wtf.beatrice.hidekobot.utils.ConfigurationManager;
+import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.awt.*;
@@ -19,8 +19,8 @@ public class Cache
 
 
     private static final Logger logger = new Logger(Cache.class);
-    private static ConfigurationManager configManager = null;
-    private static DatabaseManager dbManager = null;
+    private static ConfigurationSource configurationSource = null;
+    private static DatabaseSource databaseSource = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger;
     private static final long botMaintainerId = 979809420714332260L;
@@ -94,7 +94,7 @@ public class Cache
      * @return a long of the account's id
      */
     public static long getBotOwnerId() {
-        return configManager == null ? 0L : (Long) configManager.getConfigValue("bot-owner-id");
+        return configurationSource == null ? 0L : (Long) configurationSource.getConfigValue("bot-owner-id");
     }
 
 
@@ -104,7 +104,7 @@ public class Cache
      * @return a String of the bot's token.
      */
     public static String getBotToken() {
-        return configManager == null ? null : (String) configManager.getConfigValue("bot-token");
+        return configurationSource == null ? null : (String) configurationSource.getConfigValue("bot-token");
     }
 
     /**
@@ -142,21 +142,21 @@ public class Cache
     }
 
     /**
-     * Set the already fully-initialized DatabaseManager instance, ready to be accessed and used.
+     * Set the already fully-initialized DatabaseSource instance, ready to be accessed and used.
      *
-     * @param databaseManagerInstance the fully-initialized DatabaseManager instance.
+     * @param databaseSourceInstance the fully-initialized DatabaseSource instance.
      */
-    public static void setDatabaseManagerInstance(DatabaseManager databaseManagerInstance)
+    public static void setDatabaseSourceInstance(DatabaseSource databaseSourceInstance)
     {
-        dbManager = databaseManagerInstance;
+        databaseSource = databaseSourceInstance;
     }
 
     /**
-     * Get the fully-initialized DatabaseManager instance, ready to be used.
+     * Get the fully-initialized DatabaseSource instance, ready to be used.
      *
-     * @return the DatabaseManager instance.
+     * @return the DatabaseSource instance.
      */
-    public static @Nullable DatabaseManager getDatabaseManager() { return dbManager; }
+    public static @Nullable DatabaseSource getDatabaseSource() { return databaseSource; }
 
     /**
      * Get the DateTimeFormatter string for parsing the expired messages timestamp.
@@ -189,8 +189,8 @@ public class Cache
      */
     public static Color getBotColor() {
         Color defaultColor = Color.PINK;
-        if(configManager == null) return defaultColor;
-        String colorName = (String) configManager.getConfigValue("bot-color");
+        if(configurationSource == null) return defaultColor;
+        String colorName = (String) configurationSource.getConfigValue("bot-color");
 
         Color color = null;
         try {
@@ -246,15 +246,15 @@ public class Cache
     public static LocalDateTime getStartupTime() { return startupTime; }
 
     public static String getFullHeartBeatLink() {
-        return configManager == null ? null : (String) configManager.getConfigValue("heartbeat-link");
+        return configurationSource == null ? null : (String) configurationSource.getConfigValue("heartbeat-link");
     }
     //todo javadocs
     public static String getExecPath() { return execPath; }
 
-    private static ConfigurationManager getConfigurationManager()
-    { return configManager; }
+    /*private static ConfigurationSource getConfigurationSource()
+    { return configurationSource; }*/
 
-    public static void setConfigManager(ConfigurationManager configurationManager)
-    { configManager = configurationManager; }
+    public static void setConfigurationSource(ConfigurationSource configurationSource)
+    { Cache.configurationSource = configurationSource; }
 
 }

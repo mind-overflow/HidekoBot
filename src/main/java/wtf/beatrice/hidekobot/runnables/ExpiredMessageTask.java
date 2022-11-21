@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.requests.RestAction;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.database.DatabaseManager;
+import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.utils.Logger;
 
 import java.time.LocalDateTime;
@@ -21,14 +21,14 @@ public class ExpiredMessageTask implements Runnable {
 
     private final DateTimeFormatter formatter;
     private final Logger logger;
-    private DatabaseManager databaseManager;
+    private DatabaseSource databaseSource;
 
 
     public ExpiredMessageTask()
     {
         String format = Cache.getExpiryTimestampFormat();
         formatter = DateTimeFormatter.ofPattern(format);
-        databaseManager = Cache.getDatabaseManager();
+        databaseSource = Cache.getDatabaseSource();
         logger = new Logger(getClass());
     }
 
@@ -36,10 +36,10 @@ public class ExpiredMessageTask implements Runnable {
     @Override
     public void run() {
 
-        databaseManager = Cache.getDatabaseManager();
-        if(databaseManager == null) return;
+        databaseSource = Cache.getDatabaseSource();
+        if(databaseSource == null) return;
 
-        List<String> expiringMessages = Cache.getDatabaseManager().getQueuedExpiringMessages();
+        List<String> expiringMessages = Cache.getDatabaseSource().getQueuedExpiringMessages();
         if(expiringMessages == null || expiringMessages.isEmpty()) return;
 
         LocalDateTime now = LocalDateTime.now();
@@ -49,11 +49,11 @@ public class ExpiredMessageTask implements Runnable {
 
             if(Cache.isVerbose()) logger.log("expired check: " + messageId);
 
-            String expiryTimestamp = databaseManager.getQueuedExpiringMessageExpiryDate(messageId);
+            String expiryTimestamp = databaseSource.getQueuedExpiringMessageExpiryDate(messageId);
             if(expiryTimestamp == null || expiryTimestamp.equals("")) // if missing timestamp
             {
                 // count it as already expired
-                databaseManager.untrackExpiredMessage(messageId);
+                databaseSource.untrackExpiredMessage(messageId);
                 // move on to next message
                 continue;
             }
@@ -73,9 +73,9 @@ public class ExpiredMessageTask implements Runnable {
 
     private void disableExpired(String messageId)
     {
-        String channelId = databaseManager.getQueuedExpiringMessageChannel(messageId);
+        String channelId = databaseSource.getQueuedExpiringMessageChannel(messageId);
 
-        ChannelType msgChannelType = databaseManager.getTrackedMessageChannelType(messageId);
+        ChannelType msgChannelType = databaseSource.getTrackedMessageChannelType(messageId);
 
         MessageChannel textChannel = null;
 
@@ -83,20 +83,20 @@ public class ExpiredMessageTask implements Runnable {
         // this should never happen, but only message channels are supported.
         if(!msgChannelType.isMessage())
         {
-            databaseManager.untrackExpiredMessage(messageId);
+            databaseSource.untrackExpiredMessage(messageId);
             return;
         }
 
         // if this is a DM
         if(msgChannelType == ChannelType.PRIVATE)
         {
-            String userId = databaseManager.getTrackedReplyUserId(messageId);
+            String userId = databaseSource.getTrackedReplyUserId(messageId);
             User user = HidekoBot.getAPI().retrieveUserById(userId).complete();
             if(user == null)
             {
                 // if user is not found, consider it expired
                 // (deleted profile, or blocked the bot)
-                databaseManager.untrackExpiredMessage(messageId);
+                databaseSource.untrackExpiredMessage(messageId);
                 return;
             }
 
@@ -104,13 +104,13 @@ public class ExpiredMessageTask implements Runnable {
         }
         else
         {
-            String guildId = databaseManager.getQueuedExpiringMessageGuild(messageId);
+            String guildId = databaseSource.getQueuedExpiringMessageGuild(messageId);
             Guild guild = HidekoBot.getAPI().getGuildById(guildId);
             if(guild == null)
             {
                 // if guild is not found, consider it expired
                 // (server was deleted or bot was kicked)
-                databaseManager.untrackExpiredMessage(messageId);
+                databaseSource.untrackExpiredMessage(messageId);
                 return;
             }
             textChannel = guild.getTextChannelById(channelId);
@@ -120,7 +120,7 @@ public class ExpiredMessageTask implements Runnable {
         {
             // if channel is not found, count it as expired
             // (channel was deleted or bot permissions restricted)
-            databaseManager.untrackExpiredMessage(messageId);
+            databaseSource.untrackExpiredMessage(messageId);
             return;
         }
 
@@ -134,7 +134,7 @@ public class ExpiredMessageTask implements Runnable {
                 message -> {
                     if(message == null)
                     {
-                        databaseManager.untrackExpiredMessage(messageId);
+                        databaseSource.untrackExpiredMessage(messageId);
                         return;
                     }
 
@@ -147,11 +147,11 @@ public class ExpiredMessageTask implements Runnable {
                     }
 
                     message.editMessageComponents(newComponents).queue();
-                    databaseManager.untrackExpiredMessage(messageId);
+                    databaseSource.untrackExpiredMessage(messageId);
                 },
 
                 (error) -> {
-                    databaseManager.untrackExpiredMessage(messageId);
+                    databaseSource.untrackExpiredMessage(messageId);
                 });
     }
 }

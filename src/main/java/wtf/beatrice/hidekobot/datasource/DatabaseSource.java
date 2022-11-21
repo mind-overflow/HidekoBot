@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.database;
+package wtf.beatrice.hidekobot.datasource;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseManager
+public class DatabaseSource
 {
 
     private final static String sqliteURL = "jdbc:sqlite:%path%";
@@ -20,7 +20,7 @@ public class DatabaseManager
     private final String dbPath;
     private final Logger logger;
 
-    public DatabaseManager(String dbPath)
+    public DatabaseSource(String dbPath)
     {
         this.dbPath = dbPath;
         this.logger = new Logger(getClass());
