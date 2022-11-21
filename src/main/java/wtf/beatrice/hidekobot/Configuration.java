@@ -25,7 +25,7 @@ public class Configuration
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
-    private final static long expiryTimeSeconds = 5L;
+    private final static long expiryTimeSeconds = 15L;
 
     // used to count eg. uptime
     private static LocalDateTime startupTime;
