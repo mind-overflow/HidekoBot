@@ -1,9 +1,8 @@
 package wtf.beatrice.hidekobot.commands.slash;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -11,8 +10,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.commands.base.Invite;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 public class InviteCommand extends SlashCommandImpl
@@ -30,6 +28,7 @@ public class InviteCommand extends SlashCommandImpl
     {
         // defer reply because this might take a moment
         ReplyCallbackAction replyCallbackAction = event.deferReply();
+
         // only make message permanent in DMs
         if(event.getChannelType() != ChannelType.PRIVATE)
         {
@@ -37,27 +36,13 @@ public class InviteCommand extends SlashCommandImpl
         }
         replyCallbackAction.queue();
 
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-
-        //embed processing
-        {
-            embedBuilder.setColor(Cache.getBotColor());
-            String avatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
-            if(avatarUrl != null) embedBuilder.setThumbnail(avatarUrl);
-            embedBuilder.setTitle("Invite");
-            embedBuilder.appendDescription("Click on the button below to invite " +
-                    Cache.getBotName() +
-                    " to your server!");
-        }
-
-        String inviteUrl = Cache.getInviteUrl();
-        Button inviteButton = Button.link(inviteUrl, "Invite " + Cache.getBotName())
-                .withEmoji(Emoji.fromUnicode("\uD83C\uDF1F"));
+        MessageEmbed inviteEmbed = Invite.generateEmbed();
+        Button inviteButton = Invite.getInviteButton();
 
         WebhookMessageEditAction<Message> reply =
                 event.getHook()
-                .editOriginalEmbeds(embedBuilder.build())
-                .setActionRow(inviteButton);
+                        .editOriginalEmbeds(inviteEmbed)
+                        .setActionRow(inviteButton);
 
         reply.queue();
     }
