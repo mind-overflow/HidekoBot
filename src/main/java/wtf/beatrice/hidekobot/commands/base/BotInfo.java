@@ -24,8 +24,10 @@ public class BotInfo
 
         // help field
         long ownerId = Cache.getBotOwnerId();
+        String prefix = Cache.getBotPrefix();
         embedBuilder.addField("Getting started",
-                "This instance is run by <@" + ownerId + ">.\nType `/help` for help! ",
+                "This instance is run by <@" + ownerId + ">.\n" +
+                        "Type `/help` for help! The bot prefix is `" + prefix + "`.",
                 false);
 
         // type-specific commands list field

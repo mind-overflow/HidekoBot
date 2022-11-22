@@ -16,11 +16,13 @@ public class Cache
 {
 
 
+    // todo: make this compatible with the message listener's regex
+    private static final String botPrefix = "hideko";
     private static final Logger logger = new Logger(Cache.class);
     private static ConfigurationSource configurationSource = null;
     private static DatabaseSource databaseSource = null;
     private static boolean verbose = false;
-    private static MessageLogger verbosityLogger;
+    private static MessageLogger verbosityLogger = null;
     private static final long botMaintainerId = 979809420714332260L;
     private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
@@ -28,7 +30,7 @@ public class Cache
     private final static long expiryTimeSeconds = 15L;
 
     // used to count e.g. uptime
-    private static LocalDateTime startupTime;
+    private static LocalDateTime startupTime = null;
 
     private final static String execPath = System.getProperty("user.dir");
 
@@ -242,5 +244,12 @@ public class Cache
 
     public static void setConfigurationSource(ConfigurationSource configurationSource)
     { Cache.configurationSource = configurationSource; }
+
+    /**
+     * Get the bot's prefix
+     *
+     * @return a String of the bot's prefix.
+     */
+    public static String getBotPrefix() { return botPrefix; }
 
 }
