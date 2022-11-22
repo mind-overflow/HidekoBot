@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
+import wtf.beatrice.hidekobot.datasource.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
@@ -19,6 +20,8 @@ public class Cache
     // todo: make this compatible with the message listener's regex
     private static final String botPrefix = "hideko";
     private static final Logger logger = new Logger(Cache.class);
+
+    private static PropertiesSource propertiesSource = null;
     private static ConfigurationSource configurationSource = null;
     private static DatabaseSource databaseSource = null;
     private static boolean verbose = false;
@@ -33,8 +36,6 @@ public class Cache
     private static LocalDateTime startupTime = null;
 
     private final static String execPath = System.getProperty("user.dir");
-
-    private static final String botVersion = "0.4.0"; // todo: we should probably find a way to make this consistent with Maven
     private static final String botName = "Hideko";
 
     private static SlashCommandListener slashCommandListener = null;
@@ -161,6 +162,16 @@ public class Cache
     public static @Nullable DatabaseSource getDatabaseSource() { return databaseSource; }
 
     /**
+     * Set the properties source instance loaded from the JAR archive.
+     *
+     * @param propertiesSourceInstance the properties source instance.
+     */
+    public static void setPropertiesSourceInstance(PropertiesSource propertiesSourceInstance)
+    {
+        propertiesSource = propertiesSourceInstance;
+    }
+
+    /**
      * Get the DateTimeFormatter string for parsing the expired messages timestamp.
      *
      * @return the String of the DateTimeFormatter format.
@@ -182,7 +193,9 @@ public class Cache
      *
      * @return a String of the bot version.
      */
-    public static String getBotVersion() { return botVersion; }
+    public static String getBotVersion() {
+        return propertiesSource.getProperty("bot.version");
+    }
 
     /**
      * Get the bot's global color.

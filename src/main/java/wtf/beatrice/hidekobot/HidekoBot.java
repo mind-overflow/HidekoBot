@@ -10,6 +10,7 @@ import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
+import wtf.beatrice.hidekobot.datasource.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
@@ -45,6 +46,14 @@ public class HidekoBot
         Cache.setConfigurationSource(configurationSource);
         logger.log("Configuration loaded!");
 
+        // load properties
+        logger.log("Loading properties...");
+        PropertiesSource propertiesSource = new PropertiesSource();
+        propertiesSource.load();
+        Cache.setPropertiesSourceInstance(propertiesSource);
+        logger.log("Properties loaded!");
+
+        // check loaded bot token
         String botToken = Cache.getBotToken();
         if(botToken == null || botToken.isEmpty())
         {

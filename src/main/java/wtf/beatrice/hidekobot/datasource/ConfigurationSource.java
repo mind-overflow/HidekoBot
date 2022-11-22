@@ -31,7 +31,11 @@ public class ConfigurationSource
                 .getClassLoader()
                 .getResourceAsStream("config.yml"))
         { internalConfigContents = internalConfigYaml.load(internalConfigStream); }
-        catch (IOException e) { logger.log(e.getMessage()); }
+        catch (IOException e) {
+            logger.log(e.getMessage());
+            HidekoBot.shutdown();
+            return;
+        }
 
         if(internalConfigContents == null)
         {
