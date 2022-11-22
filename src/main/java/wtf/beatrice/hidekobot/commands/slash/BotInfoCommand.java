@@ -2,7 +2,6 @@ package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
@@ -27,7 +26,7 @@ public class BotInfoCommand implements SlashCommand
         // defer reply because this might take a moment
         event.deferReply().queue();
 
-        List<Command> registeredCommands = Cache.getRegisteredCommands();
+        List<SlashCommand> registeredCommands = Cache.getSlashCommandListener().getRegisteredCommands();
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -51,8 +50,8 @@ public class BotInfoCommand implements SlashCommand
             commandsListBuilder.append(registeredCommands.size()).append( " total - ");
             for(int i = 0; i < registeredCommands.size(); i++)
             {
-                Command cmd = registeredCommands.get(i);
-                commandsListBuilder.append("`" + cmd.getName() + "`");
+                SlashCommand cmd = registeredCommands.get(i);
+                commandsListBuilder.append("`").append(cmd.getCommandName()).append("`");
 
                 if(i + 1 != registeredCommands.size()) // don't add comma in last iteration
                 {

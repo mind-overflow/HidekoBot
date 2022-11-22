@@ -1,18 +1,15 @@
 package wtf.beatrice.hidekobot;
 
-import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
+import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.util.Logger;
 
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class Cache
 {
@@ -36,7 +33,8 @@ public class Cache
 
     private static final String botVersion = "0.2.0-slash"; // we should probably find a way to make this consistent with Maven
     private static final String botName = "HidekoBot";
-    private static List<Command> registeredCommands = new ArrayList<>();
+
+    private static SlashCommandListener slashCommandListener = null;
 
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
@@ -202,32 +200,14 @@ public class Cache
         return color == null ? defaultColor : color;
     }
 
-    /**
-     * Set the list of registered commands. They will be sorted alphabetically.
-     *
-     * @param commands a list of registered commands.
-     */
-    public static void setRegisteredCommands(List<Command> commands)
+
+    public static void setSlashCommandListener(SlashCommandListener commandListener)
     {
 
-        // sort alphabetically by field getName()
-        List<Command> tempList = commands
-                .stream()
-                .sorted(Comparator.comparing(Command::getName))
-                .toList();
-
-        registeredCommands = new ArrayList<>(tempList);
+        slashCommandListener = commandListener;
     }
 
-    /**
-     * Get a list of all bot registered commands, sorted alphabetically.
-     *
-     * @return a copy of the List.
-     */
-    public static List<Command> getRegisteredCommands()
-    {
-        return new ArrayList<>(registeredCommands);
-    }
+    public static SlashCommandListener getSlashCommandListener() { return slashCommandListener; }
 
     /**
      * Set the bot's startup time. Generally only used at boot time.

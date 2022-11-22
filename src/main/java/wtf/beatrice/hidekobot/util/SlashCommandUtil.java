@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 
@@ -123,11 +122,5 @@ public class SlashCommandUtil
             jdaInstance.updateCommands().addCommands(allCommands).queue();
             logger.log("Commands updated. New total: " + allCommands.size() + ".");
         }
-
-        // cache the registered commands.
-        // note that if this is the first time the bot runs after updating commands,
-        // this will probably still return the previous configuration because the discord api
-        // needs to propagate. this is why we also set up a command updater task (ExpiredMessageTask).
-        Cache.setRegisteredCommands(jdaInstance.retrieveCommands().complete());
     }
 }

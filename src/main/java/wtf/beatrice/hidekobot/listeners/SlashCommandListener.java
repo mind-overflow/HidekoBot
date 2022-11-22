@@ -5,18 +5,27 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.objects.SlashCommand;
 
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.TreeMap;
 
 public class SlashCommandListener extends ListenerAdapter
 {
 
-    HashMap<String, SlashCommand> registeredCommands = new HashMap<>();
+    TreeMap<String, SlashCommand> registeredCommands = new TreeMap<>();
 
     public void registerCommand(SlashCommand command)
     {
         registeredCommands.remove(command.getCommandName());
         registeredCommands.put(command.getCommandName(), command);
     }
+
+    public SlashCommand getRegisteredCommand(String label)
+    {
+        return registeredCommands.get(label);
+    }
+
+    public LinkedList<SlashCommand> getRegisteredCommands()
+    { return new LinkedList<>(registeredCommands.values()); }
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event)

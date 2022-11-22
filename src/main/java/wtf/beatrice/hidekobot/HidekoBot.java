@@ -13,7 +13,6 @@ import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
-import wtf.beatrice.hidekobot.runnables.CommandsUpdateTask;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.util.Logger;
@@ -109,6 +108,7 @@ public class HidekoBot
         slashCommandListener.registerCommand(new InviteCommand());
         slashCommandListener.registerCommand(new PingCommand());
         slashCommandListener.registerCommand(new SayCommand());
+        Cache.setSlashCommandListener(slashCommandListener);
 
         // register listeners
         jda.addEventListener(new MessageListener());
@@ -145,8 +145,6 @@ public class HidekoBot
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
         ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask();
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
-        CommandsUpdateTask commandsUpdateTask = new CommandsUpdateTask();
-        scheduler.scheduleAtFixedRate(commandsUpdateTask, 10, 300, TimeUnit.SECONDS); //every 5 minutes
         HeartBeatTask heartBeatTask = new HeartBeatTask();
         scheduler.scheduleAtFixedRate(heartBeatTask, 10, 30, TimeUnit.SECONDS); //every 30 seconds
 
