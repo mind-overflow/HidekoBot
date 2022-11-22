@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
+import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.util.Logger;
@@ -26,7 +27,7 @@ public class Cache
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
     private final static long expiryTimeSeconds = 15L;
 
-    // used to count eg. uptime
+    // used to count e.g. uptime
     private static LocalDateTime startupTime;
 
     private final static String execPath = System.getProperty("user.dir");
@@ -35,6 +36,7 @@ public class Cache
     private static final String botName = "HidekoBot";
 
     private static SlashCommandListener slashCommandListener = null;
+    private static MessageCommandListener messageCommandListener = null;
 
     private final static String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
@@ -201,13 +203,17 @@ public class Cache
     }
 
 
+    //todo javadocs
     public static void setSlashCommandListener(SlashCommandListener commandListener)
-    {
-
-        slashCommandListener = commandListener;
-    }
+    { slashCommandListener = commandListener; }
 
     public static SlashCommandListener getSlashCommandListener() { return slashCommandListener; }
+
+
+    public static void setMessageCommandListener(MessageCommandListener commandListener)
+    { messageCommandListener = commandListener; }
+
+    public static MessageCommandListener getMessageCommandListener() { return messageCommandListener; }
 
     /**
      * Set the bot's startup time. Generally only used at boot time.

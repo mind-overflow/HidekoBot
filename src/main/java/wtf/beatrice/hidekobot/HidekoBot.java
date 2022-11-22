@@ -6,11 +6,13 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
+import wtf.beatrice.hidekobot.commands.message.CommandsCommand;
+import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
-import wtf.beatrice.hidekobot.listeners.MessageListener;
+import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
@@ -97,7 +99,7 @@ public class HidekoBot
 
         }
 
-        // register commands
+        // register slash commands
         SlashCommandListener slashCommandListener = new SlashCommandListener();
         slashCommandListener.registerCommand(new AvatarCommand());
         slashCommandListener.registerCommand(new BotInfoCommand());
@@ -110,8 +112,14 @@ public class HidekoBot
         slashCommandListener.registerCommand(new SayCommand());
         Cache.setSlashCommandListener(slashCommandListener);
 
+        // register message commands
+        MessageCommandListener messageCommandListener = new MessageCommandListener();
+        messageCommandListener.registerCommand(new HelloCommand());
+        messageCommandListener.registerCommand(new CommandsCommand());
+        Cache.setMessageCommandListener(messageCommandListener);
+
         // register listeners
-        jda.addEventListener(new MessageListener());
+        jda.addEventListener(messageCommandListener);
         jda.addEventListener(slashCommandListener);
         jda.addEventListener(new SlashCommandCompleter());
         jda.addEventListener(new ButtonInteractionListener());

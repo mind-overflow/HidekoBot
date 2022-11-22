@@ -11,7 +11,8 @@ import java.util.TreeMap;
 public class SlashCommandListener extends ListenerAdapter
 {
 
-    TreeMap<String, SlashCommand> registeredCommands = new TreeMap<>();
+    // map storing command label and command object alphabetically.
+    private final TreeMap<String, SlashCommand> registeredCommands = new TreeMap<>();
 
     public void registerCommand(SlashCommand command)
     {
@@ -20,9 +21,7 @@ public class SlashCommandListener extends ListenerAdapter
     }
 
     public SlashCommand getRegisteredCommand(String label)
-    {
-        return registeredCommands.get(label);
-    }
+    { return registeredCommands.get(label); }
 
     public LinkedList<SlashCommand> getRegisteredCommands()
     { return new LinkedList<>(registeredCommands.values()); }

@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.listeners.MessageListener;
+import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class SlashCommandUtil
 {
 
-    private static final Logger logger = new Logger(MessageListener.class);
+    private static final Logger logger = new Logger(MessageCommandListener.class);
 
     static List<CommandData> allCommands = new ArrayList<>()
     {{
