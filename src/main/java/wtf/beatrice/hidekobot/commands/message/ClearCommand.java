@@ -67,6 +67,9 @@ public class ClearCommand implements MessageCommand
 
             // edit the message text and attach a button.
             Button dismiss = ClearChat.getDismissButton();
+            // ^ todo: maybe the dismiss button should also delete the original message sent by the user?
+            // todo: but then, we need to differentiate between command type in the database, and store
+            // todo: that message's id too.
             botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
 
             // add the message to database.
