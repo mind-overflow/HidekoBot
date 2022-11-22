@@ -1,6 +1,7 @@
 package wtf.beatrice.hidekobot;
 
 import org.jetbrains.annotations.Nullable;
+import wtf.beatrice.hidekobot.datasource.ConfigurationEntry;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.datasource.PropertiesSource;
@@ -97,7 +98,7 @@ public class Cache
      * @return a long of the account's id
      */
     public static long getBotOwnerId() {
-        return configurationSource == null ? 0L : (Long) configurationSource.getConfigValue("bot-owner-id");
+        return configurationSource == null ? 0L : (Long) configurationSource.getConfigValue(ConfigurationEntry.BOT_OWNER_ID);
     }
 
 
@@ -107,7 +108,7 @@ public class Cache
      * @return a String of the bot's token.
      */
     public static String getBotToken() {
-        return configurationSource == null ? null : (String) configurationSource.getConfigValue("bot-token");
+        return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.BOT_TOKEN);
     }
 
     /**
@@ -205,7 +206,7 @@ public class Cache
     public static Color getBotColor() {
         Color defaultColor = Color.PINK;
         if(configurationSource == null) return defaultColor;
-        String colorName = (String) configurationSource.getConfigValue("bot-color");
+        String colorName = (String) configurationSource.getConfigValue(ConfigurationEntry.BOT_COLOR);
 
         Color color = null;
         try {
@@ -247,7 +248,7 @@ public class Cache
     public static LocalDateTime getStartupTime() { return startupTime; }
 
     public static String getFullHeartBeatLink() {
-        return configurationSource == null ? null : (String) configurationSource.getConfigValue("heartbeat-link");
+        return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.HEARTBEAT_LINK);
     }
     //todo javadocs
     public static String getExecPath() { return execPath; }

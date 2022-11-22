@@ -133,8 +133,8 @@ public class ConfigurationSource
     {
         this.configurationEntries.putAll(configurationEntries);
     }
-    public Object getConfigValue(String key)
+    public Object getConfigValue(ConfigurationEntry key)
     {
-        return configurationEntries.get(key);
+        return configurationEntries.get(key.getPath());
     }
 }
