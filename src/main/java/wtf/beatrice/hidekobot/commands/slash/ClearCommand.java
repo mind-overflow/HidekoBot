@@ -28,53 +28,48 @@ public class ClearCommand extends SlashCommandImpl
 
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        // start a new thread, because we are doing synchronous, thread-blocking operations!
-        new Thread(() ->
+        event.deferReply().queue();
+
+        // check if user is trying to run command in dms.
+        String error = ClearChat.checkDMs(event.getChannel());
+        if(error != null)
         {
-            event.deferReply().complete();
+            event.getHook().editOriginal(error).queue();
+            return;
+        }
 
-            // check if user is trying to run command in dms.
-            String error = ClearChat.checkDMs(event.getChannel());
-            if(error != null)
-            {
-                event.getHook().editOriginal(error).queue();
-                return;
-            }
+    /* get the amount from the command args.
+     NULL should not be possible because we specified them as mandatory,
+     but apparently the mobile app doesn't care and still sends the command if you omit the args. */
+        OptionMapping amountOption = event.getOption("amount");
+        int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
 
-        /* get the amount from the command args.
-         NULL should not be possible because we specified them as mandatory,
-         but apparently the mobile app doesn't care and still sends the command if you omit the args. */
-            OptionMapping amountOption = event.getOption("amount");
-            int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
+        error = ClearChat.checkDeleteAmount(toDeleteAmount);
+        if(error != null)
+        {
+            event.getHook().editOriginal(error).queue();
+            return;
+        }
 
-            error = ClearChat.checkDeleteAmount(toDeleteAmount);
-            if(error != null)
-            {
-                event.getHook().editOriginal(error).queue();
-                return;
-            }
+        // answer by saying that the operation has begun.
+        String content = "\uD83D\uDEA7 Clearing...";
+        Message botMessage = event.getHook().editOriginal(content).complete();
 
-            // answer by saying that the operation has begun.
-            String content = "\uD83D\uDEA7 Clearing...";
-            Message botMessage = event.getHook().editOriginal(content).complete();
+        // actually delete the messages.
+        int deleted = ClearChat.delete(toDeleteAmount,
+                event.getInteraction().getIdLong(),
+                event.getChannel());
 
-            // actually delete the messages.
-            int deleted = ClearChat.delete(toDeleteAmount,
-                    event.getInteraction().getIdLong(),
-                    event.getChannel());
+        // get a nicely formatted message that logs the deletion of messages.
+        content = ClearChat.parseAmount(deleted);
 
-            // get a nicely formatted message that logs the deletion of messages.
-            content = ClearChat.parseAmount(deleted);
+        // edit the message text and attach a button.
+        Button dismiss = ClearChat.getDismissButton();
+        botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
 
-            // edit the message text and attach a button.
-            Button dismiss = ClearChat.getDismissButton();
-            botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
-
-            // add the message to database.
-            Cache.getDatabaseSource().queueDisabling(botMessage);
-            Cache.getDatabaseSource().trackRanCommandReply(botMessage, event.getUser());
-
-        }).start();
+        // add the message to database.
+        Cache.getDatabaseSource().queueDisabling(botMessage);
+        Cache.getDatabaseSource().trackRanCommandReply(botMessage, event.getUser());
 
     }
 }

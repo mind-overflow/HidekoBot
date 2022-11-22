@@ -34,18 +34,15 @@ public class BotInfoCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args) {
 
-        // run in a thread because we might use thread-locking things
-        new Thread(() -> {
-            // get a list of message commands
-            LinkedList<MessageCommand> messageCommands = Cache.getMessageCommandListener().getRegisteredCommands();
-            LinkedList<String> commandNames = new LinkedList<>();
-            for (MessageCommand command : messageCommands) {
-                commandNames.add(command.getCommandLabels().get(0));
-            }
+        // get a list of message commands
+        LinkedList<MessageCommand> messageCommands = Cache.getMessageCommandListener().getRegisteredCommands();
+        LinkedList<String> commandNames = new LinkedList<>();
+        for (MessageCommand command : messageCommands) {
+            commandNames.add(command.getCommandLabels().get(0));
+        }
 
-            // send the list
-            MessageEmbed embed = BotInfo.generateEmbed(commandNames);
-            event.getMessage().replyEmbeds(embed).queue();
-        }).start();
+        // send the list
+        MessageEmbed embed = BotInfo.generateEmbed(commandNames);
+        event.getMessage().replyEmbeds(embed).queue();
     }
 }

@@ -23,23 +23,20 @@ public class BotInfoCommand extends SlashCommandImpl
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        // run in a thread because we might use thread-locking things
-        new Thread(() -> {
-            // defer reply because this might take a moment
-            event.deferReply().queue();
+        // defer reply because this might take a moment
+        event.deferReply().queue();
 
-            // get a list of slash commands
-            List<SlashCommand> registeredCommands = Cache.getSlashCommandListener().getRegisteredCommands();
-            LinkedList<String> registeredCommandNames = new LinkedList<>();
-            for(SlashCommand command : registeredCommands)
-            {
-                // node: adding slash so people realize that this is specific about slash commands.
-                registeredCommandNames.add("/" + command.getCommandName());
-            }
+        // get a list of slash commands
+        List<SlashCommand> registeredCommands = Cache.getSlashCommandListener().getRegisteredCommands();
+        LinkedList<String> registeredCommandNames = new LinkedList<>();
+        for(SlashCommand command : registeredCommands)
+        {
+            // node: adding slash so people realize that this is specific about slash commands.
+            registeredCommandNames.add("/" + command.getCommandName());
+        }
 
-            // send the list
-            MessageEmbed embed = BotInfo.generateEmbed(registeredCommandNames);
-            event.getHook().editOriginalEmbeds(embed).queue();
-        }).start();
+        // send the list
+        MessageEmbed embed = BotInfo.generateEmbed(registeredCommandNames);
+        event.getHook().editOriginalEmbeds(embed).queue();
     }
 }

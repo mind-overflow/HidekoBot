@@ -130,6 +130,8 @@ public class MessageCommandListener extends ListenerAdapter
             // copy all split arguments to the array, except from the command label
             commandArgs = Arrays.copyOfRange(argsRaw, 1, argsRaw.length);
         }
-        commandObject.runCommand(event, commandLabel, commandArgs);
+
+        // finally run the command, in a new thread to avoid locking.
+        new Thread(() -> commandObject.runCommand(event, commandLabel, commandArgs)).start();
     }
 }

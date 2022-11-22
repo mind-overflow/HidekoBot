@@ -33,6 +33,8 @@ public class SlashCommandListener extends ListenerAdapter
         SlashCommand command = registeredCommands.get(commandName);
         if(command == null) return;
 
-        command.runSlashCommand(event);
+
+        // finally run the command, in a new thread to avoid locking.
+        new Thread(() -> command.runSlashCommand(event)).start();
     }
 }
