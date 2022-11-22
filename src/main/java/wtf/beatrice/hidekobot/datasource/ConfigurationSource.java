@@ -25,19 +25,18 @@ public class ConfigurationSource
     public void initConfig()
     {
         // load the YAML file from the archive's resources folder
-        Yaml internalConfigYaml = new Yaml();
-        LinkedHashMap<String, Object> internalConfigContents = null; // map holding all file entries
-        try (InputStream internalConfigStream = getClass()
-                .getClassLoader()
-                .getResourceAsStream("config.yml"))
-        { internalConfigContents = internalConfigYaml.load(internalConfigStream); }
-        catch (IOException e) {
-            logger.log(e.getMessage());
-            HidekoBot.shutdown();
-            return;
+        /*
+         * note: this is no longer technically a YAML file, but we are using a very similar structure
+         * to what SnakeYaml does, so that it can map all entries directly to a YAML file itself.
+         * we used to have a config.yml file in the "resources" folder, but that is no longer necessary.
+         */
+        LinkedHashMap<String, Object> internalConfigContents = new LinkedHashMap<>(); // map holding all file entries
+        for(ConfigurationEntry entry : ConfigurationEntry.values())
+        {
+            internalConfigContents.put(entry.getPath(), entry.getDefaultValue());
         }
 
-        if(internalConfigContents == null)
+        if(internalConfigContents.isEmpty())
         {
             logger.log("Error reading internal configuration!");
             HidekoBot.shutdown();
