@@ -34,7 +34,7 @@ public class Cache
 
     private final static String execPath = System.getProperty("user.dir");
 
-    private static final String botVersion = "0.3.2"; // we should probably find a way to make this consistent with Maven
+    private static final String botVersion = "0.4.0"; // todo: we should probably find a way to make this consistent with Maven
     private static final String botName = "Hideko";
 
     private static SlashCommandListener slashCommandListener = null;
