@@ -6,7 +6,7 @@
 
     <groupId>wtf.beatrice.hidekobot</groupId>
     <artifactId>HidekoBot</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.6</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
