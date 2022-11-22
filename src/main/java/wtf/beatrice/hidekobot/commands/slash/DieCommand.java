@@ -4,13 +4,20 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.objects.SlashCommand;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class DieCommand
+public class DieCommand implements SlashCommand
 {
 
+    @Override
+    public String getCommandName() {
+        return "die";
+    }
+
+    @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         if(Cache.getBotOwnerId() != event.getUser().getIdLong())

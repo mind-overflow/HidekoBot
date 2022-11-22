@@ -4,10 +4,18 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.objects.SlashCommand;
 
-public class SayCommand
+public class SayCommand implements SlashCommand
 {
 
+
+    @Override
+    public String getCommandName() {
+        return "say";
+    }
+
+    @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         MessageChannel channel = event.getChannel();

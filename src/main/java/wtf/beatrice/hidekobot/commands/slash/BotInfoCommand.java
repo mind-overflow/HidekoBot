@@ -6,15 +6,22 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.objects.SlashCommand;
 import wtf.beatrice.hidekobot.util.FormatUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class BotInfoCommand
+public class BotInfoCommand implements SlashCommand
 {
 
+    @Override
+    public String getCommandName() {
+        return "botinfo";
+    }
+
+    @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         // defer reply because this might take a moment

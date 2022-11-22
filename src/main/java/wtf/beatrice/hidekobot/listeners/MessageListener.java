@@ -10,6 +10,12 @@ import wtf.beatrice.hidekobot.util.Logger;
 public class MessageListener extends ListenerAdapter
 {
 
+    private final String commandRegex = "(?i)^(hideko|hde)\\b";
+    // (?i) -> case insensitive flag
+    // ^ -> start of string (not in middle of a sentence)
+    // \b -> the word has to end here
+    // .* -> there can be anything else after this word
+
     private final Logger logger = new Logger(MessageListener.class);
 
     @Override
@@ -17,24 +23,31 @@ public class MessageListener extends ListenerAdapter
     {
         String eventMessage = event.getMessage().getContentDisplay();
 
+        if(!eventMessage.toLowerCase().matches(commandRegex + ".*"))
+            return;
+
+        MessageChannel channel = event.getChannel();
+        // generate args from the string
+        String argsString = eventMessage.replaceAll(commandRegex + "\\s*", "");
+        String[] args = argsString.split("\\s+");
+
+        event.getMessage().reply("Hi").queue();
+
+
         if(eventMessage.equalsIgnoreCase("hideko"))
         {
-            MessageChannel channel = event.getChannel();
             channel.sendMessage("Hello there! ✨").queue();
             return;
         }
 
         if(eventMessage.equalsIgnoreCase("ping"))
         {
-            MessageChannel channel = event.getChannel();
             channel.sendMessage("Pong!").queue();
             return;
         }
 
         if(eventMessage.equalsIgnoreCase("hideko verbose"))
         {
-            MessageChannel channel = event.getChannel();
-
             boolean verbose = Cache.isVerbose();
 
             String msg = verbose ? "off" : "on";

@@ -11,9 +11,17 @@ import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.objects.SlashCommand;
 
-public class InviteCommand
+public class InviteCommand implements SlashCommand
 {
+
+    @Override
+    public String getCommandName() {
+        return "invite";
+    }
+
+    @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         // defer reply because this might take a moment

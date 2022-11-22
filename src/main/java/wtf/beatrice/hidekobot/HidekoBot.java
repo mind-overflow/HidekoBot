@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
+import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasource.DatabaseSource;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
@@ -97,9 +98,21 @@ public class HidekoBot
 
         }
 
+        // register commands
+        SlashCommandListener slashCommandListener = new SlashCommandListener();
+        slashCommandListener.registerCommand(new AvatarCommand());
+        slashCommandListener.registerCommand(new BotInfoCommand());
+        slashCommandListener.registerCommand(new ClearCommand());
+        slashCommandListener.registerCommand(new CoinFlipCommand());
+        slashCommandListener.registerCommand(new DieCommand());
+        slashCommandListener.registerCommand(new HelpCommand());
+        slashCommandListener.registerCommand(new InviteCommand());
+        slashCommandListener.registerCommand(new PingCommand());
+        slashCommandListener.registerCommand(new SayCommand());
+
         // register listeners
         jda.addEventListener(new MessageListener());
-        jda.addEventListener(new SlashCommandListener());
+        jda.addEventListener(slashCommandListener);
         jda.addEventListener(new SlashCommandCompleter());
         jda.addEventListener(new ButtonInteractionListener());
 
