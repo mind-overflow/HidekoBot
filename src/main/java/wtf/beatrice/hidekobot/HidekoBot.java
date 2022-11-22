@@ -116,6 +116,7 @@ public class HidekoBot
         MessageCommandListener messageCommandListener = new MessageCommandListener();
         messageCommandListener.registerCommand(new HelloCommand());
         messageCommandListener.registerCommand(new CommandsCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.ClearCommand());
         Cache.setMessageCommandListener(messageCommandListener);
 
         // register listeners
