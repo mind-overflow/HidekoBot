@@ -5,21 +5,25 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.objects.SlashCommand;
+import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.List;
 
-public class CoinFlipCommand implements SlashCommand
+public class CoinFlipCommand extends SlashCommandImpl
 {
 
     @Override
-    public String getCommandName() {
-        return "coinflip";
+    public CommandData getSlashCommandData()
+    {
+        return Commands.slash("coinflip",
+                "Flip a coin and get head or tails.");
     }
 
     private final Button reflipButton = Button.primary("coinflip_reflip", "Flip again")

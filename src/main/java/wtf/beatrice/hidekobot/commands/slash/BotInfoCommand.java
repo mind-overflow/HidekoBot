@@ -2,22 +2,24 @@ package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.SlashCommand;
+import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
 import wtf.beatrice.hidekobot.util.FormatUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class BotInfoCommand implements SlashCommand
+public class BotInfoCommand extends SlashCommandImpl
 {
-
     @Override
-    public String getCommandName() {
-        return "botinfo";
+    public CommandData getSlashCommandData() {
+        return Commands.slash("botinfo", "Get info about the bot.");
     }
 
     @Override

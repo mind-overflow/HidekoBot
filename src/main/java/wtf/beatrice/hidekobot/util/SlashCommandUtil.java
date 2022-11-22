@@ -1,14 +1,12 @@
 package wtf.beatrice.hidekobot.util;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.Command;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
+import wtf.beatrice.hidekobot.objects.SlashCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,28 +16,14 @@ public class SlashCommandUtil
 
     private static final Logger logger = new Logger(MessageCommandListener.class);
 
-    static List<CommandData> allCommands = new ArrayList<>()
-    {{
-        add(Commands.slash("avatar", "Get someone's profile picture.")
-                .addOption(OptionType.USER, "user", "User you want to grab the avatar of.")
-                .addOption(OptionType.INTEGER, "size", "The size of the returned image.", false, true));
-        add(Commands.slash("botinfo", "Get info about the bot."));
-        add(Commands.slash("die", "Stop the bot's process.")
-                .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
-        add(Commands.slash("clear", "Clear the current channel's chat.")
-                .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
-        add(Commands.slash("coinflip", "Flip a coin and get head or tails."));
-        add(Commands.slash("help", "Get general help on the bot."));
-        add(Commands.slash("invite", "Get an invite link for the bot."));
-        add(Commands.slash("ping", "Test if the bot is responsive."));
-        add(Commands.slash("say", "Make the bot say something.")
-                .addOption(OptionType.STRING, "text", "The message to send.", true, false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
-    }};
-
     public static void updateSlashCommands(boolean force)
     {
+
+        // populate commands list from registered commands
+        List<CommandData> allCommands = new ArrayList<>();
+        for(SlashCommand cmd : Cache.getSlashCommandListener().getRegisteredCommands())
+        { allCommands.add(cmd.getSlashCommandData()); }
+
         JDA jdaInstance = HidekoBot.getAPI();
 
         // get all the already registered commands

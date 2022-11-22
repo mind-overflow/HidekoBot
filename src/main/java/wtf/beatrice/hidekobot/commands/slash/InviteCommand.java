@@ -5,21 +5,25 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.objects.SlashCommand;
+import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
 
-public class InviteCommand implements SlashCommand
+public class InviteCommand extends SlashCommandImpl
 {
 
     @Override
-    public String getCommandName() {
-        return "invite";
+    public CommandData getSlashCommandData()
+    {
+        return Commands.slash("invite", "Get an invite link for the bot.");
     }
+
 
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
