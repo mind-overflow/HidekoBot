@@ -124,7 +124,7 @@ public class DatabaseSource
         String guildId;
 
         ChannelType channelType = message.getChannelType();
-        if(channelType == ChannelType.PRIVATE)
+        if(!(channelType.isGuild()))
         {
             guildId = userId;
         } else {
@@ -220,7 +220,7 @@ public class DatabaseSource
         String guildId;
 
         ChannelType channelType = message.getChannelType();
-        if(channelType == ChannelType.PRIVATE)
+        if(!(channelType.isGuild()))
         {
             guildId = "PRIVATE";
         } else {

@@ -88,7 +88,7 @@ public class ExpiredMessageTask implements Runnable {
         }
 
         // if this is a DM
-        if(msgChannelType == ChannelType.PRIVATE)
+        if(!(msgChannelType.isGuild()))
         {
             String userId = databaseSource.getTrackedReplyUserId(messageId);
             User user = HidekoBot.getAPI().retrieveUserById(userId).complete();

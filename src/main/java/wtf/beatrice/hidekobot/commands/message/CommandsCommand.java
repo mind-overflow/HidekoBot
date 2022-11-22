@@ -1,11 +1,13 @@
 package wtf.beatrice.hidekobot.commands.message;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CommandsCommand implements MessageCommand
 {
@@ -14,6 +16,9 @@ public class CommandsCommand implements MessageCommand
     public LinkedList<String> getCommandLabels() {
         return new LinkedList<>(Collections.singletonList("commands"));
     }
+
+    @Override
+    public List<Permission> getPermissions() { return null; }
 
     @Override
     public boolean passRawArgs() {
