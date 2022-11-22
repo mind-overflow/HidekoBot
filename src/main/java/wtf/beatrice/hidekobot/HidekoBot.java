@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
-import wtf.beatrice.hidekobot.commands.message.CommandsCommand;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
@@ -115,7 +114,7 @@ public class HidekoBot
         // register message commands
         MessageCommandListener messageCommandListener = new MessageCommandListener();
         messageCommandListener.registerCommand(new HelloCommand());
-        messageCommandListener.registerCommand(new CommandsCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BotInfoCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.CoinFlipCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.ClearCommand());
         Cache.setMessageCommandListener(messageCommandListener);
