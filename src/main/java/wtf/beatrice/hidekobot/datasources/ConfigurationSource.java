@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.datasource;
+package wtf.beatrice.hidekobot.datasources;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;

@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.datasource;
+package wtf.beatrice.hidekobot.datasources;
 
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.util.Logger;

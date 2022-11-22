@@ -1,10 +1,10 @@
 package wtf.beatrice.hidekobot;
 
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.datasource.ConfigurationEntry;
-import wtf.beatrice.hidekobot.datasource.ConfigurationSource;
-import wtf.beatrice.hidekobot.datasource.DatabaseSource;
-import wtf.beatrice.hidekobot.datasource.PropertiesSource;
+import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
+import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
+import wtf.beatrice.hidekobot.datasources.DatabaseSource;
+import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
