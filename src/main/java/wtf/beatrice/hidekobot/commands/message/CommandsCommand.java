@@ -21,9 +21,7 @@ public class CommandsCommand implements MessageCommand
     public List<Permission> getPermissions() { return null; }
 
     @Override
-    public boolean passRawArgs() {
-        return false;
-    }
+    public boolean passRawArgs() { return false; }
 
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args) {

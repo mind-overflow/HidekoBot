@@ -109,6 +109,7 @@ public class MessageCommandListener extends ListenerAdapter
                         event.getMessage()
                                 .reply("You do not have permissions to run this command!")
                                 .queue(); // todo prettier
+                        // todo: queue message deletion in 15 seconds or so
                         return;
                     }
 
