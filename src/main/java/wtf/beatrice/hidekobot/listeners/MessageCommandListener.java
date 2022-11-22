@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.objects.MessageCommand;
-import wtf.beatrice.hidekobot.objects.MessageCommandAliasesComparator;
+import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
+import wtf.beatrice.hidekobot.objects.comparators.MessageCommandAliasesComparator;
 import wtf.beatrice.hidekobot.util.Logger;
 
 import java.util.*;

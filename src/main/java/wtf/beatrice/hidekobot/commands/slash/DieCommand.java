@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

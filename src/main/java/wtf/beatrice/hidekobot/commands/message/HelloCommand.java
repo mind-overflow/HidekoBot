@@ -1,7 +1,7 @@
 package wtf.beatrice.hidekobot.commands.message;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import wtf.beatrice.hidekobot.objects.MessageCommand;
+import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.Arrays;
 import java.util.LinkedList;

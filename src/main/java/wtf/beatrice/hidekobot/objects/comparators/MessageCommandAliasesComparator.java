@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.objects;
+package wtf.beatrice.hidekobot.objects.comparators;
 
 import java.util.Comparator;
 import java.util.LinkedList;

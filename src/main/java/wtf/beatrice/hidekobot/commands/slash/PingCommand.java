@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 public class PingCommand extends SlashCommandImpl
 {

@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 import java.util.ArrayList;
 import java.util.List;

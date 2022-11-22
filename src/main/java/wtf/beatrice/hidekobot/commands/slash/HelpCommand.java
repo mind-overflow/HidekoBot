@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.objects.SlashCommandImpl;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 public class HelpCommand extends SlashCommandImpl
 {

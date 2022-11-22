@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
-import wtf.beatrice.hidekobot.objects.SlashCommand;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 
 import java.util.ArrayList;
 import java.util.List;

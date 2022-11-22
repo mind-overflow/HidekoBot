@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.listeners;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.objects.SlashCommand;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 
 import java.util.LinkedList;
 import java.util.TreeMap;

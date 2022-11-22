@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.objects;
+package wtf.beatrice.hidekobot.objects.commands;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
