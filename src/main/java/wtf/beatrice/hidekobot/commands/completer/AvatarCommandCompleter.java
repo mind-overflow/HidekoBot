@@ -4,15 +4,21 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.objects.commands.SlashArgumentsCompleterImpl;
+import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvatarCompleter
+public class AvatarCommandCompleter extends SlashArgumentsCompleterImpl
 {
 
-    public AvatarCompleter(@NotNull CommandAutoCompleteInteractionEvent event)
-    {
+    public AvatarCommandCompleter(SlashCommand parentCommand) {
+        super(parentCommand);
+    }
+
+    @Override
+    public void runCompletion(@NotNull CommandAutoCompleteInteractionEvent event) {
         if(event.getFocusedOption().getName().equals("size"))
         {
 

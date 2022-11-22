@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import sun.misc.Signal;
+import wtf.beatrice.hidekobot.commands.completer.AvatarCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
@@ -13,7 +14,7 @@ import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
-import wtf.beatrice.hidekobot.listeners.SlashCommandCompleter;
+import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
@@ -107,9 +108,13 @@ public class HidekoBot
 
         }
 
-        // register slash commands
+        // register slash commands and completers
         SlashCommandListener slashCommandListener = new SlashCommandListener();
-        slashCommandListener.registerCommand(new AvatarCommand());
+        SlashCommandCompletionListener slashCommandCompletionListener = new SlashCommandCompletionListener();
+        AvatarCommand avatarCommand = new AvatarCommand();
+        AvatarCommandCompleter avatarCommandCompleter = new AvatarCommandCompleter(avatarCommand);
+        slashCommandListener.registerCommand(avatarCommand);
+        slashCommandCompletionListener.registerCommandCompleter(avatarCommandCompleter);
         slashCommandListener.registerCommand(new BotInfoCommand());
         slashCommandListener.registerCommand(new ClearCommand());
         slashCommandListener.registerCommand(new CoinFlipCommand());
@@ -119,6 +124,7 @@ public class HidekoBot
         slashCommandListener.registerCommand(new PingCommand());
         slashCommandListener.registerCommand(new SayCommand());
         Cache.setSlashCommandListener(slashCommandListener);
+        Cache.setSlashCommandCompletionListener(slashCommandCompletionListener);
 
         // register message commands
         MessageCommandListener messageCommandListener = new MessageCommandListener();
@@ -132,7 +138,7 @@ public class HidekoBot
         // register listeners
         jda.addEventListener(messageCommandListener);
         jda.addEventListener(slashCommandListener);
-        jda.addEventListener(new SlashCommandCompleter());
+        jda.addEventListener(slashCommandCompletionListener);
         jda.addEventListener(new ButtonInteractionListener());
 
         // update slash commands (delayed)

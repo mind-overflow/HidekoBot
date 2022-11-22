@@ -7,6 +7,7 @@ import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
+import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.util.Logger;
 
@@ -40,6 +41,7 @@ public class Cache
     private static final String botName = "Hideko";
 
     private static SlashCommandListener slashCommandListener = null;
+    private static SlashCommandCompletionListener slashCommandCompletionListener = null;
     private static MessageCommandListener messageCommandListener = null;
 
     private final static String defaultInviteLink =
@@ -224,6 +226,12 @@ public class Cache
     { slashCommandListener = commandListener; }
 
     public static SlashCommandListener getSlashCommandListener() { return slashCommandListener; }
+
+
+    public static void setSlashCommandCompletionListener(SlashCommandCompletionListener commandCompletionListener)
+    { slashCommandCompletionListener = commandCompletionListener; }
+
+    public static SlashCommandCompletionListener getSlashCommandCompletionListener() { return slashCommandCompletionListener; }
 
 
     public static void setMessageCommandListener(MessageCommandListener commandListener)

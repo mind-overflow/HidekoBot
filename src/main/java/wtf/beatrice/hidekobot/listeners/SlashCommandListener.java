@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class SlashCommandListener extends ListenerAdapter
 {
 
-    // map storing command label and command object alphabetically.
+    // map that stores command label and command object alphabetically.
     private final TreeMap<String, SlashCommand> registeredCommands = new TreeMap<>();
 
     public void registerCommand(SlashCommand command)
