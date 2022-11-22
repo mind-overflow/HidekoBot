@@ -28,7 +28,7 @@ public class BotInfo
                 "This instance is run by <@" + ownerId + ">.\nType `/help` for help! ",
                 false);
 
-        // commands list field
+        // type-specific commands list field
         StringBuilder commandsListBuilder = new StringBuilder();
         commandsListBuilder.append(commandLabels.size()).append( " total - ");
         for(int i = 0; i < commandLabels.size(); i++)
@@ -41,7 +41,33 @@ public class BotInfo
             }
 
         }
-        embedBuilder.addField("Commands", commandsListBuilder.toString(), false);
+        embedBuilder.addField("Type commands", commandsListBuilder.toString(), false);
+
+        // keep track of how many total commands we have
+        int commandsCount = 0;
+
+        // message commands info fields
+        StringBuilder messageCommandsInfoBuilder = new StringBuilder();
+        if(Cache.getMessageCommandListener() == null)
+            messageCommandsInfoBuilder.append("❌ disabled");
+        else {
+            messageCommandsInfoBuilder.append("✅ available");
+            commandsCount += Cache.getMessageCommandListener().getRegisteredCommands().size();
+        }
+        embedBuilder.addField("Message commands", messageCommandsInfoBuilder.toString(), true);
+
+        // slash commands info fields
+        StringBuilder slashCommandsInfoBuilder = new StringBuilder();
+        if(Cache.getMessageCommandListener() == null)
+            slashCommandsInfoBuilder.append("❌ disabled");
+        else {
+            slashCommandsInfoBuilder.append("✅ available");
+            commandsCount += Cache.getSlashCommandListener().getRegisteredCommands().size();
+        }
+        embedBuilder.addField("Slash commands", slashCommandsInfoBuilder.toString(), true);
+
+        // commands count fields
+        embedBuilder.addField("Total commands", "Loaded: `" + commandsCount + "`", true);
 
         // version field
         embedBuilder.addField("Version", "v" + Cache.getBotVersion(), true);
