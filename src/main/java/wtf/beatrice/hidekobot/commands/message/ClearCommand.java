@@ -43,7 +43,15 @@ public class ClearCommand implements MessageCommand
         // get the amount from the command args.
         Integer toDeleteAmount;
         if (args.length == 0) toDeleteAmount = 1;
-        else toDeleteAmount = Integer.parseInt(args[0]);
+        else
+        {
+            try {
+                toDeleteAmount = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e)
+            {
+                toDeleteAmount = 1;
+            }
+        }
 
         error = ClearChat.checkDeleteAmount(toDeleteAmount);
         if (error != null) {
