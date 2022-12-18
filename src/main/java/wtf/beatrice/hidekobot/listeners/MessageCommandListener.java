@@ -123,7 +123,7 @@ public class MessageCommandListener extends ListenerAdapter
         {
 
             // remove first argument, which is the command label
-            argsString = argsString.replaceAll("^[\\S]+\\s+", "");
+            argsString = argsString.replaceAll("^[\\S]+\\s*", "");
             // pass all other arguments as a single argument as the first array element
             commandArgs = new String[]{argsString};
         }

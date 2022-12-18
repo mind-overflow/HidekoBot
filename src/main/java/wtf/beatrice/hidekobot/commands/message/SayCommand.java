@@ -34,8 +34,8 @@ public class SayCommand implements MessageCommand
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
 
-        String messageContent = "";
-        if(args.length != 0)
+        String messageContent;
+        if(args.length != 0 && !args[0].isEmpty())
         {
             messageContent = args[0];
         } else {
