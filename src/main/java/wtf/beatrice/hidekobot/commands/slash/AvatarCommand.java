@@ -1,6 +1,7 @@
 package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.commands.base.Avatar;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 public class AvatarCommand extends SlashCommandImpl
@@ -31,9 +33,6 @@ public class AvatarCommand extends SlashCommandImpl
         User user;
         int resolution;
 
-        int[] acceptedSizes = Cache.getSupportedAvatarResolutions();
-
-
         OptionMapping userArg = event.getOption("user");
         if(userArg != null)
         {
@@ -45,57 +44,12 @@ public class AvatarCommand extends SlashCommandImpl
         OptionMapping sizeArg = event.getOption("size");
         if(sizeArg != null)
         {
-            resolution = sizeArg.getAsInt();
-
-            // method to find closest value to accepted values
-            int distance = Math.abs(acceptedSizes[0] - resolution);
-            int idx = 0;
-            for(int c = 1; c < acceptedSizes.length; c++){
-                int cdistance = Math.abs(acceptedSizes[c] - resolution);
-                if(cdistance < distance){
-                    idx = c;
-                    distance = cdistance;
-                }
-            }
-            resolution = acceptedSizes[idx];
-
+            resolution = Avatar.parseResolution(sizeArg.getAsInt());
         } else {
-            resolution = 512;
+            resolution = Avatar.parseResolution(512);
         }
 
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-
-        // embed processing
-        {
-            embedBuilder.setColor(Cache.getBotColor());
-            embedBuilder.setTitle("Profile picture");
-
-            embedBuilder.addField("User", "<@" + user.getId() + ">", false);
-
-            embedBuilder.addField("Current resolution", resolution + " × " + resolution, false);
-
-            // string builder to create a string that links to all available resolutions
-            StringBuilder links = new StringBuilder();
-            for(int pos = 0; pos < acceptedSizes.length; pos++)
-            {
-                int currSize = acceptedSizes[pos];
-
-                String currLink = user.getEffectiveAvatar().getUrl(currSize);
-
-                links.append("[").append(currSize).append("px](").append(currLink).append(")");
-                if(pos + 1 != acceptedSizes.length) // don't add a separator on the last iteration
-                {
-                    links.append(" | ");
-                }
-            }
-
-            embedBuilder.addField("Available resolutions", links.toString(), false);
-
-
-
-            embedBuilder.setImage(user.getEffectiveAvatar().getUrl(resolution));
-        }
-
-        event.getHook().editOriginalEmbeds(embedBuilder.build()).queue();
+        MessageEmbed embed = Avatar.buildEmbed(resolution, user);
+        event.getHook().editOriginalEmbeds(embed).queue();
     }
 }
