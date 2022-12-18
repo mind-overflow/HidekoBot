@@ -57,10 +57,11 @@ public class MessageCommandListener extends ListenerAdapter
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
-        String eventMessage = event.getMessage().getContentDisplay();
+        // warning: we are getting the RAW value of the message content, not the DISPLAY value!
+        String eventMessage = event.getMessage().getContentRaw();
 
         // check if the sent message matches the bot activation regex (prefix, name, ...)
-        if(!eventMessage.toLowerCase().matches(commandRegex + ".*"))
+        if(!eventMessage.toLowerCase().matches(commandRegex + "((.|\\n)*)"))
             return;
 
         // generate args from the string
@@ -120,6 +121,7 @@ public class MessageCommandListener extends ListenerAdapter
         String[] commandArgs;
         if(commandObject.passRawArgs())
         {
+
             // remove first argument, which is the command label
             argsString = argsString.replaceAll("^[\\S]+\\s+", "");
             // pass all other arguments as a single argument as the first array element
