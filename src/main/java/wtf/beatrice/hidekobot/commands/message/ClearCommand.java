@@ -49,7 +49,7 @@ public class ClearCommand implements MessageCommand
                 toDeleteAmount = Integer.parseInt(args[0]);
             } catch (NumberFormatException e)
             {
-                toDeleteAmount = 1;
+                toDeleteAmount = 0;
             }
         }
 
