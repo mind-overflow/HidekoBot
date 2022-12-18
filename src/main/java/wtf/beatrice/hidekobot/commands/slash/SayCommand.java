@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 public class SayCommand extends SlashCommandImpl
@@ -22,7 +23,7 @@ public class SayCommand extends SlashCommandImpl
                         "The message to send.",
                         true,
                         false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE));
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Say.getPermission()));
     }
 
     @Override
