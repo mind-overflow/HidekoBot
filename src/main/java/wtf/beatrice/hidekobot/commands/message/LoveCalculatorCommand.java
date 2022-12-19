@@ -77,8 +77,8 @@ public class LoveCalculatorCommand implements MessageCommand
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setAuthor(event.getAuthor().getAsTag(), null, event.getAuthor().getAvatarUrl());
-        
         embedBuilder.setTitle("Love Calculator");
+
         embedBuilder.addField("\uD83D\uDC65 People",
                 user1.getAsMention() + " & " + user2.getAsMention(),
                 false);
