@@ -48,6 +48,6 @@ public class MagicBallCommand implements MessageCommand
        String question = questionBuilder.toString();
 
 
-        event.getMessage().replyEmbeds(MagicBall.generateEmbed(question, event.getAuthor())).queue();
+        event.getChannel().sendMessageEmbeds(MagicBall.generateEmbed(question, event.getAuthor())).queue();
     }
 }
