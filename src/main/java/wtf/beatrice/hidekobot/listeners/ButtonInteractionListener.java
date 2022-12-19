@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
+import wtf.beatrice.hidekobot.commands.message.UrbanDictionaryCommand;
 
 public class ButtonInteractionListener extends ListenerAdapter
 {
@@ -19,6 +20,10 @@ public class ButtonInteractionListener extends ListenerAdapter
 
             // clearchat command
             case "clear_dismiss" -> ClearChat.dismissMessage(event);
+
+            // urban dictionary navigation
+            case "urban_nextpage" -> UrbanDictionaryCommand.changePage(event, true);
+            case "urban_previouspage" -> UrbanDictionaryCommand.changePage(event, false);
 
         }
 

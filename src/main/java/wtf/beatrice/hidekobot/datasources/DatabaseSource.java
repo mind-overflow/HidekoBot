@@ -81,6 +81,12 @@ public class DatabaseSource
      * | 39402849302   | 39402849302        | 39402849302      | 39402849302    | PRIVATE         |
      * --------------------------------------------------------------------------------------------
      *
+     * TABLE 3: urban_dictionary
+     * -----------------------------------------------------------------------------------------------------
+     * | message_id    | page      | meanings    | examples    | contributors      | dates      | term     |
+     * -----------------------------------------------------------------------------------------------------
+     * | 39402849302   | 0         | base64      | base64      | base64            | base64     | miku     |
+     * -----------------------------------------------------------------------------------------------------
      */
 
     //todo: javadocs
@@ -102,6 +108,16 @@ public class DatabaseSource
                 "message_id TEXT NOT NULL," + // message id of the bot's response
                 "user_id TEXT NOT NULL, " + // user who ran the command
                 "channel_type TEXT NOT NULL" + // channel type (PRIVATE, FORUM, ...)
+                ");");
+
+        newTables.add("CREATE TABLE IF NOT EXISTS urban_dictionary (" +
+                "message_id TEXT NOT NULL, " + // message id of the bot's response
+                "page INTEGER NOT NULL," + // page that we are currently on
+                "meanings TEXT NOT NULL," + // list of all meanings, serialized and encoded
+                "examples TEXT NOT NULL, " + // list of all examples, serialized and encoded
+                "contributors TEXT NOT NULL, " + // list of all contributors, serialized and encoded
+                "dates TEXT NOT NULL, " + // list of all submission dates, serialized and encoded
+                "term TEXT NOT NULL" + // the term that was searched
                 ");");
 
         for(String sql : newTables)
@@ -301,6 +317,17 @@ public class DatabaseSource
             return false;
         }
 
+        query = "DELETE FROM urban_dictionary WHERE message_id = ?;";
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            preparedStatement.execute();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
         return true;
     }
 
@@ -371,6 +398,221 @@ public class DatabaseSource
         }
 
         return null;
+    }
+
+    public boolean trackUrban(String meanings, String examples,
+                              String contributors, String dates,
+                              Message message, String term)
+    {
+
+        String query = "INSERT INTO urban_dictionary " +
+                "(message_id, page, meanings, examples, contributors, dates, term) VALUES " +
+                " (?, ?, ?, ?, ?, ?, ?);";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, message.getId());
+            preparedStatement.setInt(2, 0);
+            preparedStatement.setString(3, meanings);
+            preparedStatement.setString(4, examples);
+            preparedStatement.setString(5, contributors);
+            preparedStatement.setString(6, dates);
+            preparedStatement.setString(7, term);
+
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public int getUrbanPage(String messageId)
+    {
+        String query = "SELECT page " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return 0;
+            while(resultSet.next())
+            {
+                return resultSet.getInt("page");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public String getUrbanMeanings(String messageId)
+    {
+        String query = "SELECT meanings " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("meanings");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getUrbanExamples(String messageId)
+    {
+        String query = "SELECT examples " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("examples");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getUrbanContributors(String messageId)
+    {
+        String query = "SELECT contributors " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("contributors");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getUrbanDates(String messageId)
+    {
+        String query = "SELECT dates " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("dates");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getUrbanTerm(String messageId)
+    {
+        String query = "SELECT term " +
+                "FROM urban_dictionary " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.isClosed()) return null;
+            while(resultSet.next())
+            {
+                return resultSet.getString("term");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean setUrbanPage(String messageId, int page)
+    {
+        String query = "UPDATE urban_dictionary " +
+                "SET page = ? " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setInt(1, page);
+            preparedStatement.setString(2, messageId);
+            preparedStatement.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean resetExpiryTimestamp(String messageId)
+    {
+        LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(Cache.getExpiryTimeSeconds());
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Cache.getExpiryTimestampFormat());
+        String expiryTimeFormatted = dateTimeFormatter.format(expiryTime);
+
+        String query = "UPDATE pending_disabled_messages " +
+                "SET expiry_timestamp = ? " +
+                "WHERE message_id = ?;";
+
+        try(PreparedStatement preparedStatement = dbConnection.prepareStatement(query))
+        {
+            preparedStatement.setString(1, expiryTimeFormatted);
+            preparedStatement.setString(2, messageId);
+            preparedStatement.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 

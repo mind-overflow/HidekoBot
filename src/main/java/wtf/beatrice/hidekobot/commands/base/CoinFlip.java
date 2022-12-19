@@ -61,8 +61,6 @@ public class CoinFlip
 
     public static void trackAndRestrict(Message replyMessage, User user)
     {
-        String replyMessageId = replyMessage.getId();
-
         Cache.getDatabaseSource().queueDisabling(replyMessage);
         Cache.getDatabaseSource().trackRanCommandReply(replyMessage, user);
     }
