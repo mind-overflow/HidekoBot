@@ -102,13 +102,21 @@ public class UrbanDictionaryCommand implements MessageCommand
 
         for(String htmlMeaning : htmlMeanings)
         {
-            String text = htmlMeaning.replaceAll("<.*?>", "");
+            String text = htmlMeaning
+                    .replaceAll("<br\\s*?>", "\n") // keep newlines
+                    .replaceAll("<.*?>", ""); // remove all other html tags
+            // discord only allows 1024 characters for embed fields
+            if(text.length() > 1024) text = text.substring(0, 1023);
             plaintextMeanings.add(text);
         }
 
         for(String htmlExample : htmlExamples)
         {
-            String text = htmlExample.replaceAll("<.*?>", "");
+            String text = htmlExample
+                    .replaceAll("<br\\s*?>", "\n") // keep newlines
+                    .replaceAll("<.*?>", ""); // remove all other html tags
+            // discord only allows 1024 characters for embed fields
+            if(text.length() > 1024) text = text.substring(0, 1023);
             plaintextExamples.add(text);
         }
 
