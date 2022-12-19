@@ -139,6 +139,7 @@ public class HidekoBot
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.LoveCalculatorCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.MagicBallCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.SayCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.UrbanDictionaryCommand());
         Cache.setMessageCommandListener(messageCommandListener);
 
         // register listeners
