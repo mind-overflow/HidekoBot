@@ -176,10 +176,9 @@ public class UrbanDictionaryCommand implements MessageCommand
         }
 
         // make it nice to look at, compared to the html value
-        term = term.replaceAll("\\+", " ");
-        term = WordUtils.capitalizeFully(term);
 
-
+        final String finalTerm = term;
+        term = WordUtils.capitalizeFully(term.replaceAll("\\+", " "));
 
         String serializedMeanings = serialize(plaintextMeanings);
         String serializedExamples = serialize(plaintextExamples);
@@ -194,7 +193,6 @@ public class UrbanDictionaryCommand implements MessageCommand
                 plaintextExamples.get(0), contributorsNames.get(0), submissionDates.get(0), 0);
 
         // copy term for async thing
-        final String finalTerm = term;
         event.getChannel()
                 .sendMessageEmbeds(embed)
                 .addActionRow(previousPageButton.asDisabled(), //disabled by default because we're on page 0
@@ -243,8 +241,6 @@ public class UrbanDictionaryCommand implements MessageCommand
 
     public static void changePage(ButtonInteractionEvent event, boolean increase)
     {
-
-
         String messageId = event.getMessageId();
         DatabaseSource database = Cache.getDatabaseSource();
 
@@ -277,6 +273,8 @@ public class UrbanDictionaryCommand implements MessageCommand
         if(increase)
             page++;
         else page--;
+
+        term = WordUtils.capitalizeFully(term.replaceAll("\\+", " "));
 
         MessageEmbed updatedEmbed = buildEmbed(term, url, event.getUser(),
                 meanings.get(page), examples.get(page), contributors.get(page),
