@@ -95,7 +95,7 @@ public class UrbanDictionaryCommand implements MessageCommand
                         .replaceAll("<br\\s*?>", "\n") // keep newlines
                         .replaceAll("<.*?>", ""); // remove all other html tags
                 // discord only allows 1024 characters for embed fields
-                if(text.length() > 1024) text = text.substring(0, 1023);
+                if(text.length() > 1024) text = text.substring(0, 1020) + "...";
                 plaintextMeanings.add(text);
             }
 
@@ -111,7 +111,7 @@ public class UrbanDictionaryCommand implements MessageCommand
                         .replaceAll("<br\\s*?>", "\n") // keep newlines
                         .replaceAll("<.*?>", ""); // remove all other html tags
                 // discord only allows 1024 characters for embed fields
-                if(text.length() > 1024) text = text.substring(0, 1023);
+                if(text.length() > 1024) text = text.substring(0, 1020) + "...";
                 plaintextExamples.add(text);
             }
 
