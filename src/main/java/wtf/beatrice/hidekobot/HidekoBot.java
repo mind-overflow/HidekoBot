@@ -133,6 +133,7 @@ public class HidekoBot
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BotInfoCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.CoinFlipCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.ClearCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.DiceRollCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.InviteCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.SayCommand());
         Cache.setMessageCommandListener(messageCommandListener);
