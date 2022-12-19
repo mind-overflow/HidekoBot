@@ -24,7 +24,7 @@ public class MagicBall
                     "It is decidedly so.",
                     "Without a doubt.",
                     "Yes, definitely.",
-                    "You may rely on it.",
+                    "That would be a yes.",
                     "As I see it, yes.",
                     "Most likely.",
                     "Looks like it.",
