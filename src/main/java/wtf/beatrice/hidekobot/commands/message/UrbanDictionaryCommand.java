@@ -76,48 +76,64 @@ public class UrbanDictionaryCommand implements MessageCommand
             return;
         }
 
-        List<String> htmlMeanings = new ArrayList<>();
-        List<String> htmlExamples = new ArrayList<>();
-
-        Elements definitions = doc.getElementsByClass("definition");
-        for(Element element : definitions)
-        {
-            Elements meanings = element.getElementsByClass("meaning");
-            for(Element meaning : meanings)
-            {
-                htmlMeanings.add(meaning.html());
-                break;// just one meaning per definition
-            }
-
-            Elements examples = element.getElementsByClass("example");
-            for(Element example : examples)
-            {
-                htmlExamples.add(example.html());
-                break; // just one example per definition
-            }
-        }
-
+        List<String> contributorsNames = new ArrayList<>();
+        List<String> submissionDates = new ArrayList<>();
         List<String> plaintextMeanings = new ArrayList<>();
         List<String> plaintextExamples = new ArrayList<>();
 
-        for(String htmlMeaning : htmlMeanings)
+        Elements definitions = doc.getElementsByClass("definition");
+        for(Element definition : definitions)
         {
-            String text = htmlMeaning
-                    .replaceAll("<br\\s*?>", "\n") // keep newlines
-                    .replaceAll("<.*?>", ""); // remove all other html tags
-            // discord only allows 1024 characters for embed fields
-            if(text.length() > 1024) text = text.substring(0, 1023);
-            plaintextMeanings.add(text);
-        }
+            Elements meaningSingleton = definition.getElementsByClass("meaning");
+            if(meaningSingleton.isEmpty())
+            {
+                plaintextMeanings.add(" ");
+            } else
+            {
+                Element meaning = meaningSingleton.get(0);
+                String text = meaning.html()
+                        .replaceAll("<br\\s*?>", "\n") // keep newlines
+                        .replaceAll("<.*?>", ""); // remove all other html tags
+                // discord only allows 1024 characters for embed fields
+                if(text.length() > 1024) text = text.substring(0, 1023);
+                plaintextMeanings.add(text);
+            }
 
-        for(String htmlExample : htmlExamples)
-        {
-            String text = htmlExample
-                    .replaceAll("<br\\s*?>", "\n") // keep newlines
-                    .replaceAll("<.*?>", ""); // remove all other html tags
-            // discord only allows 1024 characters for embed fields
-            if(text.length() > 1024) text = text.substring(0, 1023);
-            plaintextExamples.add(text);
+            Elements exampleSingleton = definition.getElementsByClass("example");
+
+            if(exampleSingleton.isEmpty())
+            {
+                plaintextExamples.add(" ");
+            } else
+            {
+                Element example = exampleSingleton.get(0);
+                String text = example.html()
+                        .replaceAll("<br\\s*?>", "\n") // keep newlines
+                        .replaceAll("<.*?>", ""); // remove all other html tags
+                // discord only allows 1024 characters for embed fields
+                if(text.length() > 1024) text = text.substring(0, 1023);
+                plaintextExamples.add(text);
+            }
+
+            Elements contributorSingleton = definition.getElementsByClass("contributor");
+            if(contributorSingleton.isEmpty())
+            {
+                contributorsNames.add("Unknown");
+            } else
+            {
+                Element contributor = contributorSingleton.get(0);
+
+                String htmlContributor = contributor.html();
+                String htmlContributorName = contributor.select("a").html();
+                String htmlSubmitDate = htmlContributor.substring(
+                        htmlContributor.indexOf("</a>") + 4);
+
+                contributorsNames.add(htmlContributorName
+                        .replaceAll("<.*?>", "")); // remove all html tags;
+
+                submissionDates.add(htmlSubmitDate
+                        .replaceAll("<.*?>", "")); // remove all html tags;
+            }
         }
 
         // make it nice to look at, compared to the html value
@@ -126,10 +142,13 @@ public class UrbanDictionaryCommand implements MessageCommand
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Cache.getBotColor());
-        embedBuilder.setTitle("Urban Dictionary: " + term);
+        embedBuilder.setTitle(term + ", on Urban Dictionary", url);
         embedBuilder.setAuthor(event.getAuthor().getAsTag(), null, event.getAuthor().getAvatarUrl());
         embedBuilder.addField("Definition", plaintextMeanings.get(0), false);
         embedBuilder.addField("Example", plaintextExamples.get(0), false);
+        embedBuilder.addField("Submission",
+                "*sent by " + contributorsNames.get(0) + " on " + submissionDates.get(0) + "*",
+                false);
 
         event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
     }
