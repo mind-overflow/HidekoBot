@@ -57,6 +57,9 @@ public class MessageCommandListener extends ListenerAdapter
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
+        // check if a bot is sending this message, and ignore it
+        if(event.getAuthor().isBot()) return;
+
         // warning: we are getting the RAW value of the message content, not the DISPLAY value!
         String eventMessage = event.getMessage().getContentRaw();
 
