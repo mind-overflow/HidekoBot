@@ -44,6 +44,9 @@ public class ClearCommand extends SlashCommandImpl
         OptionMapping amountOption = event.getOption("amount");
         int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
 
+        // cap the amount to avoid abuse.
+        if(toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+
         error = ClearChat.checkDeleteAmount(toDeleteAmount);
         if(error != null)
         {

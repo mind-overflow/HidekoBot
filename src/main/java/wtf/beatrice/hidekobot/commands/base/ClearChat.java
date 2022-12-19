@@ -54,7 +54,8 @@ public class ClearChat
         // int to keep track of how many messages we actually deleted.
         int deleted = 0;
 
-        int limit = 95; //discord limits this method to range 2-100. we set it to 95 to be safe.
+        int limit = 95; //discord limits this method to only 2<x<100 deletions per run.
+        // we set this slightly lower to be safe, and iterate as needed.
 
         // increase the count by 1, because we technically aren't clearing the first ID ever
         // which is actually the slash command's ID and not a message.
@@ -192,5 +193,8 @@ public class ClearChat
             event.getInteraction().getMessage().delete().queue();
         }
     }
+
+    // cap the amount to avoid abuse.
+    public static int getMaxAmount() { return 1000; }
 
 }

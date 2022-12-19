@@ -53,6 +53,9 @@ public class ClearCommand implements MessageCommand
             }
         }
 
+        // cap the amount to avoid abuse.
+        if(toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+
         error = ClearChat.checkDeleteAmount(toDeleteAmount);
         if (error != null) {
             event.getMessage().reply(error).queue();
