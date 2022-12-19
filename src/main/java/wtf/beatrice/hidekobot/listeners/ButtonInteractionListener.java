@@ -24,6 +24,7 @@ public class ButtonInteractionListener extends ListenerAdapter
             // urban dictionary navigation
             case "urban_nextpage" -> UrbanDictionaryCommand.changePage(event, true);
             case "urban_previouspage" -> UrbanDictionaryCommand.changePage(event, false);
+            case "urban_delete" -> UrbanDictionaryCommand.delete(event);
 
         }
 

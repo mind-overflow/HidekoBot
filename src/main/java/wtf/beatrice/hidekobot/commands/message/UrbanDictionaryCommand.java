@@ -49,6 +49,8 @@ public class UrbanDictionaryCommand implements MessageCommand
             .withEmoji(Emoji.fromFormatted("⬅️"));
     static final Button nextPageButton = Button.primary("urban_nextpage", "Next")
             .withEmoji(Emoji.fromFormatted("➡️"));
+    static final Button deleteButton = Button.danger("urban_delete", "Delete")
+            .withEmoji(Emoji.fromFormatted("\uD83D\uDDD1️"));
 
     private static MessageEmbed buildEmbed(String term,
                                            String url,
@@ -196,7 +198,8 @@ public class UrbanDictionaryCommand implements MessageCommand
         event.getChannel()
                 .sendMessageEmbeds(embed)
                 .addActionRow(previousPageButton.asDisabled(), //disabled by default because we're on page 0
-                        nextPageBtnLocal)
+                        nextPageBtnLocal,
+                        deleteButton)
                 .queue(message ->
         {
 
@@ -238,6 +241,19 @@ public class UrbanDictionaryCommand implements MessageCommand
         }
     }
 
+    public static void delete(ButtonInteractionEvent event)
+    {
+        String messageId = event.getMessageId();
+        DatabaseSource database = Cache.getDatabaseSource();
+
+        // check if the user interacting is the same one who ran the command
+        if (!(database.isUserTrackedFor(event.getUser().getId(), messageId))) {
+            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
+            return;
+        }
+
+        event.getInteraction().getMessage().delete().queue();
+    }
 
     public static void changePage(ButtonInteractionEvent event, boolean increase)
     {
@@ -298,6 +314,8 @@ public class UrbanDictionaryCommand implements MessageCommand
             components.add(nextPageButton.asEnabled());
         }
 
+        components.add(deleteButton);
+
         ActionRow currentRow = ActionRow.of(components);
         List<ActionRow> actionRows = new ArrayList<>(Collections.singletonList(currentRow));
 
@@ -305,6 +323,5 @@ public class UrbanDictionaryCommand implements MessageCommand
         event.editComponents(actionRows).complete();
         database.setUrbanPage(messageId, page);
         database.resetExpiryTimestamp(messageId);
-
     }
 }
