@@ -75,11 +75,16 @@ public class ClearCommand implements MessageCommand
         // ^ todo: maybe the dismiss button should also delete the original message sent by the user?
         // todo: but then, we need to differentiate between command type in the database, and store
         // todo: that message's id too.
-        botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
+        Message finalMessage = event.getChannel().sendMessage(content).setActionRow(dismiss).complete();
 
         // add the message to database.
-        Cache.getDatabaseSource().queueDisabling(botMessage);
-        Cache.getDatabaseSource().trackRanCommandReply(botMessage, event.getAuthor());
+        Cache.getDatabaseSource().queueDisabling(finalMessage);
+        Cache.getDatabaseSource().trackRanCommandReply(finalMessage, event.getAuthor());
+
+        // delete the sender's message.
+        event.getMessage().delete().queue();
+        // delete the "clearing" info message.
+        botMessage.delete().queue();
 
     }
 

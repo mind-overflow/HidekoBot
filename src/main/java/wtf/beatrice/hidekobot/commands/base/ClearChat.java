@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot.commands.base;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -46,7 +47,9 @@ public class ClearChat
         return null;
     }
 
-    public static int delete(int toDeleteAmount, long startingMessageId, MessageChannel channel)
+    public static int delete(int toDeleteAmount,
+                             long startingMessageId,
+                             MessageChannel channel)
     {
         // int to keep track of how many messages we actually deleted.
         int deleted = 0;
@@ -155,6 +158,7 @@ public class ClearChat
 
     public static String parseAmount(int deleted)
     {
+
         if(deleted < 1)
         {
             return "\uD83D\uDE22 Couldn't clear any message!";
