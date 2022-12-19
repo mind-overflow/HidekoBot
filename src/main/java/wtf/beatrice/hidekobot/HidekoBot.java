@@ -121,6 +121,7 @@ public class HidekoBot
         slashCommandListener.registerCommand(new DieCommand());
         slashCommandListener.registerCommand(new HelpCommand());
         slashCommandListener.registerCommand(new InviteCommand());
+        slashCommandListener.registerCommand(new MagicBallCommand());
         slashCommandListener.registerCommand(new PingCommand());
         slashCommandListener.registerCommand(new SayCommand());
         Cache.setSlashCommandListener(slashCommandListener);
