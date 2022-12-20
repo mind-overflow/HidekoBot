@@ -135,7 +135,7 @@ public class UrbanDictionary
     }
 
 
-    public static void changePage(ButtonInteractionEvent event, boolean increase)
+    public static void changePage(ButtonInteractionEvent event, ChangeType changeType)
     {
         String messageId = event.getMessageId();
         DatabaseSource database = Cache.getDatabaseSource();
@@ -163,9 +163,10 @@ public class UrbanDictionary
                 serializedExamples, serializedContributors, serializedDates);
 
         // move to new page
-        if(increase)
+        if(changeType == ChangeType.NEXT)
             page++;
-        else page--;
+        else if(changeType == ChangeType.PREVIOUS)
+            page--;
 
         term = UrbanDictionary.sanitizeArgs(term, false);
 
@@ -341,4 +342,9 @@ public class UrbanDictionary
         }
     }
 
+    public enum ChangeType
+    {
+        NEXT,
+        PREVIOUS;
+    }
 }
