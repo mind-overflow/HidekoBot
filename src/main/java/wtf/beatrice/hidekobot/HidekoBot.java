@@ -18,8 +18,8 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
+import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.Logger;
-import wtf.beatrice.hidekobot.util.SlashCommandUtil;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -152,7 +152,7 @@ public class HidekoBot
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
         Executors.newSingleThreadScheduledExecutor().schedule(() -> // todo: try-with-resources
-                SlashCommandUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
+                CommandUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
