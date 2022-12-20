@@ -2,8 +2,6 @@ package wtf.beatrice.hidekobot.util;
 
 import wtf.beatrice.hidekobot.Cache;
 
-import java.util.Random;
-
 public class RandomUtil
 {
     /**

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.Alias;
-import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 

@@ -17,7 +17,10 @@ import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.util.SerializationUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UrbanDictionary
 {
