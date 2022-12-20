@@ -143,6 +143,14 @@ public class DiceRollCommand implements MessageCommand
 
         LinkedList<Dice> rolledDices = new LinkedList<>();
 
+        // in case no dice was specified (or invalid), roll a standard 6-sided dice.
+        if(dicesToRoll.isEmpty())
+        {
+            Dice standardDice = new Dice(6);
+            dicesToRoll.put(standardDice, 1);
+            totalRolls = 1;
+        }
+
         for(Dice dice : dicesToRoll.keySet())
         {
             for(int roll = 0; roll < dicesToRoll.get(dice); roll++)
@@ -186,7 +194,9 @@ public class DiceRollCommand implements MessageCommand
 
         embedBuilder.addField("\uD83C\uDFB2 Rolls", message.toString(), false);
 
-        embedBuilder.addField("✨ Total", totalRolls + " rolls: " + total, false);
+        String rolls = totalRolls == 1 ? "roll" : "rolls";
+
+        embedBuilder.addField("✨ Total", totalRolls + " " + rolls + ": " + total, false);
 
 
         event.getMessage().replyEmbeds(embedBuilder.build()).queue();
