@@ -55,7 +55,7 @@ public class LoveCalculatorCommand extends SlashCommandImpl
             secondUser = event.getUser();
         }
 
-        MessageEmbed embed = LoveCalculator.buildEmbed(event.getUser(), firstUser, secondUser);
+        MessageEmbed embed = LoveCalculator.buildEmbedAndCacheResult(event.getUser(), firstUser, secondUser);
         event.replyEmbeds(embed).queue();
     }
 }

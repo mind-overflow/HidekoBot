@@ -6,11 +6,23 @@ import net.dv8tion.jda.api.entities.User;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoveCalculator
 {
-    public static MessageEmbed buildEmbed(User author, User user1, User user2)
+    public static MessageEmbed buildEmbedAndCacheResult(User author, User user1, User user2)
     {
-        int loveAmount = RandomUtil.getRandomNumber(0, 100);
+        String userId1 = user1.getId();
+        String userId2 = user2.getId();
+
+        Integer loveAmount = Cache.getLoveCalculatorValue(userId1, userId2);
+        if(loveAmount == null)
+        {
+            loveAmount = RandomUtil.getRandomNumber(0, 100);
+            Cache.cacheLoveCalculatorValue(userId1, userId2, loveAmount);
+            Cache.getScheduler().schedule(() ->
+                    Cache.removeLoveCalculatorValue(userId1, userId2), 10, TimeUnit.MINUTES);
+        }
 
         String formattedAmount = loveAmount + "%";
         if(loveAmount <= 30) formattedAmount += "... \uD83D\uDE22";

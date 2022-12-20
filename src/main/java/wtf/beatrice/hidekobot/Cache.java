@@ -14,7 +14,10 @@ import wtf.beatrice.hidekobot.util.Logger;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Cache
 {
@@ -27,6 +30,12 @@ public class Cache
     // the Random instance that we should always use when looking for an RNG based thing.
     // the seed is updated periodically.
     private static final Random randomInstance = new Random();
+
+    // map to store results of "love calculator", to avoid people re-running the same command until
+    // they get what they wanted.
+    // i didn't think this was worthy of a whole database table with a runnable checking for expiration,
+    // and it will get cleared after a few minutes anyway, so RAM caching is more than good enough.
+    private static final HashMap<String, Integer> loveCalculatorValues = new HashMap<>();
 
     private static PropertiesSource propertiesSource = null;
     private static ConfigurationSource configurationSource = null;
@@ -41,6 +50,9 @@ public class Cache
 
     // used to count e.g. uptime
     private static LocalDateTime startupTime = null;
+
+    // the scheduler that should always be used when running a scheduled task.
+    private final static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
 
     private final static String execPath = System.getProperty("user.dir");
     private static final String botName = "Hideko";
@@ -286,5 +298,32 @@ public class Cache
      * @return a String of the bot's prefix.
      */
     public static String getBotPrefix() { return botPrefix; }
+
+    public static void cacheLoveCalculatorValue(String userId1, String userId2, int value)
+    {
+        String merged = userId1 + "|" + userId2;
+        loveCalculatorValues.put(merged, value);
+    }
+
+    @Nullable
+    public static Integer getLoveCalculatorValue(String userId1, String userId2)
+    {
+        String merged1 = userId1 + "|" + userId2;
+        String merged2 = userId2 + "|" + userId1;
+        Integer value = null;
+        value = loveCalculatorValues.get(merged1);
+        if(value == null) value = loveCalculatorValues.get(merged2);
+        return value;
+    }
+
+    public static void removeLoveCalculatorValue(String userId1, String userId2)
+    {
+        loveCalculatorValues.remove(userId1 + "|" + userId2);
+        loveCalculatorValues.remove(userId2 + "|" + userId1);
+    }
+
+    public static ScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
 
 }
