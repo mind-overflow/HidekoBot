@@ -132,7 +132,7 @@ public class HelpCommand implements MessageCommand
                 for(int i = 0; i < permissions.size(); i++)
                 {
                     Permission permission = permissions.get(i);
-                    permissionsStringBuilder.append("`").append(permission.getName()).append("`");
+                    permissionsStringBuilder.append("**").append(permission.getName()).append("**");
 
                     if(i + 1 != permissions.size())
                         permissionsStringBuilder.append(", "); // separate with comma expect on last iteration
