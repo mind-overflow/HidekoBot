@@ -36,6 +36,13 @@ public class CommandUtil
     }
 
 
+    /**
+     * Method to update slash commands registered on Discord's side.
+     * It runs automatically every time the bot starts, but only updates the commands in case differences
+     * are found, unless forced.
+     *
+     * @param force a boolean specifying if the update should be forced even if no differences were found.
+     */
     public static void updateSlashCommands(boolean force)
     {
 
