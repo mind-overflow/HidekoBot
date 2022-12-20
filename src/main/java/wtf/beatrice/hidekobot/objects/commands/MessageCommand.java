@@ -49,6 +49,23 @@ public interface MessageCommand
     CommandCategory getCategory();
 
     /**
+     * Say what this command does.
+     *
+     * @return a String explaining what this command does.
+     */
+    @NotNull
+    String getDescription();
+
+    /**
+     * Say how people should use this command.
+     *
+     * @return a String explaining how to use the command, excluding the bot prefix and command name. Null if no parameter is needed
+     */
+    @Nullable
+    String getUsage();
+
+
+    /**
      * Run the command logic by parsing the event and replying accordingly.
      *
      * @param event the received message event. It should not be used for parsing message contents data as

@@ -36,6 +36,18 @@ public class InviteCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Get the bot's invite link.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return null;
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
     }

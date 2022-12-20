@@ -35,6 +35,18 @@ public class BotInfoCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Get general info about the bot.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return null;
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.TOOLS;
     }

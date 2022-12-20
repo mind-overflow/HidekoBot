@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.commands.base.Alias;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
@@ -37,6 +38,18 @@ public class AliasCommand implements MessageCommand
         return CommandCategory.TOOLS;
     }
 
+    @NotNull
+    @Override
+    public String getDescription() {
+        return "See other command aliases.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "<command>";
+    }
+
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
@@ -54,19 +67,11 @@ public class AliasCommand implements MessageCommand
             return;
         }
 
-        LinkedList<String> aliases = command.getCommandLabels();
-        StringBuilder aliasesStringBuilder = new StringBuilder();
-        aliasesStringBuilder.append("Aliases for **").append(aliases.get(0)).append("**: ");
-        for(int i = 0; i < aliases.size(); i++)
-        {
-            aliasesStringBuilder.append("`").append(aliases.get(i)).append("`");
-
-            if(i + 1 != aliases.size())
-                aliasesStringBuilder.append(", "); // separate with comma except on last iteration
-        }
+        String aliases = Alias.generateNiceAliases(command);
+        aliases =  "Aliases for **" + command.getCommandLabels().get(0) + "**: " + aliases;
 
         event.getMessage()
-                .reply(aliasesStringBuilder.toString())
+                .reply(aliases)
                 .queue();
 
     }

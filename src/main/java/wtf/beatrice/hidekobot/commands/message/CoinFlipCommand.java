@@ -33,6 +33,18 @@ public class CoinFlipCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Flip a coin.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return null;
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
     }

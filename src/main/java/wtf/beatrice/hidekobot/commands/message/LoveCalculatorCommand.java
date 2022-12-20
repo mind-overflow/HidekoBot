@@ -41,6 +41,18 @@ public class LoveCalculatorCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Calculate how much two people love each other. You can mention two people or just one.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "<person 1> [person 2]";
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
     }
@@ -55,7 +67,9 @@ public class LoveCalculatorCommand implements MessageCommand
 
         if(args.length == 0 || mentions.isEmpty())
         {
-            event.getMessage().reply("\uD83D\uDE22 I need to know who to check!").queue();
+            event.getMessage()
+                    .reply("\uD83D\uDE22 I need to know who to check! Please mention them.")
+                    .queue();
             return;
         }
 

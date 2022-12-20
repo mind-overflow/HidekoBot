@@ -38,6 +38,18 @@ public class AvatarCommand  implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Get someone's avatar, or your own. You can additionally specify a resolution.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "[mentioned user] [resolution]";
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.TOOLS;
     }
@@ -47,7 +59,7 @@ public class AvatarCommand  implements MessageCommand
     {
         int[] acceptedSizes = Cache.getSupportedAvatarResolutions();
 
-        User user = null;
+        User user;
         int resolution = -1;
 
         // we have no specific order for user and resolution, so let's try parsing any arg as resolution

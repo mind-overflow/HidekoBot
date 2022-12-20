@@ -7,6 +7,7 @@ import org.apache.commons.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.commands.base.Alias;
 import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -32,6 +33,18 @@ public class HelpCommand implements MessageCommand
     @Override
     public boolean passRawArgs() {
         return false;
+    }
+
+    @NotNull
+    @Override
+    public String getDescription() {
+        return "Get general help on the bot. Specify a command if you want specific help about that command.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "[command]";
     }
 
     @NotNull
@@ -90,6 +103,51 @@ public class HelpCommand implements MessageCommand
 
                 embedBuilder.addField(niceCategoryName, commandsList.toString(), false);
             }
+
+            event.getMessage().replyEmbeds(embedBuilder.build()).queue();
+        } else {
+
+            String commandLabel = args[0].toLowerCase();
+            MessageCommand command = Cache.getMessageCommandListener().getRegisteredCommand(commandLabel);
+            if(command == null)
+            {
+                event.getMessage().reply("Unrecognized command: `" + commandLabel + "`!").queue(); // todo prettier
+                return;
+            }
+
+            commandLabel = command.getCommandLabels().get(0);
+            String usage = "`" + Cache.getBotPrefix() + " " + commandLabel;
+            String internalUsage = command.getUsage();
+            if(internalUsage != null) usage += " " + internalUsage;
+            usage += "`";
+
+            String aliases = Alias.generateNiceAliases(command);
+
+            List<Permission> permissions = command.getPermissions();
+            StringBuilder permissionsStringBuilder = new StringBuilder();
+            if(permissions == null)
+            {
+                permissionsStringBuilder = new StringBuilder("Available to everyone");
+            } else {
+                for(int i = 0; i < permissions.size(); i++)
+                {
+                    Permission permission = permissions.get(i);
+                    permissionsStringBuilder.append("`").append(permission.getName()).append("`");
+
+                    if(i + 1 != permissions.size())
+                        permissionsStringBuilder.append(", "); // separate with comma expect on last iteration
+                }
+            }
+
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            embedBuilder.setColor(Cache.getBotColor());
+            embedBuilder.setTitle(WordUtils.capitalizeFully(commandLabel + " help"));
+
+            embedBuilder.addField("Description", command.getDescription(), false);
+            embedBuilder.addField("Usage", usage, false);
+            embedBuilder.addField("Aliases", aliases, false);
+            embedBuilder.addField("Permissions", permissionsStringBuilder.toString(), false);
 
             event.getMessage().replyEmbeds(embedBuilder.build()).queue();
         }

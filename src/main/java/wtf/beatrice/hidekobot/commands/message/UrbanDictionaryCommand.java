@@ -38,6 +38,18 @@ public class UrbanDictionaryCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Look something up in the Urban Dictionary.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "<query>";
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
     }

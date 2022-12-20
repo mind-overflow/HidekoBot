@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot.commands.message;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
@@ -24,6 +25,18 @@ public class HelloCommand implements MessageCommand
     @Override
     public boolean passRawArgs() {
         return false;
+    }
+
+    @NotNull
+    @Override
+    public String getDescription() {
+        return "Get pinged by the bot.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return null;
     }
 
     @NotNull

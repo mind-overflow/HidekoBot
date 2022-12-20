@@ -32,6 +32,18 @@ public class SayCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Make the bot say something for you.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "<text>";
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.TOOLS;
     }

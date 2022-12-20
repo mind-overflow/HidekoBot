@@ -32,6 +32,18 @@ public class MagicBallCommand implements MessageCommand
 
     @NotNull
     @Override
+    public String getDescription() {
+        return "Ask a question to the Magic Ball.";
+    }
+
+    @Nullable
+    @Override
+    public String getUsage() {
+        return "<question>";
+    }
+
+    @NotNull
+    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
     }
