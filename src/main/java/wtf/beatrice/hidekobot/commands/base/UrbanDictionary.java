@@ -80,9 +80,9 @@ public class UrbanDictionary
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setTitle(term + ", on Urban Dictionary", url);
         embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
-        embedBuilder.addField("Definition", search.getPlaintextMeanings().get(page), false);
-        embedBuilder.addField("Example", search.getPlaintextExamples().get(page), false);
-        embedBuilder.addField("Submission",
+        embedBuilder.addField("\uD83D\uDCD6 Definition", search.getPlaintextMeanings().get(page), false);
+        embedBuilder.addField("\uD83D\uDCAD Example", search.getPlaintextExamples().get(page), false);
+        embedBuilder.addField("\uD83D\uDCCC Submission",
                 "*Entry " + (page+1) + " | Sent by " + search.getContributorsNames().get(page) +
                         " on " + search.getSubmissionDates().get(page) + "*",
                 false);
