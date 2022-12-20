@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.commands.base.Avatar;
+import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.Collections;
@@ -32,6 +33,11 @@ public class AvatarCommand  implements MessageCommand
     @Override
     public boolean passRawArgs() {
         return false;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.TOOLS;
     }
 
     @Override

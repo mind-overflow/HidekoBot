@@ -40,6 +40,13 @@ public interface MessageCommand
     boolean passRawArgs();
 
     /**
+     * Say what category this command belongs to.
+     *
+     * @return the command category.
+     */
+    CommandCategory getCategory();
+
+    /**
      * Run the command logic by parsing the event and replying accordingly.
      *
      * @param event the received message event. It should not be used for parsing message contents data as

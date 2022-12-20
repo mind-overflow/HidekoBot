@@ -7,14 +7,12 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import wtf.beatrice.hidekobot.objects.comparators.MessageCommandAliasesComparator;
 import wtf.beatrice.hidekobot.util.Logger;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MessageCommandListener extends ListenerAdapter
 {
@@ -22,6 +20,10 @@ public class MessageCommandListener extends ListenerAdapter
     // map storing command labels and command object alphabetically.
     private final TreeMap<LinkedList<String>, MessageCommand> registeredCommands =
             new TreeMap<LinkedList<String>, MessageCommand>(new MessageCommandAliasesComparator());
+
+    // map commands and their categories.
+    // this is not strictly needed but it's better to have it so we avoid looping every time we need to check the cat.
+    LinkedHashMap<CommandCategory, LinkedList<MessageCommand>> commandCategories = new LinkedHashMap<>();
 
     private final String commandRegex = "(?i)^(hideko|hde)\\b";
     // (?i) -> case insensitive flag

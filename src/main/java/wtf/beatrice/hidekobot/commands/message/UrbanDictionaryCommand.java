@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import wtf.beatrice.hidekobot.commands.base.UrbanDictionary;
+import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.io.IOException;
@@ -34,7 +35,10 @@ public class UrbanDictionaryCommand implements MessageCommand
         return false;
     }
 
-
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.FUN;
+    }
 
 
     @Override

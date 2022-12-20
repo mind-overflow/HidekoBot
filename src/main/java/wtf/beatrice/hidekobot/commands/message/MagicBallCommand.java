@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.commands.base.MagicBall;
+import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.LinkedList;
@@ -26,6 +27,11 @@ public class MagicBallCommand implements MessageCommand
     @Override
     public boolean passRawArgs() {
         return false;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.FUN;
     }
 
     @Override

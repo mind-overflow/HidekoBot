@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.BotInfo;
+import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.Collections;
@@ -29,6 +30,11 @@ public class BotInfoCommand implements MessageCommand
     @Override
     public boolean passRawArgs() {
         return false;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.TOOLS;
     }
 
     @Override
