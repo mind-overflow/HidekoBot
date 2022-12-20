@@ -178,7 +178,7 @@ public class HidekoBot
         }
 
         // start scheduled runnables
-        ScheduledExecutorService scheduler = Cache.getScheduler();
+        ScheduledExecutorService scheduler = Cache.getTaskScheduler();
         ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask();
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
         HeartBeatTask heartBeatTask = new HeartBeatTask();

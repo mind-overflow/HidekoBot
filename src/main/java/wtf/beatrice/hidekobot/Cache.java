@@ -52,7 +52,7 @@ public class Cache
     private static LocalDateTime startupTime = null;
 
     // the scheduler that should always be used when running a scheduled task.
-    private final static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
+    private final static ScheduledExecutorService taskScheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
 
     private final static String execPath = System.getProperty("user.dir");
     private static final String botName = "Hideko";
@@ -322,8 +322,8 @@ public class Cache
         loveCalculatorValues.remove(userId2 + "|" + userId1);
     }
 
-    public static ScheduledExecutorService getScheduler() {
-        return scheduler;
+    public static ScheduledExecutorService getTaskScheduler() {
+        return taskScheduler;
     }
 
 }

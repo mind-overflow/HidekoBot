@@ -20,7 +20,7 @@ public class LoveCalculator
         {
             loveAmount = RandomUtil.getRandomNumber(0, 100);
             Cache.cacheLoveCalculatorValue(userId1, userId2, loveAmount);
-            Cache.getScheduler().schedule(() ->
+            Cache.getTaskScheduler().schedule(() ->
                     Cache.removeLoveCalculatorValue(userId1, userId2), 10, TimeUnit.MINUTES);
         }
 
