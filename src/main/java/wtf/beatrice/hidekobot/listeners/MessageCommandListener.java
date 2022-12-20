@@ -97,10 +97,10 @@ public class MessageCommandListener extends ListenerAdapter
         if(commandObject == null)
         {
             /* temporarily disabled because when people talk about the bot, it replies with this spammy message.
-            
+
             event.getMessage().reply("Unrecognized command: `" + commandLabel + "`!").queue(); // todo prettier
 
-             */
+            */
             return;
         }
 
