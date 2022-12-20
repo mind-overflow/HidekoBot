@@ -1,12 +1,11 @@
 package wtf.beatrice.hidekobot.util;
 
+import wtf.beatrice.hidekobot.Cache;
+
 import java.util.Random;
 
 public class RandomUtil
 {
-    private static final Random random = new Random();
-
-
     /**
      * Returns a random integer picked in a range.
      *
@@ -29,7 +28,7 @@ public class RandomUtil
         int difference = (max - min) + 1;
 
         // find a number between 0 and our range (eg. 5 -> 8 = 0 -> 3)
-        int randomTemp = random.nextInt(difference);
+        int randomTemp = Cache.getRandom().nextInt(difference);
 
         // add the minimum value, so we are sure to be in the original range (0->5, 1->6, 2->7, 3->8)
         return randomTemp + min;

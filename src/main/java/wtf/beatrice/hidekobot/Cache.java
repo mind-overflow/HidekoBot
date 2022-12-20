@@ -14,6 +14,7 @@ import wtf.beatrice.hidekobot.util.Logger;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class Cache
 {
@@ -22,6 +23,10 @@ public class Cache
     // todo: make this compatible with the message listener's regex
     private static final String botPrefix = "hideko";
     private static final Logger logger = new Logger(Cache.class);
+
+    // the Random instance that we should always use when looking for an RNG based thing.
+    // the seed is updated periodically.
+    private static final Random randomInstance = new Random();
 
     private static PropertiesSource propertiesSource = null;
     private static ConfigurationSource configurationSource = null;
@@ -59,6 +64,14 @@ public class Cache
      * @return array of supported resolutions.
      */
     public static int[] getSupportedAvatarResolutions() { return supportedAvatarResolutions; }
+
+    public static Random getRandom() {
+        return randomInstance;
+    }
+
+    public static void setRandomSeed(long seed) {
+        randomInstance.setSeed(seed);
+    }
 
     /**
      * Checks if the bot has been started with the verbose argument.
