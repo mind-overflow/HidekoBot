@@ -17,7 +17,7 @@ public class CoinFlip
 
     public static Button getReflipButton() {
         return Button.primary("coinflip_reflip", "Flip again")
-                .withEmoji(Emoji.fromFormatted("\uD83E\uDE99"));
+                .withEmoji(Emoji.fromUnicode("\uD83E\uDE99"));
     }
 
     public static String genRandom()
