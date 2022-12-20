@@ -18,8 +18,9 @@ public class SerializationUtil
             so.flush();
             return Base64.getEncoder().encodeToString(bo.toByteArray());
         }
-        catch (IOException ignored) {}
-        return null;
+        catch (IOException e) {
+            throw new SerializationException("Error during serialization", e);
+        }
     }
 
     public static LinkedList deserializeBase64(String dataStr) {
