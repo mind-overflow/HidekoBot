@@ -28,8 +28,6 @@ public class MagicBallCommand extends SlashCommandImpl
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        MessageChannel channel = event.getChannel();
-
         // get the asked question
         OptionMapping textOption = event.getOption("question");
         String question = "";
