@@ -49,7 +49,7 @@ public class InviteCommand implements MessageCommand
     @NotNull
     @Override
     public CommandCategory getCategory() {
-        return CommandCategory.FUN;
+        return CommandCategory.MODERATION;
     }
 
     @Override
