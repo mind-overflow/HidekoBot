@@ -9,15 +9,14 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
+import wtf.beatrice.hidekobot.util.SerializationUtil;
 
-import java.io.*;
 import java.util.*;
 
 public class UrbanDictionary
@@ -88,39 +87,11 @@ public class UrbanDictionary
         return embedBuilder.build();
     }
 
-    public static String serialize(List dataList) {
 
-        try (ByteArrayOutputStream bo = new ByteArrayOutputStream();
-             ObjectOutputStream so = new ObjectOutputStream(bo)) {
-            so.writeObject(dataList);
-            so.flush();
-            return Base64.getEncoder().encodeToString(bo.toByteArray());
-        }
-        catch (IOException ignored) {}
-        return null;
-    }
-
-    public static LinkedList deserialize(String dataStr) {
-
-        byte[] b = Base64.getDecoder().decode(dataStr);
-        ByteArrayInputStream bi = new ByteArrayInputStream(b);
-        ObjectInputStream si;
-        try {
-            si = new ObjectInputStream(bi);
-            return LinkedList.class.cast(si.readObject());
-        }
-        catch (IOException | ClassNotFoundException e) {
-            throw new SerializationException("Error during deserialization", e);
-        }
-    }
-
-    public static String getNoTermFoundError()
+    public static String getTermNotFoundError()
     {
         return "\uD83D\uDE22 I couldn't find that term!";
     }
-
-
-
 
     public static void track(Message message, User user, UrbanSearch search, String sanitizedTerm)
     {
@@ -133,7 +104,6 @@ public class UrbanDictionary
                 message,
                 sanitizedTerm);
     }
-
 
     public static void changePage(ButtonInteractionEvent event, ChangeType changeType)
     {
@@ -224,10 +194,10 @@ public class UrbanDictionary
             this.serializedContributors = serializedContributors;
             this.serializedDates = serializedDates;
 
-            this.plaintextMeanings = UrbanDictionary.deserialize(serializedMeanings);
-            this.plaintextExamples = UrbanDictionary.deserialize(serializedExamples);
-            this.contributorsNames = UrbanDictionary.deserialize(serializedContributors);
-            this.submissionDates = UrbanDictionary.deserialize(serializedDates);
+            this.plaintextMeanings = SerializationUtil.deserializeBase64(serializedMeanings);
+            this.plaintextExamples = SerializationUtil.deserializeBase64(serializedExamples);
+            this.contributorsNames = SerializationUtil.deserializeBase64(serializedContributors);
+            this.submissionDates = SerializationUtil.deserializeBase64(serializedDates);
 
             this.pages = submissionDates.size();
         }
@@ -297,10 +267,10 @@ public class UrbanDictionary
                 }
             }
 
-            serializedMeanings = serialize(plaintextMeanings);
-            serializedExamples = serialize(plaintextExamples);
-            serializedContributors = serialize(contributorsNames);
-            serializedDates = serialize(submissionDates);
+            serializedMeanings = SerializationUtil.serializeBase64(plaintextMeanings);
+            serializedExamples = SerializationUtil.serializeBase64(plaintextExamples);
+            serializedContributors = SerializationUtil.serializeBase64(contributorsNames);
+            serializedDates = SerializationUtil.serializeBase64(submissionDates);
 
             pages = submissionDates.size();
         }

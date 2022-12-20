@@ -64,7 +64,7 @@ public class UrbanDictionaryCommand implements MessageCommand
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            event.getMessage().reply(UrbanDictionary.getNoTermFoundError()).queue();
+            event.getMessage().reply(UrbanDictionary.getTermNotFoundError()).queue();
             return;
         }
 

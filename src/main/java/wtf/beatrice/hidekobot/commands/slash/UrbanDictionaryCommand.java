@@ -57,7 +57,7 @@ public class UrbanDictionaryCommand extends SlashCommandImpl
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            event.reply(UrbanDictionary.getNoTermFoundError())
+            event.reply(UrbanDictionary.getTermNotFoundError())
                     .setEphemeral(true)
                     .queue();
             return;
