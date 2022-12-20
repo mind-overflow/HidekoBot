@@ -9,12 +9,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

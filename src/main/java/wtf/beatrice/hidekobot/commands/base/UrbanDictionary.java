@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import wtf.beatrice.hidekobot.Cache;

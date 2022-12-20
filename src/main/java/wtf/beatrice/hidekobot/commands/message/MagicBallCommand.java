@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.commands.base.MagicBall;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
+
 import java.util.LinkedList;
 import java.util.List;
 

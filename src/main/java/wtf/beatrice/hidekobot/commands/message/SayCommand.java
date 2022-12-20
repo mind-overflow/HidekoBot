@@ -1,10 +1,8 @@
 package wtf.beatrice.hidekobot.commands.message;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
