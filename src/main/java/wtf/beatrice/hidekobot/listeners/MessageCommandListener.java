@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import wtf.beatrice.hidekobot.objects.comparators.MessageCommandAliasesComparator;
@@ -80,7 +81,9 @@ public class MessageCommandListener extends ListenerAdapter
         // it will be the whole text as a single element.
         if(argsString.isEmpty())
         {
-            event.getMessage().reply("Hello there! ✨").queue();
+            event.getMessage()
+                    .reply("Hello there! ✨ Type `" + Cache.getBotPrefix() + " help` to get started!")
+                    .queue();
             return;
         }
 
@@ -93,7 +96,11 @@ public class MessageCommandListener extends ListenerAdapter
 
         if(commandObject == null)
         {
+            /* temporarily disabled because when people talk about the bot, it replies with this spammy message.
+            
             event.getMessage().reply("Unrecognized command: `" + commandLabel + "`!").queue(); // todo prettier
+
+             */
             return;
         }
 
