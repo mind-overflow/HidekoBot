@@ -84,7 +84,7 @@ public class UrbanDictionary
         embedBuilder.addField("\uD83D\uDCAD Example", search.getPlaintextExamples().get(page), false);
         embedBuilder.addField("\uD83D\uDCCC Submission",
                 "*Entry " + (page+1) + " | Sent by " + search.getContributorsNames().get(page) +
-                        " on " + search.getSubmissionDates().get(page) + "*",
+                        " on" + search.getSubmissionDates().get(page) + "*",
                 false);
 
         return embedBuilder.build();
