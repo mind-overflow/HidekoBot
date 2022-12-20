@@ -119,6 +119,7 @@ public class HidekoBot
         slashCommandListener.registerCommand(new BotInfoCommand());
         slashCommandListener.registerCommand(new ClearCommand());
         slashCommandListener.registerCommand(new CoinFlipCommand());
+        slashCommandListener.registerCommand(new DiceRollCommand());
         slashCommandListener.registerCommand(new DieCommand());
         slashCommandListener.registerCommand(new HelpCommand());
         slashCommandListener.registerCommand(new InviteCommand());

@@ -8,47 +8,46 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import wtf.beatrice.hidekobot.commands.base.DiceRoll;
 import wtf.beatrice.hidekobot.commands.base.Say;
+import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class SayCommand extends SlashCommandImpl
+public class DiceRollCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()
     {
 
-        return Commands.slash("say", "Make the bot say something.")
-                .addOption(OptionType.STRING, "text",
-                        "The message to send.",
-                        true,
-                        false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Say.getPermission()));
+        return Commands.slash("diceroll", "Roll dice. You can roll multiple dice at the same time.")
+                .addOption(OptionType.STRING, "query",
+                        "The dice to roll.",
+                        false,
+                        false);
     }
 
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        MessageChannel channel = event.getChannel();
+        event.deferReply().queue();
 
-        // get the text to send
-        OptionMapping textOption = event.getOption("text");
+        OptionMapping textOption = event.getOption("query");
         String messageContent = "";
         if(textOption != null)
         {
              messageContent = textOption.getAsString();
         }
 
-        if(textOption == null || messageContent.isEmpty())
-        {
-            event.reply("\uD83D\uDE20 Hey, you have to tell me what to say!")
-                    .setEphemeral(true)
-                    .queue();
-            return;
-        }
+        String[] args = messageContent.split("\\s");
 
-        channel.sendMessage(messageContent).queue();
-        event.reply("Message sent! ✨")
-                .setEphemeral(true)
-                .queue();
+        MessageResponse response = DiceRoll.buildResponse(event.getUser(), args);
+
+        if(response.getContent() != null)
+        {
+            event.getHook().editOriginal(response.getContent()).queue();
+        } else if(response.getEmbed() != null)
+        {
+            event.getHook().editOriginalEmbeds(response.getEmbed()).queue();
+        }
     }
 }
