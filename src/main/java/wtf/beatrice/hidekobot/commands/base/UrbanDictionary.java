@@ -120,19 +120,7 @@ public class UrbanDictionary
     }
 
 
-    public static void delete(ButtonInteractionEvent event)
-    {
-        String messageId = event.getMessageId();
-        DatabaseSource database = Cache.getDatabaseSource();
 
-        // check if the user interacting is the same one who ran the command
-        if (!(database.isUserTrackedFor(event.getUser().getId(), messageId))) {
-            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
-            return;
-        }
-
-        event.getInteraction().getMessage().delete().queue();
-    }
 
     public static void track(Message message, User user, UrbanSearch search, String sanitizedTerm)
     {

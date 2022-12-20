@@ -179,20 +179,6 @@ public class ClearChat
         }
     }
 
-
-
-    public static void dismissMessage(ButtonInteractionEvent event)
-    {
-
-        if(!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
-        {
-            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
-        } else
-        {
-            event.getInteraction().getMessage().delete().queue();
-        }
-    }
-
     // cap the amount to avoid abuse.
     public static int getMaxAmount() { return 1000; }
 
