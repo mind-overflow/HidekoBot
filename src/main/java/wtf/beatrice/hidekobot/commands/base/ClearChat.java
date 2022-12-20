@@ -168,15 +168,6 @@ public class ClearChat
         }
     }
 
-    private void respond(Object responseFlowObj, String content)
-    {
-        if(responseFlowObj instanceof InteractionHook) {
-            ((InteractionHook) responseFlowObj).editOriginal(content).queue();
-        } else if (responseFlowObj instanceof Message) {
-            ((Message) responseFlowObj).reply(content).queue();
-        }
-    }
-
     // cap the amount to avoid abuse.
     public static int getMaxAmount() { return 1000; }
 
