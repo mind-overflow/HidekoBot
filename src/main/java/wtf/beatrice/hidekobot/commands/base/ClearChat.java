@@ -150,7 +150,7 @@ public class ClearChat
 
     public static Button getDismissButton()
     {
-        return Button.primary("clear_dismiss", "Dismiss")
+        return Button.primary("generic_dismiss", "Dismiss")
                 .withEmoji(Emoji.fromUnicode("❌"));
     }
 

@@ -45,7 +45,7 @@ public class UrbanDictionary
 
     public static Button getDeleteButton()
     {
-        return Button.danger("urban_delete", "Delete")
+        return Button.danger("generic_dismiss", "Delete")
                 .withEmoji(Emoji.fromFormatted("\uD83D\uDDD1️"));
     }
 

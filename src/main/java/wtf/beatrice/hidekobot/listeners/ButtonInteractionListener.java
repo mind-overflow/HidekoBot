@@ -18,13 +18,12 @@ public class ButtonInteractionListener extends ListenerAdapter
             // coinflip
             case "coinflip_reflip" -> CoinFlip.buttonReFlip(event);
 
-            // clearchat command
-            case "clear_dismiss" -> CommandUtil.delete(event);
+            // generic dismiss button
+            case "generic_dismiss" -> CommandUtil.delete(event);
 
             // urban dictionary navigation
             case "urban_nextpage" -> UrbanDictionary.changePage(event, true);
             case "urban_previouspage" -> UrbanDictionary.changePage(event, false);
-            case "urban_delete" -> CommandUtil.delete(event);
 
         }
 
