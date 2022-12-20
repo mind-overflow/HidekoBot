@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Mentions;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
@@ -38,6 +39,7 @@ public class LoveCalculatorCommand implements MessageCommand
         return false;
     }
 
+    @NotNull
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;

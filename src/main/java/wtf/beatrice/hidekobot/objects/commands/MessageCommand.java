@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.objects.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -44,6 +45,7 @@ public interface MessageCommand
      *
      * @return the command category.
      */
+    @NotNull
     CommandCategory getCategory();
 
     /**

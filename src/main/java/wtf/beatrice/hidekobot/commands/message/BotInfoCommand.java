@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot.commands.message;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.BotInfo;
@@ -32,6 +33,7 @@ public class BotInfoCommand implements MessageCommand
         return false;
     }
 
+    @NotNull
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.TOOLS;

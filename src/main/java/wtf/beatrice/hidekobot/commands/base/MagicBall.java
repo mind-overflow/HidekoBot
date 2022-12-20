@@ -16,7 +16,7 @@ public class MagicBall
 
     public static LinkedList<String> getLabels()
     {
-        return new LinkedList<>(Arrays.asList("8ball", "eightball", "magicball", "8b"));
+        return new LinkedList<>(Arrays.asList("8ball", "8b", "eightball", "magicball"));
     }
 
     private final static List<String> answers = new ArrayList<>(

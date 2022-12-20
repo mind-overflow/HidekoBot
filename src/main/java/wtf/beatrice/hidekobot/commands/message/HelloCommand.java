@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.commands.message;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
@@ -25,6 +26,7 @@ public class HelloCommand implements MessageCommand
         return false;
     }
 
+    @NotNull
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;

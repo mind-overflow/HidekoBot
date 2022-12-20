@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.commands.base.Invite;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -33,6 +34,7 @@ public class InviteCommand implements MessageCommand
         return false;
     }
 
+    @NotNull
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;

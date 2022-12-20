@@ -131,6 +131,7 @@ public class HidekoBot
         // register message commands
         MessageCommandListener messageCommandListener = new MessageCommandListener();
         messageCommandListener.registerCommand(new HelloCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AliasCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AvatarCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BotInfoCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.CoinFlipCommand());

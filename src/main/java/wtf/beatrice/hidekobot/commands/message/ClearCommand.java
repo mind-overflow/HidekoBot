@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -28,6 +29,7 @@ public class ClearCommand implements MessageCommand
     public boolean passRawArgs() {
         return false;
     }
+    @NotNull
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.MODERATION;
