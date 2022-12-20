@@ -139,10 +139,13 @@ public class HelpCommand implements MessageCommand
                 }
             }
 
+            String title = command.getCategory().getEmoji() +
+                    " \"" + WordUtils.capitalizeFully(commandLabel + "\" help");
+
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
             embedBuilder.setColor(Cache.getBotColor());
-            embedBuilder.setTitle(WordUtils.capitalizeFully(commandLabel + " help"));
+            embedBuilder.setTitle(title);
 
             embedBuilder.addField("Description", command.getDescription(), false);
             embedBuilder.addField("Usage", usage, false);
