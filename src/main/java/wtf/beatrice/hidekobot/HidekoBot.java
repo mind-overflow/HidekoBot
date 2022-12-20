@@ -18,6 +18,7 @@ import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
+import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.Logger;
 
@@ -158,7 +159,6 @@ public class HidekoBot
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
-        jda.getPresence().setActivity(Activity.playing("Hatsune Miku: Project DIVA"));
 
         // connect to database
         logger.log("Connecting to database...");
@@ -182,6 +182,8 @@ public class HidekoBot
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
         HeartBeatTask heartBeatTask = new HeartBeatTask();
         scheduler.scheduleAtFixedRate(heartBeatTask, 10, 30, TimeUnit.SECONDS); //every 30 seconds
+        StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
+        scheduler.scheduleAtFixedRate(statusUpdateTask, 0, 60 * 5, TimeUnit.SECONDS); // every 5 minutes
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());
