@@ -2,7 +2,6 @@ package wtf.beatrice.hidekobot.util;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 
 public class CommandUtil
 {

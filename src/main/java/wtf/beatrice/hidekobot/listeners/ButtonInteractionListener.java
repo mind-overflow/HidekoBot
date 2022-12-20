@@ -2,7 +2,6 @@ package wtf.beatrice.hidekobot.listeners;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.commands.base.UrbanDictionary;
 import wtf.beatrice.hidekobot.util.CommandUtil;
