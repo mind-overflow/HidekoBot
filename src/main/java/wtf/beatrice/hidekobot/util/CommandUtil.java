@@ -1,11 +1,19 @@
 package wtf.beatrice.hidekobot.util;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.components.LayoutComponent;
+import net.dv8tion.jda.api.requests.RestAction;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
+import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 
 import java.util.ArrayList;
@@ -133,5 +141,97 @@ public class CommandUtil
             jdaInstance.updateCommands().addCommands(allCommands).queue();
             logger.log("Commands updated. New total: " + allCommands.size() + ".");
         }
+    }
+
+
+    /**
+     * Method to disable all buttons from an expired message.
+     *
+     * @param messageId the message id to disable.
+     */
+    public static void disableExpired(String messageId)
+    {
+        DatabaseSource databaseSource = Cache.getDatabaseSource();
+
+        String channelId = databaseSource.getQueuedExpiringMessageChannel(messageId);
+
+        // todo: warning, the following method + related if check are thread-locking.
+        // todo: we should probably merge the two tables somehow, since they have redundant information.
+        ChannelType msgChannelType = databaseSource.getTrackedMessageChannelType(messageId);
+
+        MessageChannel textChannel = null;
+
+        // this should never happen, but only message channels are supported.
+        if(!msgChannelType.isMessage())
+        {
+            databaseSource.untrackExpiredMessage(messageId);
+            return;
+        }
+
+        // if this is a DM
+        if(!(msgChannelType.isGuild()))
+        {
+            String userId = databaseSource.getTrackedReplyUserId(messageId);
+            User user = userId == null ? null : HidekoBot.getAPI().retrieveUserById(userId).complete();
+            if(user == null)
+            {
+                // if user is not found, consider it expired
+                // (deleted profile, or blocked the bot)
+                databaseSource.untrackExpiredMessage(messageId);
+                return;
+            }
+
+            textChannel = user.openPrivateChannel().complete();
+        }
+        else
+        {
+            String guildId = databaseSource.getQueuedExpiringMessageGuild(messageId);
+            Guild guild = guildId == null ? null : HidekoBot.getAPI().getGuildById(guildId);
+            if(guild == null)
+            {
+                // if guild is not found, consider it expired
+                // (server was deleted or bot was kicked)
+                databaseSource.untrackExpiredMessage(messageId);
+                return;
+            }
+            textChannel = guild.getTextChannelById(channelId);
+        }
+
+        if(textChannel == null)
+        {
+            // if channel is not found, count it as expired
+            // (channel was deleted or bot permissions restricted)
+            databaseSource.untrackExpiredMessage(messageId);
+            return;
+        }
+
+        RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
+
+
+        if(Cache.isVerbose()) logger.log("cleaning up: " + messageId);
+
+        retrieveAction.queue(
+                message -> {
+                    if(message == null)
+                    {
+                        databaseSource.untrackExpiredMessage(messageId);
+                        return;
+                    }
+
+                    List<LayoutComponent> components = message.getComponents();
+                    List<LayoutComponent> newComponents = new ArrayList<>();
+                    for (LayoutComponent component : components)
+                    {
+                        component = component.asDisabled();
+                        newComponents.add(component);
+                    }
+
+                    message.editMessageComponents(newComponents).queue();
+                    databaseSource.untrackExpiredMessage(messageId);
+                },
+
+                (error) -> {
+                    databaseSource.untrackExpiredMessage(messageId);
+                });
     }
 }
