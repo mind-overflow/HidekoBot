@@ -61,12 +61,12 @@ public class DiceRollCommand implements MessageCommand
 
         MessageResponse response = DiceRoll.buildResponse(event.getAuthor(), args);
 
-        if(response.getContent() != null)
+        if(response.content() != null)
         {
-            event.getMessage().reply(response.getContent()).queue();
-        } else if(response.getEmbed() != null)
+            event.getMessage().reply(response.content()).queue();
+        } else if(response.embed() != null)
         {
-            event.getMessage().replyEmbeds(response.getEmbed()).queue();
+            event.getMessage().replyEmbeds(response.embed()).queue();
         }
 
     }
