@@ -22,6 +22,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +38,7 @@ public class TriviaUtil
     public static HashMap<String, List<String>> channelAndWhoResponded = new HashMap<>();
 
     // first string is the channelId, the list contain all score records for that channel
-    public static HashMap<String, List<TriviaScore>> channelAndScores = new HashMap<>();
+    public static HashMap<String, LinkedList<TriviaScore>> channelAndScores = new HashMap<>();
 
     public static String getTriviaLink(int categoryId) {return triviaLink + categoryId; }
     public static String getCategoriesLink() {return categoriesLink; }
@@ -116,8 +117,8 @@ public class TriviaUtil
 
         if(trackResponse(user, event.getChannel()))
         {
-            List<TriviaScore> scores = channelAndScores.get(channelId);
-            if(scores == null) scores = new ArrayList<>();
+            LinkedList<TriviaScore> scores = channelAndScores.get(channelId);
+            if(scores == null) scores = new LinkedList<>();
             TriviaScore currentUserScore = null;
             for(TriviaScore score : scores)
             {

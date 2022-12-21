@@ -51,6 +51,7 @@ public class TriviaTask implements Runnable
     @Override
     public void run()
     {
+
         if(previousMessage != null)
         {
             // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
@@ -75,8 +76,9 @@ public class TriviaTask implements Runnable
             int topScore = 0;
             StringBuilder othersBuilder = new StringBuilder();
 
-            LinkedList<TriviaScore> triviaScores = new LinkedList<>(TriviaUtil.channelAndScores.get(channel.getId()));
-            triviaScores.sort(new TriviaScoreComparator());
+            LinkedList<TriviaScore> triviaScores = TriviaUtil.channelAndScores.get(channel.getId());
+            if(triviaScores == null) triviaScores = new LinkedList<>();
+            else triviaScores.sort(new TriviaScoreComparator());
 
             int pos = 0;
             Integer previousScore = null;
@@ -119,16 +121,18 @@ public class TriviaTask implements Runnable
             String winnersTitle = "\uD83D\uDCAB ";
             winnersTitle += winners.size() == 1 ? "Winner" : "Winners";
 
+            String winnersString = winnersBuilder.toString();
+            String othersString = othersBuilder.toString();
 
             EmbedBuilder scoreboardBuilder = new EmbedBuilder();
             scoreboardBuilder.setColor(Cache.getBotColor());
             scoreboardBuilder.setTitle("\uD83C\uDF1F Trivia Scoreboard");
-            scoreboardBuilder.addField(winnersTitle, winnersBuilder.toString(), false);
-            scoreboardBuilder.addField("☁️ Others", othersBuilder.toString(), false);
+            if(!winnersString.isEmpty()) scoreboardBuilder.addField(winnersTitle, winnersString, false);
+            else scoreboardBuilder.addField("\uD83D\uDE22 Sad Trivia",
+                    "No one played \uD83D\uDE2D", false);
+            if(!othersString.isEmpty()) scoreboardBuilder.addField("☁️ Others", othersString, false);
 
             channel.sendMessage(scoreboardText).addEmbeds(scoreboardBuilder.build()).queue();
-
-
 
             // remove all cached data
             TriviaUtil.channelsRunningTrivia.remove(channel.getId());
@@ -184,6 +188,7 @@ public class TriviaTask implements Runnable
                 .sendMessageEmbeds(embedBuilder.build())
                 .setActionRow(answerButtons)
                 .complete();
+
 
         Cache.getDatabaseSource().trackRanCommandReply(previousMessage, author);
         // todo: ^ we should get rid of this tracking, since we don't need to know who started the trivia.
