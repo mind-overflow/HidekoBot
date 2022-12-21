@@ -8,8 +8,9 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.json.JSONObject;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.objects.TriviaQuestion;
-import wtf.beatrice.hidekobot.objects.TriviaScore;
+import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
+import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
+import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.TriviaUtil;
@@ -26,18 +27,20 @@ public class TriviaTask implements Runnable
 
     private final JSONObject triviaJson;
     private final List<TriviaQuestion> questions;
+    private final TriviaCategory category;
 
     ScheduledFuture<?> future = null;
 
     private int iteration = 0;
 
-    public TriviaTask(User author, MessageChannel channel)
+    public TriviaTask(User author, MessageChannel channel, TriviaCategory category)
     {
         this.author = author;
         this.channel = channel;
+        this.category = category;
 
-        triviaJson = TriviaUtil.fetchTrivia();
-        questions = TriviaUtil.getQuestions(triviaJson); //todo: null check, rate limiting...
+        triviaJson = TriviaUtil.fetchJson(TriviaUtil.getTriviaLink(category.categoryId()));
+        questions = TriviaUtil.parseQuestions(triviaJson); //todo: null check, rate limiting...
     }
 
     public void setScheduledFuture(ScheduledFuture<?> future)
@@ -50,7 +53,7 @@ public class TriviaTask implements Runnable
     {
         if(previousMessage != null)
         {
-            // todo: we shouldn't use this method, since it messes with the database...
+            // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
             CommandUtil.disableExpired(previousMessage.getId());
 
             String previousCorrectAnswer = questions.get(iteration-1).correctAnswer();
@@ -172,7 +175,8 @@ public class TriviaTask implements Runnable
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setColor(Cache.getBotColor());
-        embedBuilder.setTitle("\uD83C\uDFB2 Trivia (" + (iteration+1) + "/" + questions.size() + ")");
+        embedBuilder.setTitle("\uD83C\uDFB2 Trivia - " + category.categoryName() +
+                " (" + (iteration+1) + "/" + questions.size() + ")");
 
         embedBuilder.addField("❓ Question", currentTriviaQuestion.question(), false);
 

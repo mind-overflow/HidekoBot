@@ -1,10 +1,8 @@
 package wtf.beatrice.hidekobot.objects.comparators;
 
-import wtf.beatrice.hidekobot.objects.TriviaScore;
+import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class gets two trivia scores, and compares their score.

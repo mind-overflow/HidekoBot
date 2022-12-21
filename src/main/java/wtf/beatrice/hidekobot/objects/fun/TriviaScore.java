@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.objects;
+package wtf.beatrice.hidekobot.objects.fun;
 
 import net.dv8tion.jda.api.entities.User;
 

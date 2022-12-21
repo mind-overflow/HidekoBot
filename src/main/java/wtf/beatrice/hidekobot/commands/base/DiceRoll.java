@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.commands.base;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.objects.Dice;
+import wtf.beatrice.hidekobot.objects.fun.Dice;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 
 import java.util.LinkedHashMap;

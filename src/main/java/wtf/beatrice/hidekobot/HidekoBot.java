@@ -11,10 +11,7 @@ import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
-import wtf.beatrice.hidekobot.listeners.ButtonInteractionListener;
-import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
-import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
-import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
+import wtf.beatrice.hidekobot.listeners.*;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.runnables.RandomSeedTask;
@@ -154,6 +151,7 @@ public class HidekoBot
         jda.addEventListener(slashCommandListener);
         jda.addEventListener(slashCommandCompletionListener);
         jda.addEventListener(new ButtonInteractionListener());
+        jda.addEventListener(new SelectMenuInteractionListener());
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;

@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.objects;
+package wtf.beatrice.hidekobot.objects.fun;
 
 import java.util.List;
 
