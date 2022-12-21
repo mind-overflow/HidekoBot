@@ -85,7 +85,7 @@ public class TriviaCommand implements MessageCommand
         ScheduledFuture<?> future =
                 Cache.getTaskScheduler().scheduleAtFixedRate(triviaTask,
                         0,
-                        10,
+                        15,
                         TimeUnit.SECONDS);
         triviaTask.setScheduledFuture(future);
 
