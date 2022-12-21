@@ -3,6 +3,8 @@ package wtf.beatrice.hidekobot.commands.message;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.Channel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +16,6 @@ import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import wtf.beatrice.hidekobot.util.TriviaUtil;
 
-import java.nio.channels.ScatteringByteChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -61,8 +62,15 @@ public class TriviaCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
+        Channel channel = event.getChannel();
 
-        if(TriviaUtil.channelsRunningTrivia.contains(event.getChannel().getId()))
+        if(!(channel instanceof TextChannel))
+        {
+            event.getMessage().reply("\uD83D\uDE22 Sorry! Trivia doesn't work in DMs.").queue();
+            return;
+        }
+
+        if(TriviaUtil.channelsRunningTrivia.contains(channel.getId()))
         {
             // todo nicer looking
             // todo: also what if the bot stops (database...?)
