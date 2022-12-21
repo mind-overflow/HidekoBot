@@ -13,7 +13,7 @@ import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.util.CommandUtil;
-import wtf.beatrice.hidekobot.util.TriviaUtil;
+import wtf.beatrice.hidekobot.commands.base.Trivia;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
@@ -39,8 +39,8 @@ public class TriviaTask implements Runnable
         this.channel = channel;
         this.category = category;
 
-        triviaJson = TriviaUtil.fetchJson(TriviaUtil.getTriviaLink(category.categoryId()));
-        questions = TriviaUtil.parseQuestions(triviaJson); //todo: null check, rate limiting...
+        triviaJson = Trivia.fetchJson(Trivia.getTriviaLink(category.categoryId()));
+        questions = Trivia.parseQuestions(triviaJson); //todo: null check, rate limiting...
     }
 
     public void setScheduledFuture(ScheduledFuture<?> future)
@@ -64,7 +64,7 @@ public class TriviaTask implements Runnable
             // todo: maybe also add who replied correctly as a list
 
             // clean the list of people who answered, so they can answer again for the new question
-            TriviaUtil.channelAndWhoResponded.put(previousMessage.getChannel().getId(), new ArrayList<>());
+            Trivia.channelAndWhoResponded.put(previousMessage.getChannel().getId(), new ArrayList<>());
         }
 
         if(iteration >= questions.size())
@@ -76,7 +76,7 @@ public class TriviaTask implements Runnable
             int topScore = 0;
             StringBuilder othersBuilder = new StringBuilder();
 
-            LinkedList<TriviaScore> triviaScores = TriviaUtil.channelAndScores.get(channel.getId());
+            LinkedList<TriviaScore> triviaScores = Trivia.channelAndScores.get(channel.getId());
             if(triviaScores == null) triviaScores = new LinkedList<>();
             else triviaScores.sort(new TriviaScoreComparator());
 
@@ -135,9 +135,9 @@ public class TriviaTask implements Runnable
             channel.sendMessage(scoreboardText).addEmbeds(scoreboardBuilder.build()).queue();
 
             // remove all cached data
-            TriviaUtil.channelsRunningTrivia.remove(channel.getId());
-            TriviaUtil.channelAndWhoResponded.remove(channel.getId());
-            TriviaUtil.channelAndScores.remove(channel.getId());
+            Trivia.channelsRunningTrivia.remove(channel.getId());
+            Trivia.channelAndWhoResponded.remove(channel.getId());
+            Trivia.channelAndScores.remove(channel.getId());
 
             future.cancel(false);
             // we didn't implement null checks on the future on purpose, because we need to know if we were unable

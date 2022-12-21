@@ -1,19 +1,24 @@
-package wtf.beatrice.hidekobot.util;
+package wtf.beatrice.hidekobot.commands.base;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.objects.MessageResponse;
+import wtf.beatrice.hidekobot.objects.comparators.TriviaCategoryComparator;
 import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 import wtf.beatrice.hidekobot.runnables.TriviaTask;
+import wtf.beatrice.hidekobot.util.CommandUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class TriviaUtil
+public class Trivia
 {
     private final static String triviaLink = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
     private final static String categoriesLink = "https://opentdb.com/api_category.php";
@@ -42,6 +47,47 @@ public class TriviaUtil
 
     public static String getTriviaLink(int categoryId) {return triviaLink + categoryId; }
     public static String getCategoriesLink() {return categoriesLink; }
+
+    public static String getNoDMsError() {
+        return "\uD83D\uDE22 Sorry! Trivia doesn't work in DMs.";
+    }
+
+    public static String getTriviaAlreadyRunningError() {
+        // todo nicer looking
+        return "Trivia is already running here!";
+    }
+
+    public static MessageResponse generateMainScreen()
+    {
+        // todo null checks
+        JSONObject categoriesJson = Trivia.fetchJson(Trivia.getCategoriesLink());
+        List<TriviaCategory> categories = Trivia.parseCategories(categoriesJson);
+        categories.sort(new TriviaCategoryComparator());
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Cache.getBotColor());
+        embedBuilder.setTitle("\uD83C\uDFB2 Trivia");
+        embedBuilder.addField("\uD83D\uDCD6 Begin here",
+                "Select a category from the dropdown menu to start a match!",
+                false);
+        embedBuilder.addField("❓ How to play",
+                "A new question gets posted every few seconds." +
+                        "\nIf you get it right, you earn points!" +
+                        "\nIf you choose a wrong answer, you lose points." +
+                        "\nIf you are unsure, you can wait without answering and your score won't change!",
+                false);
+
+        StringSelectMenu.Builder menuBuilder = StringSelectMenu.create("trivia_categories");
+
+        for(TriviaCategory category : categories)
+        {
+            String name = category.categoryName();
+            int id = category.categoryId();
+            menuBuilder.addOption(name, String.valueOf(id));
+        }
+
+        return new MessageResponse(null, embedBuilder.build(), menuBuilder.build());
+    }
 
     public static JSONObject fetchJson(String link)
     {
@@ -206,7 +252,7 @@ public class TriviaUtil
         Message message = event.getMessage();
         MessageChannel channel = message.getChannel();
 
-        if(TriviaUtil.channelsRunningTrivia.contains(channel.getId()))
+        if(Trivia.channelsRunningTrivia.contains(channel.getId()))
         {
             // todo nicer looking
             // todo: also what if the bot stops (database...?)
@@ -228,7 +274,7 @@ public class TriviaUtil
                         TimeUnit.SECONDS);
         triviaTask.setScheduledFuture(future);
 
-        TriviaUtil.channelsRunningTrivia.add(channel.getId());
+        Trivia.channelsRunningTrivia.add(channel.getId());
     }
 
     public enum AnswerType {

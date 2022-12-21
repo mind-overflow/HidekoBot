@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.commands.base.UrbanDictionary;
 import wtf.beatrice.hidekobot.util.CommandUtil;
-import wtf.beatrice.hidekobot.util.TriviaUtil;
+import wtf.beatrice.hidekobot.commands.base.Trivia;
 
 public class ButtonInteractionListener extends ListenerAdapter
 {
@@ -27,9 +27,9 @@ public class ButtonInteractionListener extends ListenerAdapter
             case "urban_previouspage" -> UrbanDictionary.changePage(event, UrbanDictionary.ChangeType.PREVIOUS);
 
             // trivia
-            case "trivia_correct" -> TriviaUtil.handleAnswer(event, TriviaUtil.AnswerType.CORRECT);
+            case "trivia_correct" -> Trivia.handleAnswer(event, Trivia.AnswerType.CORRECT);
             case "trivia_wrong_1", "trivia_wrong_2", "trivia_wrong_3" ->
-                    TriviaUtil.handleAnswer(event, TriviaUtil.AnswerType.WRONG);
+                    Trivia.handleAnswer(event, Trivia.AnswerType.WRONG);
 
         }
 
