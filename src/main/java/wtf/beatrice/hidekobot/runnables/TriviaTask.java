@@ -20,7 +20,6 @@ import java.util.concurrent.ScheduledFuture;
 
 public class TriviaTask implements Runnable
 {
-
     private final User author;
     private final MessageChannel channel;
 
@@ -55,14 +54,20 @@ public class TriviaTask implements Runnable
             // todo: we shouldn't use this method, since it messes with the database...
             CommandUtil.disableExpired(previousMessage.getId());
             String previousCorrectAnswer = questions.get(iteration-1).correctAnswer();
-            previousMessage.reply("The correct answer was: **" + previousCorrectAnswer + "**!").queue();
+
+            // we need this to be thread-locking to avoid getting out of sync with the rest of the trivia features
+            previousMessage.reply("The correct answer was: **" + previousCorrectAnswer + "**!").complete();
             // todo: maybe also add who replied correctly as a list
+
+            // clean the list of people who answered, so they can answer again for the new question
+            TriviaUtil.channelAndWhoResponded.put(previousMessage.getChannel().getId(), new ArrayList<>());
         }
 
         if(iteration >= questions.size())
         {
             // todo: nicer-looking embed with stats
-            channel.sendMessage("Trivia session is over!").queue();
+            // we need this to be thread-locking to avoid getting out of sync with the rest of the trivia features
+            channel.sendMessage("Trivia session is over!").complete();
 
             TriviaUtil.channelsRunningTrivia.remove(channel.getId());
             future.cancel(false);

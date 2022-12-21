@@ -1,10 +1,12 @@
 package wtf.beatrice.hidekobot.util;
 
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
-import org.jsoup.Jsoup;
+import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.TriviaQuestion;
 
 import java.io.BufferedReader;
@@ -13,13 +15,18 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TriviaUtil
 {
     private final static String link = "https://opentdb.com/api.php?amount=10&type=multiple";
 
     public static List<String> channelsRunningTrivia = new ArrayList<>();
+
+    // first string is the channelId, the list contain all users who responded there
+    public static HashMap<String, List<String>> channelAndWhoResponded = new HashMap<>();
 
     public static JSONObject fetchTrivia()
     {
@@ -69,6 +76,50 @@ public class TriviaUtil
         }
 
         return questions;
+    }
+
+    public static void handleAnswer(ButtonInteractionEvent event, AnswerType answerType)
+    {
+        if(trackResponse(event.getUser(), event.getChannel()))
+        {
+            if(answerType.equals(AnswerType.CORRECT))
+            {
+                event.reply(event.getUser().getAsMention() + " got it right!").queue();
+            } else {
+                event.reply(event.getUser().getAsMention() + ", that's not the right answer!").queue();
+            }
+        } else {
+            event.reply(event.getUser().getAsMention() + ", you can't answer twice!")
+                    .queue(message ->
+                    Cache.getTaskScheduler().schedule(() ->
+                            message.deleteOriginal().queue(), 5, TimeUnit.SECONDS));
+        }
+    }
+
+    private static boolean trackResponse(User user, MessageChannel channel)
+    {
+        String userId = user.getId();
+        String channelId = channel.getId();
+
+        List<String> responders = channelAndWhoResponded.get(channelId);
+
+        if(responders == null)
+        {
+            responders = new ArrayList<>();
+        }
+
+        if(responders.isEmpty() || !responders.contains(userId))
+        {
+            responders.add(userId);
+            channelAndWhoResponded.put(channelId, responders);
+            return true; // response was successfully tracked
+        } else {
+            return false; // response wasn't tracked because there already was an entry
+        }
+    }
+
+    public enum AnswerType {
+        CORRECT, WRONG
     }
 
 }
