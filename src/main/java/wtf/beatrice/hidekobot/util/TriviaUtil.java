@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.TriviaQuestion;
+import wtf.beatrice.hidekobot.objects.TriviaScore;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class TriviaUtil
 
     // first string is the channelId, the list contain all users who responded there
     public static HashMap<String, List<String>> channelAndWhoResponded = new HashMap<>();
+
+    // first string is the channelId, the list contain all score records for that channel
+    public static HashMap<String, List<TriviaScore>> channelAndScores = new HashMap<>();
 
     public static JSONObject fetchTrivia()
     {
@@ -80,19 +84,47 @@ public class TriviaUtil
 
     public static void handleAnswer(ButtonInteractionEvent event, AnswerType answerType)
     {
-        if(trackResponse(event.getUser(), event.getChannel()))
+        User user = event.getUser();
+        String channelId = event.getChannel().getId();
+
+        if(trackResponse(user, event.getChannel()))
         {
+            List<TriviaScore> scores = channelAndScores.get(channelId);
+            if(scores == null) scores = new ArrayList<>();
+            TriviaScore currentUserScore = null;
+            for(TriviaScore score : scores)
+            {
+                if(score.getUser().equals(user))
+                {
+                    currentUserScore = score;
+                    scores.remove(score);
+                    break;
+                }
+            }
+
+            if(currentUserScore == null)
+            {
+                currentUserScore = new TriviaScore(user);
+            }
+
             if(answerType.equals(AnswerType.CORRECT))
             {
-                event.reply(event.getUser().getAsMention() + " got it right!").queue();
+
+                event.reply(user.getAsMention() + " got it right! \uD83E\uDD73 (**+3**)").queue();
+                currentUserScore.changeScore(3);
+
             } else {
-                event.reply(event.getUser().getAsMention() + ", that's not the right answer!").queue();
+                event.reply("❌ " + user.getAsMention() + ", that's not the right answer! (**-1**)").queue();
+                currentUserScore.changeScore(-1);
             }
+
+            scores.add(currentUserScore);
+            channelAndScores.put(channelId, scores);
         } else {
-            event.reply(event.getUser().getAsMention() + ", you can't answer twice!")
-                    .queue(message ->
+            event.reply("☹️ " + user.getAsMention() + ", you can't answer twice!")
+                    .queue(interaction ->
                     Cache.getTaskScheduler().schedule(() ->
-                            message.deleteOriginal().queue(), 5, TimeUnit.SECONDS));
+                            interaction.deleteOriginal().queue(), 3, TimeUnit.SECONDS));
         }
     }
 
