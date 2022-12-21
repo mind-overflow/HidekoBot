@@ -67,18 +67,17 @@ public class ExpiredMessageTask implements Runnable {
             }
         }
 
-
-
     }
 
     private void disableExpired(String messageId)
     {
         String channelId = databaseSource.getQueuedExpiringMessageChannel(messageId);
 
+        // todo: warning, the following method + related if check are thread-locking.
+        // todo: we should probably merge the two tables somehow, since they have redundant information.
         ChannelType msgChannelType = databaseSource.getTrackedMessageChannelType(messageId);
 
         MessageChannel textChannel = null;
-
 
         // this should never happen, but only message channels are supported.
         if(!msgChannelType.isMessage())
@@ -91,7 +90,7 @@ public class ExpiredMessageTask implements Runnable {
         if(!(msgChannelType.isGuild()))
         {
             String userId = databaseSource.getTrackedReplyUserId(messageId);
-            User user = HidekoBot.getAPI().retrieveUserById(userId).complete();
+            User user = userId == null ? null : HidekoBot.getAPI().retrieveUserById(userId).complete();
             if(user == null)
             {
                 // if user is not found, consider it expired
@@ -105,7 +104,7 @@ public class ExpiredMessageTask implements Runnable {
         else
         {
             String guildId = databaseSource.getQueuedExpiringMessageGuild(messageId);
-            Guild guild = HidekoBot.getAPI().getGuildById(guildId);
+            Guild guild = guildId == null ? null : HidekoBot.getAPI().getGuildById(guildId);
             if(guild == null)
             {
                 // if guild is not found, consider it expired
@@ -130,7 +129,6 @@ public class ExpiredMessageTask implements Runnable {
         if(Cache.isVerbose()) logger.log("cleaning up: " + messageId);
 
         retrieveAction.queue(
-
                 message -> {
                     if(message == null)
                     {
