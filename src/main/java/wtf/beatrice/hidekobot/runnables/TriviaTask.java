@@ -52,6 +52,9 @@ public class TriviaTask implements Runnable
         {
             // todo: we shouldn't use this method, since it messes with the database...
             CommandUtil.disableExpired(previousMessage.getId());
+            String previousCorrectAnswer = questions.get(iteration-1).correctAnswer();
+            previousMessage.reply("The correct answer was: **" + previousCorrectAnswer + "**!").queue();
+            // todo: maybe also add who replied correctly as a list
         }
 
         if(iteration >= questions.size())
