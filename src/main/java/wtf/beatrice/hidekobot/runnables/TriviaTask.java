@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.json.JSONObject;
 import wtf.beatrice.hidekobot.Cache;
@@ -12,6 +13,7 @@ import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.TriviaUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -85,6 +87,20 @@ public class TriviaTask implements Runnable
         }
 
         Collections.shuffle(answerButtons);
+
+        List<String> buttonEmojis = Arrays.asList("\uD83D\uDD34", "\uD83D\uDD35",
+                "\uD83D\uDFE2", "\uD83D\uDFE1", "\uD83D\uDFE4", "\uD83D\uDFE3", "\uD83D\uDFE0");
+
+        // add emojis to buttons
+        for(int emojiPos = 0; emojiPos < buttonEmojis.size(); emojiPos++)
+        {
+            if(emojiPos == answerButtons.size()) break;
+
+            String emoji = buttonEmojis.get(emojiPos);
+            Button button = answerButtons.get(emojiPos);
+
+            answerButtons.set(emojiPos, button.withEmoji(Emoji.fromUnicode(emoji)));
+        }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
