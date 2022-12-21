@@ -42,12 +42,12 @@ public class DiceRollCommand extends SlashCommandImpl
 
         MessageResponse response = DiceRoll.buildResponse(event.getUser(), args);
 
-        if(response.getContent() != null)
+        if(response.content() != null)
         {
-            event.getHook().editOriginal(response.getContent()).queue();
-        } else if(response.getEmbed() != null)
+            event.getHook().editOriginal(response.content()).queue();
+        } else if(response.embed() != null)
         {
-            event.getHook().editOriginalEmbeds(response.getEmbed()).queue();
+            event.getHook().editOriginalEmbeds(response.embed()).queue();
         }
     }
 }
