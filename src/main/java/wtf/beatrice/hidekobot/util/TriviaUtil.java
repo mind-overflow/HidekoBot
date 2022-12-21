@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TriviaUtil
 {
-    private final static String link = "https://opentdb.com/api.php?amount=10";
+    private final static String link = "https://opentdb.com/api.php?amount=10&type=multiple";
 
     public static List<String> channelsRunningTrivia = new ArrayList<>();
 
