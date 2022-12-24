@@ -17,7 +17,7 @@ public class StatusUpdateTask implements Runnable
             "Excel",
             "Mii Channel",
             "Wii Speak",
-            "MineTest",
+            "Minetest",
             "Mario Kart Wii"
     );
 
