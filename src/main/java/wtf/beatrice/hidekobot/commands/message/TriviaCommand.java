@@ -8,12 +8,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.commands.base.Trivia;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
-import wtf.beatrice.hidekobot.commands.base.Trivia;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TriviaCommand implements MessageCommand

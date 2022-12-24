@@ -1,21 +1,12 @@
 package wtf.beatrice.hidekobot.runnables;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.ChannelType;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.interactions.components.LayoutComponent;
-import net.dv8tion.jda.api.requests.RestAction;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpiredMessageTask implements Runnable {

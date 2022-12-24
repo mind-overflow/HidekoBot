@@ -1,7 +1,6 @@
 package wtf.beatrice.hidekobot.objects.comparators;
 
 import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
-import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 
 import java.util.Comparator;
 

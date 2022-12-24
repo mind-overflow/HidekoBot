@@ -8,12 +8,12 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.json.JSONObject;
 import wtf.beatrice.hidekobot.Cache;
+import wtf.beatrice.hidekobot.commands.base.Trivia;
+import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
-import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.util.CommandUtil;
-import wtf.beatrice.hidekobot.commands.base.Trivia;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
