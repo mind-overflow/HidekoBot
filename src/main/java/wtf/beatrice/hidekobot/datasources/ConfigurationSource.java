@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.datasources;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.util.Logger;
 
@@ -57,7 +58,7 @@ public class ConfigurationSource
             }
         }
         // load the YAML file from the filesystem
-        Yaml fsConfigYaml = new Yaml();
+        Yaml fsConfigYaml = new Yaml(new SafeConstructor());
         LinkedHashMap<String, Object> fsConfigContents = null; // map holding all file entries
         try (InputStream fsConfigStream = new FileInputStream(fsConfigFile))
         { fsConfigContents = fsConfigYaml.load(fsConfigStream); }
