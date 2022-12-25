@@ -145,6 +145,7 @@ public class HidekoBot
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.DiceRollCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.HelpCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.InviteCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.KickCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.LoveCalculatorCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.MagicBallCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.SayCommand());
