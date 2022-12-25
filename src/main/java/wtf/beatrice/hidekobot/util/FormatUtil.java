@@ -15,10 +15,10 @@ public class FormatUtil
      *
      * @return the formatter String
      */
-    public static String getNiceUptime()
+    public static String getNiceTimeDiff(LocalDateTime start)
     {
         LocalDateTime now = LocalDateTime.now();
-        long uptimeSeconds = ChronoUnit.SECONDS.between(Cache.getStartupTime(), now);
+        long uptimeSeconds = ChronoUnit.SECONDS.between(start, now);
         Duration uptime = Duration.ofSeconds(uptimeSeconds);
         long seconds = uptime.toSecondsPart();
         long minutes = uptime.toMinutesPart();
@@ -31,7 +31,7 @@ public class FormatUtil
             if(hours == 0)
             {
                 if(minutes == 0)
-                {} else {
+                {} else { // i know this if has an empty body but i feel like this reads better
                     uptimeStringBuilder.append(minutes).append("m ");
                 }
             } else {

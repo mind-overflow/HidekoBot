@@ -10,6 +10,7 @@ import wtf.beatrice.hidekobot.commands.base.BotInfo;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class BotInfoCommand implements MessageCommand
 
     @Override
     public LinkedList<String> getCommandLabels() {
-        return new LinkedList<>(Collections.singletonList("botinfo"));
+        return new LinkedList<>(Arrays.asList("botinfo", "info"));
     }
 
     @Nullable

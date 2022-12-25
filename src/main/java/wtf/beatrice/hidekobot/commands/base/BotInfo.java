@@ -91,12 +91,17 @@ public class BotInfo
         embedBuilder.addField("Maintainer", developerMention, true);
 
         // uptime field
-        embedBuilder.addField("Uptime", FormatUtil.getNiceUptime(), true);
+        embedBuilder.addField("Uptime", FormatUtil.getNiceTimeDiff(Cache.getStartupTime()), true);
 
         // issue tracker field
         embedBuilder.addField("Support",
                 "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot/issues)",
                 true); //todo: we should probably make this a final field in the config class
+
+        // bot birthday field
+        embedBuilder.addField("Bot age",
+                Cache.getBotName() + " was created " + FormatUtil.getNiceTimeDiff(Cache.getBotBirthDate()) + "ago!",
+                false);
 
         return embedBuilder.build();
     }

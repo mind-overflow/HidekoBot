@@ -51,6 +51,9 @@ public class Cache
     // used to count e.g. uptime
     private static LocalDateTime startupTime = null;
 
+    // date of when the first bot commit was made (CEST time)
+    private static final LocalDateTime botBirthDate = LocalDateTime.of(2022, 8, 25, 21, 50);
+
     // the scheduler that should always be used when running a scheduled task.
     private final static ScheduledExecutorService taskScheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
 
@@ -279,6 +282,13 @@ public class Cache
      * @return a LocalDateTime object of the startup instant.
      */
     public static LocalDateTime getStartupTime() { return startupTime; }
+
+    /**
+     * Get the time of when the bot was created.
+     *
+     * @return a LocalDateTime object of the first commit's instant.
+     */
+    public static LocalDateTime getBotBirthDate() { return botBirthDate; }
 
     public static String getFullHeartBeatLink() {
         return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.HEARTBEAT_LINK);
