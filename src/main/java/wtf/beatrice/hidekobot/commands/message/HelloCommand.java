@@ -48,8 +48,8 @@ public class HelloCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        String senderId = event.getMessage().getAuthor().getId();
-        event.getMessage().reply("Hi, <@" + senderId + ">! :sparkles:").queue();
+        String sender = event.getMessage().getAuthor().getAsMention();
+        event.getMessage().reply("Hi, " + sender + "! :sparkles:").queue();
     }
 
 }

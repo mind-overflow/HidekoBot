@@ -11,12 +11,12 @@ import wtf.beatrice.hidekobot.commands.base.ProfileImage;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class AvatarCommand extends SlashCommandImpl
+public class BannerCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData() {
-        return Commands.slash("avatar", "Get someone's profile picture.")
-                .addOption(OptionType.USER, "user", "User you want to grab the avatar of.")
+        return Commands.slash("banner", "Get someone's profile banner.")
+                .addOption(OptionType.USER, "user", "User you want to grab the banner of.")
                 .addOption(OptionType.INTEGER, "size", "The size of the returned image.",
                         false,
                         true);
@@ -47,7 +47,7 @@ public class AvatarCommand extends SlashCommandImpl
             resolution = ProfileImage.parseResolution(512);
         }
 
-        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.AVATAR);
+        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.BANNER);
         if(response.content() != null)
         {
             event.getHook().editOriginal(response.content()).queue();

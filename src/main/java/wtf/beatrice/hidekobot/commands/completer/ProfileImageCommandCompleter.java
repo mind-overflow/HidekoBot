@@ -10,10 +10,10 @@ import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvatarCommandCompleter extends SlashArgumentsCompleterImpl
+public class ProfileImageCommandCompleter extends SlashArgumentsCompleterImpl
 {
 
-    public AvatarCommandCompleter(SlashCommand parentCommand) {
+    public ProfileImageCommandCompleter(SlashCommand parentCommand) {
         super(parentCommand);
     }
 

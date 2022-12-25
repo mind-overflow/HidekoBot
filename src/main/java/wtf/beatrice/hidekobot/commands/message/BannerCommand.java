@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.commands.base.ProfileImage;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
@@ -17,12 +16,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AvatarCommand  implements MessageCommand
+public class BannerCommand implements MessageCommand
 {
 
     @Override
     public LinkedList<String> getCommandLabels() {
-        return new LinkedList<>(Collections.singletonList("avatar"));
+        return new LinkedList<>(Collections.singletonList("banner"));
     }
 
     @Nullable
@@ -39,7 +38,7 @@ public class AvatarCommand  implements MessageCommand
     @NotNull
     @Override
     public String getDescription() {
-        return "Get someone's avatar, or your own. You can additionally specify a resolution.";
+        return "Get someone's profile banner, or your own.";
     }
 
     @Nullable
@@ -57,8 +56,6 @@ public class AvatarCommand  implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        int[] acceptedSizes = Cache.getSupportedAvatarResolutions();
-
         User user;
         int resolution = -1;
 
@@ -94,7 +91,7 @@ public class AvatarCommand  implements MessageCommand
         if(user == null) user = event.getAuthor();
 
         // send a response
-        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.AVATAR);
+        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.BANNER);
         if(response.content() != null)
         {
             event.getMessage().reply(response.content()).queue();
