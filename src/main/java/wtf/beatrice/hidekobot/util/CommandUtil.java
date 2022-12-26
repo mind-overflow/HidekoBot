@@ -230,8 +230,6 @@ public class CommandUtil
                     databaseSource.untrackExpiredMessage(messageId);
                 },
 
-                (error) -> {
-                    databaseSource.untrackExpiredMessage(messageId);
-                });
+                error -> databaseSource.untrackExpiredMessage(messageId));
     }
 }

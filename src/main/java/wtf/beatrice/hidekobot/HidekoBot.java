@@ -138,6 +138,7 @@ public class HidekoBot
         messageCommandListener.registerCommand(new HelloCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AliasCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AvatarCommand());
+        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BanCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BannerCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BotInfoCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.CoinFlipCommand());

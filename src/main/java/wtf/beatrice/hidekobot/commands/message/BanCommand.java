@@ -21,19 +21,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class KickCommand implements MessageCommand
+public class BanCommand implements MessageCommand
 {
 
     @Override
     public LinkedList<String> getCommandLabels() {
-        return new LinkedList<>(Collections.singletonList("kick"));
+        return new LinkedList<>(Collections.singletonList("ban"));
     }
 
     @Nullable
     @Override
     public List<Permission> getPermissions() {
-        return new ArrayList<Permission>(Collections.singletonList(Permission.KICK_MEMBERS));
+        return new ArrayList<Permission>(Collections.singletonList(Permission.BAN_MEMBERS));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class KickCommand implements MessageCommand
     @NotNull
     @Override
     public String getDescription() {
-        return "Kick the mentioned user.";
+        return "Ban the mentioned user.";
     }
 
     @Nullable
@@ -62,6 +63,6 @@ public class KickCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        UserPunishment.handle(event, args, UserPunishment.PunishmentType.KICK);
+        UserPunishment.handle(event, args, UserPunishment.PunishmentType.BAN);
     }
 }

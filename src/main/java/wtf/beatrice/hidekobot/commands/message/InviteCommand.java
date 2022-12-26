@@ -69,9 +69,7 @@ public class InviteCommand implements MessageCommand
                         .addActionRow(inviteButton)
                         .queue();
                 event.getMessage().addReaction(Emoji.fromUnicode("✅")).queue();
-            },  (error) -> {
-                event.getMessage().addReaction(Emoji.fromUnicode("❌")).queue();
-            });
+            }, error -> event.getMessage().addReaction(Emoji.fromUnicode("❌")).queue());
         } else {
             event.getMessage()
                     .replyEmbeds(inviteEmbed)

@@ -242,7 +242,7 @@ public class Cache
         try {
             Field field = Color.class.getField(colorName);
             color = (Color)field.get(null);
-        } catch (Exception e) {
+        } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
             logger.log("Unknown color: " + colorName);
         }
         return color == null ? defaultColor : color;

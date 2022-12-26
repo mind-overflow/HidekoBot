@@ -132,9 +132,8 @@ public class ClearChat
                         which are restricted by discord, and thus has to use
                         a less efficient way that triggers rate-limiting very quickly. */
 
-                    } catch (Exception e)
+                    } catch (RuntimeException ignored)
                     {
-
                         return -1;
                     }
                 }

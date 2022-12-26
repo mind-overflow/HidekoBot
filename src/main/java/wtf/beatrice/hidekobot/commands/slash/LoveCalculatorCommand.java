@@ -39,7 +39,7 @@ public class LoveCalculatorCommand extends SlashCommandImpl
         OptionMapping firsUserArg = event.getOption("first");
         if(firsUserArg != null)
         {
-            firstUser = firsUserArg.getAsUser();
+            firstUser = firsUserArg.getAsUser(); //todo null check?
         } else {
             event.reply("\uD83D\uDE22 I need to know who to check! Please mention them.")
                     .setEphemeral(true)
@@ -50,7 +50,7 @@ public class LoveCalculatorCommand extends SlashCommandImpl
         OptionMapping secondUserArg = event.getOption("second");
         if(secondUserArg != null)
         {
-            secondUser = secondUserArg.getAsUser();
+            secondUser = secondUserArg.getAsUser(); //todo null check?
         } else {
             secondUser = event.getUser();
         }
