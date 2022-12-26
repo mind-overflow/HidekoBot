@@ -38,14 +38,14 @@ public class TriviaCommand extends SlashCommandImpl
             return;
         }
 
+        // if we got here, this might take a bit
+        event.deferReply().queue();
         MessageResponse response = Trivia.generateMainScreen();
 
-        event.replyEmbeds(response.embed()).addActionRow(response.components()).queue(interaction ->
+        event.getHook().editOriginalEmbeds(response.embed()).setActionRow(response.components()).queue(message ->
         {
-            interaction.retrieveOriginal().queue(message -> {
-                Cache.getDatabaseSource().trackRanCommandReply(message, event.getUser());
-                Cache.getDatabaseSource().queueDisabling(message);
-            });
+            Cache.getDatabaseSource().trackRanCommandReply(message, event.getUser());
+            Cache.getDatabaseSource().queueDisabling(message);
         });
     }
 }
