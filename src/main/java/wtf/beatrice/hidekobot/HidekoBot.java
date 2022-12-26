@@ -113,6 +113,7 @@ public class HidekoBot
         ProfileImageCommandCompleter avatarCommandCompleter = new ProfileImageCommandCompleter(avatarCommand);
         slashCommandListener.registerCommand(avatarCommand);
         slashCommandCompletionListener.registerCommandCompleter(avatarCommandCompleter);
+        slashCommandListener.registerCommand(new BanCommand());
         BannerCommand bannerCommand = new BannerCommand();
         ProfileImageCommandCompleter bannerCommandCompleter = new ProfileImageCommandCompleter(bannerCommand);
         slashCommandListener.registerCommand(bannerCommand);
@@ -124,10 +125,12 @@ public class HidekoBot
         slashCommandListener.registerCommand(new DieCommand());
         slashCommandListener.registerCommand(new HelpCommand());
         slashCommandListener.registerCommand(new InviteCommand());
+        slashCommandListener.registerCommand(new KickCommand());
         slashCommandListener.registerCommand(new LoveCalculatorCommand());
         slashCommandListener.registerCommand(new MagicBallCommand());
         slashCommandListener.registerCommand(new PingCommand());
         slashCommandListener.registerCommand(new SayCommand());
+        slashCommandListener.registerCommand(new TimeoutCommand());
         slashCommandListener.registerCommand(new TriviaCommand());
         slashCommandListener.registerCommand(new UrbanDictionaryCommand());
         Cache.setSlashCommandListener(slashCommandListener);

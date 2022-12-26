@@ -50,7 +50,7 @@ public class KickCommand implements MessageCommand
     @NotNull
     @Override
     public String getDescription() {
-        return "Kick the mentioned user.";
+        return "Kick the mentioned user from the guild.";
     }
 
     @Nullable

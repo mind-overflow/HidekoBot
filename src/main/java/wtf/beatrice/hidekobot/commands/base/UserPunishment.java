@@ -7,8 +7,11 @@ import net.dv8tion.jda.api.entities.Mentions;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
+import org.apache.commons.lang3.ArrayUtils;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
@@ -16,6 +19,9 @@ import wtf.beatrice.hidekobot.util.FormatUtil;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +30,63 @@ public class UserPunishment
 
     private final static Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
     private final static Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
+
+    public static void handle(SlashCommandInteractionEvent event, PunishmentType punishmentType)
+    {
+        // this might take a sec
+        event.deferReply().queue();
+
+        User targetUser = null;
+
+        OptionMapping targetUserArg = event.getOption("target");
+        if(targetUserArg != null)
+        {
+            targetUser = targetUserArg.getAsUser();
+        }
+
+        List<IMentionable> mentions = null;
+        if(targetUser != null) mentions = new ArrayList<>(Collections.singletonList(targetUser));
+
+        String reason = null;
+        OptionMapping reasonArg = event.getOption("reason");
+        if(reasonArg != null)
+        {
+            reason = reasonArg.getAsString();
+        }
+
+        String timeDiff = null;
+        OptionMapping timeDiffArg = event.getOption("duration");
+        if(timeDiffArg != null)
+        {
+            timeDiff = timeDiffArg.getAsString();
+        }
+
+        // todo: the following code is not great, because we are making an array and then
+        // we are also recreating the string later in code. this is useless and a bit hacked on,
+        // but works for now. this happened because the function was NOT written with slash commands
+        // in mind, but with message commands, that send every word as a separate argument.
+        // we should probably rework the it so that it works better in both scenarios.
+        String[] reasonSplit = null;
+        // generate the arguments array by splitting the string
+        if(reason != null) reasonSplit = reason.split("\\s+");
+        //prepend timediff at index 0
+        if(timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, timeDiff);
+        // in message-commands, the first arg would contain the user mention. since we have no one mentioned here,
+        // because it's in its own argument, we just prepend an empty string. note that this makes relying on the
+        // first argument BAD, because it is no longer ensured that it contains the user mention.
+        if(timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, "");
+
+        MessageResponse response = getResponse(event.getUser(),
+                punishmentType,
+                event.getChannel(),
+                mentions,
+                reasonSplit);
+
+        if(response.embed() != null)
+            event.getHook().editOriginalEmbeds(response.embed()).queue();
+        else if(response.content() != null)
+            event.getHook().editOriginal(response.content()).queue();
+    }
 
     public static void handle(MessageReceivedEvent event, String[] args, PunishmentType punishmentType)
     {
@@ -57,7 +120,7 @@ public class UserPunishment
             return new MessageResponse("Sorry! I can't " + punishmentTypeName + " people in DMs.", null);
         }
 
-        if(mentions.isEmpty())
+        if(mentions == null || mentions.isEmpty())
         {
             // todo nicer looking with emojis
             return new MessageResponse("You have to tell me who to " + punishmentTypeName + "!", null);
@@ -80,7 +143,7 @@ public class UserPunishment
         // some commands require an additional parameter before the reason, so in that case, we should start at 2.
         int startingPoint = punishmentType == PunishmentType.TIMEOUT ? 2 : 1;
 
-        if(args.length > startingPoint)
+        if(args != null && args.length > startingPoint)
         {
             for(int i = startingPoint; i < args.length; i++)
             {
@@ -110,8 +173,11 @@ public class UserPunishment
                 case BAN -> punishmentAction = guild.ban(mentioned, 0, TimeUnit.SECONDS);
                 case KICK -> punishmentAction = guild.kick(mentioned);
                 case TIMEOUT -> {
-                    String durationStr = args[1];
-                    duration = FormatUtil.parseDuration(durationStr);
+                    if(args != null)
+                    {
+                        String durationStr = args[1];
+                        duration = FormatUtil.parseDuration(durationStr);
+                    }
 
                     boolean isDurationValid = true;
 
@@ -137,7 +203,8 @@ public class UserPunishment
                     null);
         }
 
-        if(!reason.isEmpty() && !reasonBuilder.isEmpty()) punishmentAction.reason(reason);
+        if(!reason.isEmpty() && !reasonBuilder.isEmpty())
+            punishmentAction.reason("[" + author.getAsTag() + "] " + reason);
 
         try {
             punishmentAction.complete();
