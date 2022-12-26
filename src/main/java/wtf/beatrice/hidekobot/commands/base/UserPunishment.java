@@ -9,16 +9,22 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
-import org.apache.commons.text.WordUtils;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
+import wtf.beatrice.hidekobot.util.FormatUtil;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UserPunishment
 {
+
+    private final static Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
+    private final static Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
+
     public static void handle(MessageReceivedEvent event, String[] args, PunishmentType punishmentType)
     {
         Mentions msgMentions = event.getMessage().getMentions();
@@ -70,9 +76,13 @@ public class UserPunishment
 
         StringBuilder reasonBuilder = new StringBuilder();
         String reason = "";
-        if(args.length > 1)
+
+        // some commands require an additional parameter before the reason, so in that case, we should start at 2.
+        int startingPoint = punishmentType == PunishmentType.TIMEOUT ? 2 : 1;
+
+        if(args.length > startingPoint)
         {
-            for(int i = 1; i < args.length; i++)
+            for(int i = startingPoint; i < args.length; i++)
             {
                 String arg = args[i];
                 reasonBuilder.append(arg);
@@ -91,6 +101,7 @@ public class UserPunishment
         }
 
         Guild guild = ((TextChannel) channel).getGuild();
+        Duration duration = null;
 
         AuditableRestAction<Void> punishmentAction = null;
 
@@ -98,6 +109,27 @@ public class UserPunishment
             switch (punishmentType) {
                 case BAN -> punishmentAction = guild.ban(mentioned, 0, TimeUnit.SECONDS);
                 case KICK -> punishmentAction = guild.kick(mentioned);
+                case TIMEOUT -> {
+                    String durationStr = args[1];
+                    duration = FormatUtil.parseDuration(durationStr);
+
+                    boolean isDurationValid = true;
+
+                    if(duration == null) isDurationValid = false;
+                    else
+                    {
+                        if(duration.compareTo(maxTimeoutDuration) > 0) isDurationValid = false;
+                        if(minTimeoutDuration.compareTo(duration) > 0) isDurationValid = false;
+                    }
+
+                    if(duration == null || !isDurationValid)
+                    {
+                        // todo nicer looking with emojis
+                        return new MessageResponse("Sorry, but the specified duration is invalid!", null);
+                    }
+
+                    punishmentAction = guild.timeoutFor(mentioned, duration);
+                }
             }
         } catch (RuntimeException ignored) {
             // todo nicer looking with emojis
@@ -122,8 +154,10 @@ public class UserPunishment
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setTitle("User " + punishmentType.getPastTense());
 
-        embedBuilder.addField("\uD83D\uDC64 User", mentioned.getAsMention(), true);
-        embedBuilder.addField("✂️ By", author.getAsMention(), true);
+        embedBuilder.addField("\uD83D\uDC64 User", mentioned.getAsMention(), false);
+        embedBuilder.addField("✂️ By", author.getAsMention(), false);
+        if(duration != null)
+            embedBuilder.addField("⏱️ Duration", FormatUtil.getNiceDuration(duration), false);
 
         if(reason.isEmpty())
             reason = "*No reason specified*";
@@ -138,6 +172,7 @@ public class UserPunishment
     public enum PunishmentType {
         KICK("kicked"),
         BAN("banned"),
+        TIMEOUT("timed out"),
 
         ;
 

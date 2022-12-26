@@ -57,7 +57,7 @@ public class UrbanDictionary
 
     public static String sanitizeArgs(String term, boolean forUrl)
     {
-        term = term.replaceAll("[^\\d\\w\\s]", ""); // only keep letters, numbers and spaces
+        term = term.replaceAll("[^\\w\\s]", ""); // only keep letters, numbers and spaces
         term = WordUtils.capitalizeFully(term); // Make Every Word Start With A Capital Letter
         if(forUrl) term = term.replaceAll("\\s+", "+"); // replace all whitespaces with + for the url
         if (term.length() > 64) term = term.substring(0, 64); // cut it to length to avoid abuse
