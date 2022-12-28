@@ -25,4 +25,8 @@ Edit the configuration file and set all values according to your needs.
 Save the file and start the bot again. If there are no issues, everything will load and it will print an
 invite-link in your console. Click on the link to add your bot to any server with the correct permissions
 already set-up. The bot supports both slash commands and message commands, with prefix `hideko`. Most
-commands support both systems, but some of them are limited in one way or another.
+commands support both systems, but some of them are limited in one way or another.  
+  
+The bot currently supports SQLite as a database backend. A database file will be created after the first boot
+in the same directory that you ran it. Do not delete the database file to avoid corruption and unpredictable
+behavior.
