@@ -133,8 +133,6 @@ public class HidekoBot
         slashCommandListener.registerCommand(new TimeoutCommand());
         slashCommandListener.registerCommand(new TriviaCommand());
         slashCommandListener.registerCommand(new UrbanDictionaryCommand());
-        Cache.setSlashCommandListener(slashCommandListener);
-        Cache.setSlashCommandCompletionListener(slashCommandCompletionListener);
 
         // register message commands
         MessageCommandListener messageCommandListener = new MessageCommandListener();
@@ -156,9 +154,11 @@ public class HidekoBot
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.TimeoutCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.TriviaCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.UrbanDictionaryCommand());
-        Cache.setMessageCommandListener(messageCommandListener);
 
         // register listeners
+        Cache.setSlashCommandListener(slashCommandListener);
+        Cache.setSlashCommandCompletionListener(slashCommandCompletionListener);
+        Cache.setMessageCommandListener(messageCommandListener);
         jda.addEventListener(messageCommandListener);
         jda.addEventListener(slashCommandListener);
         jda.addEventListener(slashCommandCompletionListener);
