@@ -93,7 +93,7 @@ public class Cache
      *
      * @return a boolean which is true if the bot is in verbose-mode
      */
-    public static boolean isVerbose() { return verbose; }
+    public static synchronized boolean isVerbose() { return verbose; }
 
     /**
      * Set the bot's verbosity status at runtime.
