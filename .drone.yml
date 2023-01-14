@@ -10,13 +10,20 @@ steps:
     image: maven:3-eclipse-temurin-16
     commands:
       - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - find
       - mvn javadoc:javadoc
+      - find
       - mvn test -B
+      - find
 
   - name: code-analysis
-    image: aosapps/drone-sonar-plugin
-    settings:
-      sonar_host:
-        from_secret: sonar_host
-      sonar_token:
-        from_secret: sonar_token
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.login=$SONAR_LOGIN_KEY
+    environment:
+      SONAR_PROJECT_KEY:
+        from_secret: sonar_project_key
+      SONAR_INSTANCE_URL:
+        from_secret: sonar_instance_url
+      SONAR_LOGIN_KEY:
+        from_secret: sonar_login_key
