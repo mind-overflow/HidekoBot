@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Trivia
 {
-    private final static String triviaLink = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
-    private final static String categoriesLink = "https://opentdb.com/api_category.php";
+    private static final String triviaLink = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
+    private static final String categoriesLink = "https://opentdb.com/api_category.php";
 
     public static List<String> channelsRunningTrivia = new ArrayList<>();
 

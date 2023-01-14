@@ -12,8 +12,8 @@ public class MessageLogger extends ListenerAdapter
 {
     // this class only gets loaded as a listener if verbosity is set to true on startup.
 
-    private final static String guildChannelFormat = "[%guild%] [#%channel%] %user%: %message%";
-    private final static String dmFormat = "[DM] %user%: %message%";
+    private static final String guildChannelFormat = "[%guild%] [#%channel%] %user%: %message%";
+    private static final String dmFormat = "[DM] %user%: %message%";
 
     private final Logger logger = new Logger(MessageLogger.class);
 

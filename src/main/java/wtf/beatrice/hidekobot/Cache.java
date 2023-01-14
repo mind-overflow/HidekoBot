@@ -43,10 +43,10 @@ public class Cache
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger = null;
     private static final long botMaintainerId = 979809420714332260L;
-    private final static String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
+    private static final String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
-    private final static long expiryTimeSeconds = 30L;
+    private static final long expiryTimeSeconds = 30L;
 
     // used to count e.g. uptime
     private static LocalDateTime startupTime = null;
@@ -55,16 +55,16 @@ public class Cache
     private static final LocalDateTime botBirthDate = LocalDateTime.of(2022, 8, 25, 21, 50);
 
     // the scheduler that should always be used when running a scheduled task.
-    private final static ScheduledExecutorService taskScheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
+    private static final ScheduledExecutorService taskScheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
 
-    private final static String execPath = System.getProperty("user.dir");
+    private static final String execPath = System.getProperty("user.dir");
     private static final String botName = "Hideko";
 
     private static SlashCommandListener slashCommandListener = null;
     private static SlashCommandCompletionListener slashCommandCompletionListener = null;
     private static MessageCommandListener messageCommandListener = null;
 
-    private final static String defaultInviteLink =
+    private static final String defaultInviteLink =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
 
     private static String botApplicationId = "";

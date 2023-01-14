@@ -27,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class UserPunishment
 {
 
-    private final static Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
-    private final static Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
+    private static final Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
+    private static final Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
 
     public static void handle(SlashCommandInteractionEvent event, PunishmentType punishmentType)
     {

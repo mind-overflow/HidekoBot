@@ -19,7 +19,7 @@ public class MagicBall
         return new LinkedList<>(Arrays.asList("8ball", "8b", "eightball", "magicball"));
     }
 
-    private final static List<String> answers = new ArrayList<>(
+    private static final List<String> answers = new ArrayList<>(
             Arrays.asList("It is certain.",
                     "It is decidedly so.",
                     "Without a doubt.",

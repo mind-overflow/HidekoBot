@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseSource
 {
 
-    private final static String sqliteURL = "jdbc:sqlite:%path%";
+    private static final String sqliteURL = "jdbc:sqlite:%path%";
     private Connection dbConnection = null;
     private final String dbPath;
     private final Logger logger;
