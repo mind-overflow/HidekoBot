@@ -101,7 +101,7 @@ public class Cache
      *
      * @param v the verbosity boolean value
      */
-    public static void setVerbose(boolean v)
+    public static synchronized void setVerbose(boolean v)
     {
         verbose = v;
 
