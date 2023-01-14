@@ -9,17 +9,14 @@ steps:
   - name: build
     image: maven:3-eclipse-temurin-16
     commands:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-      - find
+      - mvn install --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - mvn javadoc:javadoc
-      - find
       - mvn test -B
-      - find
 
   - name: code-analysis
     image: maven:3-eclipse-temurin-16
     commands:
-      - mvn sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.login=$SONAR_LOGIN_KEY
+      - mvn sonar:sonar --no-transfer-progress -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.login=$SONAR_LOGIN_KEY
     environment:
       SONAR_PROJECT_KEY:
         from_secret: sonar_project_key
