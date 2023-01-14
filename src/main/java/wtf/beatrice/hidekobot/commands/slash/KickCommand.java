@@ -1,24 +1,14 @@
 package wtf.beatrice.hidekobot.commands.slash;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.IMentionable;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.commands.base.UserPunishment;
-import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class KickCommand extends SlashCommandImpl
 {

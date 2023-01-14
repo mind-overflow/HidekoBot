@@ -11,7 +11,6 @@ import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

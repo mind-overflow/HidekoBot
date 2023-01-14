@@ -1,19 +1,10 @@
 package wtf.beatrice.hidekobot.commands.message;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.IMentionable;
-import net.dv8tion.jda.api.entities.Mentions;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.commands.base.UserPunishment;
-import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
