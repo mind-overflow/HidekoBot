@@ -1,11 +1,11 @@
 # HidekoBot    
-[![Reliability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=reliability_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
-[![Maintainability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=sqale_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59) 
-[![Security Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=security_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
-[![Build Status](https://drone.beatrice.wtf/api/badges/mind-overflow/HidekoBot/status.svg)](https://drone.beatrice.wtf/mind-overflow/HidekoBot) 
-[![Lines of Code](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=ncloc&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
+[![Reliability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=reliability_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
+[![Maintainability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=sqale_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot_AYWyYHsvX-1Ma0D4pJ59) 
+[![Security Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=security_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
+[![Build Status](https://drone.beatrice.wtf/api/badges/bea/HidekoBot/status.svg)](https://drone.beatrice.wtf/bea/HidekoBot) 
+[![Lines of Code](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=ncloc&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
   
-Hideko is a general-purpose Discord bot.    
+Hideko is a general-purpose Discord bot.  
   
 ## Download  
 The latest stable version is always uploaded automatically to the [Maven repository](https://nexus.beatrice.wtf/#browse/browse:maven-releases:wtf%2Fbeatrice%2Fhidekobot%2FHidekoBot).  

@@ -106,7 +106,7 @@ public class BotInfo
 
         // issue tracker field
         embedBuilder.addField("Support",
-                "[Issue tracker](https://git.beatrice.wtf/mind-overflow/HidekoBot/issues)",
+                "[Issue tracker](https://git.beatrice.wtf/bea/HidekoBot/issues)",
                 true); //todo: we should probably make this a final field in the config class
 
         // bot birthday field
