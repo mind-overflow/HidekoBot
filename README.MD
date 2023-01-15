@@ -39,3 +39,10 @@ commands support both systems, but some of them are limited in one way or anothe
 The bot currently supports SQLite as a database backend. A database file will be created after the first boot
 in your current directory. Do not delete the database file to avoid corruption and unpredictable
 behavior.
+
+# Development
+## Versioning
+This project uses the `x.y.z-releaseType` schema for releases.  
+Development builds are tagged as `x.y.z-SNAPSHOT` and sometimes pushed to the snapshots Maven repository.  
+Stable builds are tagged as `x.y.z` and always pushed to the releases Maven repository, by promoting the build on
+[Drone](https://drone.beatrice.wtf/). Currently, promoting stable builds is a manual process.
