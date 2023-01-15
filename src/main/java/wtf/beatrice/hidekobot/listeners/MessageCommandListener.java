@@ -67,7 +67,7 @@ public class MessageCommandListener extends ListenerAdapter
         String eventMessage = event.getMessage().getContentRaw();
 
         // check if the sent message matches the bot activation regex (prefix, name, ...)
-        if(!eventMessage.toLowerCase().matches(commandRegex + "((.|\\n)*)"))
+        if(!eventMessage.toLowerCase().matches("(?s)" + commandRegex + ".*"))
             return;
 
         // generate args from the string

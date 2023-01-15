@@ -106,8 +106,11 @@ public class FormatUtil
         eg: 3d, 33hours, 32048dojg, 3d2h5m22s.
         it does not match if the [digits and characters] blocks are missing.
         eg: 33, asd, 3g5hj, 4 asd.
+
+        {1,10} is used to limit the size of the input to parse, to avoid stack overflows.
+        no one should be typing more than 10 arguments, or more than 10 digits for a single argument anyway.
          */
-        if(!duration.matches("(\\d+[a-zA-Z]+)+"))
+        if(!duration.matches("(\\d{1,10}[a-zA-Z]{1,10}){1,10}"))
             return null;
 
         String[] durationTimes = duration.split("[a-zA-Z]+");
