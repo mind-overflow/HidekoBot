@@ -1,7 +1,8 @@
 package wtf.beatrice.hidekobot.runnables;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -9,12 +10,8 @@ import java.net.URL;
 
 public class HeartBeatTask implements Runnable
 {
-    private final Logger logger;
+    private final Logger LOGGER = LoggerFactory.getLogger(HeartBeatTask.class);
 
-    public HeartBeatTask()
-    {
-        logger = new Logger(getClass());
-    }
 
 
 
@@ -37,15 +34,15 @@ public class HeartBeatTask implements Runnable
             if(200 <= responseCode && responseCode < 300)
             {
                 // only log ok response codes when verbosity is enabled
-                if(Cache.isVerbose()) logger.log("Heartbeat response code: " + responseCode);
+                if(Cache.isVerbose()) LOGGER.info("Heartbeat response code: {}", responseCode);
             }
             else
             {
-                logger.log("Heartbeat returned problematic response code: " + responseCode);
+                LOGGER.error("Heartbeat returned problematic response code: {}", responseCode);
             }
 
         } catch (IOException e) {
-            logger.log("Error while trying to push heartbeat: " + e.getMessage());
+            LOGGER.error("Error while trying to push heartbeat", e);
         }
 
     }

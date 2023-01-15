@@ -3,8 +3,8 @@ package wtf.beatrice.hidekobot.datasources;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -15,15 +15,19 @@ import java.util.List;
 public class DatabaseSource
 {
 
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DatabaseSource.class);
     private static final String sqliteURL = "jdbc:sqlite:%path%";
     private Connection dbConnection = null;
     private final String dbPath;
-    private final Logger logger;
 
     public DatabaseSource(String dbPath)
     {
         this.dbPath = dbPath;
-        this.logger = new Logger(getClass());
+    }
+
+    private void logException(SQLException e)
+    {
+        LOGGER.error("Database Exception", e);
     }
 
     public boolean connect()
@@ -34,10 +38,10 @@ public class DatabaseSource
 
         try {
             dbConnection = DriverManager.getConnection(url);
-            logger.log("Database connection established!");
+            LOGGER.info("Database connection established!");
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
             return false;
         }
 
@@ -54,7 +58,7 @@ public class DatabaseSource
                     dbConnection.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logException(e);
                 return false;
             }
 
@@ -126,7 +130,7 @@ public class DatabaseSource
                 // execute the statement
                 stmt.execute(sql);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logException(e);
                 return false;
             }
         }
@@ -168,7 +172,7 @@ public class DatabaseSource
             return true;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
         }
 
         return false;
@@ -199,7 +203,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -223,7 +227,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -264,7 +268,7 @@ public class DatabaseSource
             return true;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
         }
 
         return false;
@@ -286,7 +290,7 @@ public class DatabaseSource
                 messages.add(resultSet.getString("message_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return messages;
@@ -302,7 +306,7 @@ public class DatabaseSource
             preparedStatement.execute();
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
             return false;
         }
 
@@ -313,7 +317,7 @@ public class DatabaseSource
             preparedStatement.execute();
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
             return false;
         }
 
@@ -324,7 +328,7 @@ public class DatabaseSource
             preparedStatement.execute();
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
             return false;
         }
 
@@ -348,7 +352,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -371,7 +375,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -394,7 +398,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -424,7 +428,7 @@ public class DatabaseSource
             return true;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            logException(e);
         }
 
         return false;
@@ -447,7 +451,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return 0;
@@ -470,7 +474,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -493,7 +497,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -516,7 +520,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -539,7 +543,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -562,7 +566,7 @@ public class DatabaseSource
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return null;
@@ -583,7 +587,7 @@ public class DatabaseSource
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return false;
@@ -609,7 +613,7 @@ public class DatabaseSource
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logException(e);
         }
 
         return false;

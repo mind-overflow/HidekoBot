@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.comparators.TriviaCategoryComparator;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Trivia
 {
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Trivia.class);
     private static final String triviaLink = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
     private static final String categoriesLink = "https://opentdb.com/api_category.php";
 
@@ -105,7 +107,7 @@ public class Trivia
             bufferedReader.close();
             return new JSONObject(jsonStrBuilder.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("JSON Parsing Exception", e);
         }
 
         return null;
