@@ -1,9 +1,10 @@
 package wtf.beatrice.hidekobot.runnables;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.util.CommandUtil;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ExpiredMessageTask implements Runnable {
 
     private final DateTimeFormatter formatter;
-    private final Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExpiredMessageTask.class);
     private DatabaseSource databaseSource;
 
 
@@ -21,7 +22,6 @@ public class ExpiredMessageTask implements Runnable {
         String format = Cache.getExpiryTimestampFormat();
         formatter = DateTimeFormatter.ofPattern(format);
         databaseSource = Cache.getDatabaseSource();
-        logger = new Logger(getClass());
     }
 
 
@@ -39,7 +39,7 @@ public class ExpiredMessageTask implements Runnable {
         for(String messageId : expiringMessages)
         {
 
-            if(Cache.isVerbose()) logger.log("expired check: " + messageId);
+            if(Cache.isVerbose()) LOGGER.info("expired check: {}", messageId);
 
             String expiryTimestamp = databaseSource.getQueuedExpiringMessageExpiryDate(messageId);
             if(expiryTimestamp == null || expiryTimestamp.equals("")) // if missing timestamp
@@ -54,7 +54,7 @@ public class ExpiredMessageTask implements Runnable {
             LocalDateTime expiryDate = LocalDateTime.parse(expiryTimestamp, formatter);
             if(now.isAfter(expiryDate))
             {
-                if(Cache.isVerbose()) logger.log("expired: " + messageId);
+                if(Cache.isVerbose()) LOGGER.info("expired: {}", messageId);
                 CommandUtil.disableExpired(messageId);
             }
         }

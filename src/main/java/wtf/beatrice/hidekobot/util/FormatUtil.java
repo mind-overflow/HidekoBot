@@ -12,6 +12,27 @@ import java.util.Arrays;
 public class FormatUtil
 {
 
+
+    // cosmetic string to print on startup.
+    private static final String LOGO =
+            "██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░\n" +
+                    "██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗\n" +
+                    "███████║██║██║░░██║█████╗░░█████═╝░██║░░██║\n" +
+                    "██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║\n" +
+                    "██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝\n" +
+                    "╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░";
+
+
+    /**
+     * Returns ASCII art saying the bot name.
+     *
+     * @return a String containing the logo
+     */
+    public static String getLogo()
+    {
+        return LOGO;
+    }
+
     /**
      * Generate a nicely formatted time-diff String that omits unnecessary data
      * (e.g. 0 days, 0 hours, 4 minutes, 32 seconds -> 4m 32s)

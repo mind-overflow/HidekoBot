@@ -1,5 +1,6 @@
 package wtf.beatrice.hidekobot.util;
 
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -11,6 +12,8 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.requests.RestAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
@@ -22,7 +25,7 @@ import java.util.List;
 public class CommandUtil
 {
 
-    private static final Logger logger = new Logger(CommandUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtil.class);
 
     /**
      * Function to delete a message when a user clicks the "delete" button attached to that message.
@@ -133,13 +136,13 @@ public class CommandUtil
             }
         }
 
-        logger.log("Found " + registeredCommands.size() + " commands.");
+        LOGGER.info("Found {} commands.", registeredCommands.size());
 
         if(update)
         {
             // send updated command list.
             jdaInstance.updateCommands().addCommands(allCommands).queue();
-            logger.log("Commands updated. New total: " + allCommands.size() + ".");
+            LOGGER.info("Commands updated. New total: {}.", allCommands.size());
         }
     }
 
@@ -208,7 +211,7 @@ public class CommandUtil
         RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
 
 
-        if(Cache.isVerbose()) logger.log("cleaning up: " + messageId);
+        if(Cache.isVerbose()) LOGGER.info("cleaning up: {}", messageId);
 
         retrieveAction.queue(
                 message -> {

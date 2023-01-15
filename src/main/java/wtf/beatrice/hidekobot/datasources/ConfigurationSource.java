@@ -1,10 +1,11 @@
 package wtf.beatrice.hidekobot.datasources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.io.*;
 import java.util.LinkedHashMap;
@@ -12,13 +13,12 @@ import java.util.LinkedHashMap;
 public class ConfigurationSource
 {
     private final LinkedHashMap<String, Object> configurationEntries = new LinkedHashMap<>();
-    private final Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationSource.class);
     private final String configFilePath;
 
     public ConfigurationSource(String configFilePath)
     {
         this.configFilePath = configFilePath;
-        logger = new Logger(getClass());
     }
 
     public void initConfig()
@@ -37,7 +37,7 @@ public class ConfigurationSource
 
         if(internalConfigContents.isEmpty())
         {
-            logger.log("Error reading internal configuration!");
+            LOGGER.error("Error reading internal configuration!");
             HidekoBot.shutdown();
             return;
         }
@@ -49,8 +49,7 @@ public class ConfigurationSource
             // try to create config file
             try { fsConfigFile.createNewFile(); }
             catch (IOException e) {
-                logger.log("Error creating configuration file!");
-                logger.log(e.getMessage());
+                LOGGER.error("Error creating configuration file!", e);
                 HidekoBot.shutdown();
                 return;
             }
@@ -60,7 +59,7 @@ public class ConfigurationSource
         LinkedHashMap<String, Object> fsConfigContents = null; // map holding all file entries
         try (InputStream fsConfigStream = new FileInputStream(fsConfigFile))
         { fsConfigContents = fsConfigYaml.load(fsConfigStream); }
-        catch (IOException e) { logger.log(e.getMessage()); }
+        catch (IOException e) { LOGGER.error(e.getMessage()); }
 
 
         if(fsConfigContents == null) // if file contents are empty or corrupted...
@@ -114,7 +113,7 @@ public class ConfigurationSource
                 Yaml yaml = new Yaml(dumperOptions);
                 yaml.dump(filledEntries, missingKeysWriter);
             } catch (FileNotFoundException e) {
-                logger.log(e.getMessage());
+                LOGGER.error(e.getMessage());
                 HidekoBot.shutdown();
                 return;
             }

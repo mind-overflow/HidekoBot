@@ -1,7 +1,8 @@
 package wtf.beatrice.hidekobot.datasources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ public class PropertiesSource
 
     private Properties properties = null;
     private final String fileName = "default.properties";
-    private final Logger logger = new Logger(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesSource.class);
 
     public void load()
     {
@@ -26,7 +27,7 @@ public class PropertiesSource
 
         }
         catch (IOException e) {
-            logger.log(e.getMessage());
+            LOGGER.error(e.getMessage());
             HidekoBot.shutdown();
             return;
         }

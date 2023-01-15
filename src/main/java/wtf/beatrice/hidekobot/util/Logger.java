@@ -9,15 +9,6 @@ import java.util.concurrent.TimeUnit;
 public class Logger
 {
 
-    // cosmetic string to print on startup.
-    private String logo =
-            "██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░\n" +
-            "██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗\n" +
-            "███████║██║██║░░██║█████╗░░█████═╝░██║░░██║\n" +
-            "██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║\n" +
-            "██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝\n" +
-            "╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░";
-
     // objects that we need to have for a properly formatted message
     private String className;
     private final String format = "[%date% %time%] [%class%] %message%";
@@ -72,14 +63,5 @@ public class Logger
         System.out.println(message);
     }
 
-    /**
-     * Returns ASCII art saying the bot name.
-     *
-     * @return a String containing the logo
-     */
-    public String getLogo()
-    {
-        return logo;
-    }
 
 }

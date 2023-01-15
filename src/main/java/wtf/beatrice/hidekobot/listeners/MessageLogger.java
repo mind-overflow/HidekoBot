@@ -6,7 +6,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.beatrice.hidekobot.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageLogger extends ListenerAdapter
 {
@@ -15,7 +16,7 @@ public class MessageLogger extends ListenerAdapter
     private static final String guildChannelFormat = "[%guild%] [#%channel%] %user%: %message%";
     private static final String dmFormat = "[DM] %user%: %message%";
 
-    private final Logger logger = new Logger(MessageLogger.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageLogger.class);
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
@@ -42,13 +43,13 @@ public class MessageLogger extends ListenerAdapter
                 .replace("%user%", userName)
                 .replace("%message%", message);
 
-        logger.log(toLog);
+        LOGGER.info(toLog);
 
         if(!event.getMessage().getAttachments().isEmpty())
         {
             for(Message.Attachment atch : event.getMessage().getAttachments())
             {
-                logger.log(atch.getUrl());
+                LOGGER.info(atch.getUrl());
             }
         }
     }

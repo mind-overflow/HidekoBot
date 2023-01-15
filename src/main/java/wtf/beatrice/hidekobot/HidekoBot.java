@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.Signal;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
@@ -17,7 +19,7 @@ import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.runnables.RandomSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.util.CommandUtil;
-import wtf.beatrice.hidekobot.util.Logger;
+import wtf.beatrice.hidekobot.util.FormatUtil;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -32,31 +34,31 @@ public class HidekoBot
 {
     private static JDA jda;
 
-    private static final Logger logger = new Logger(HidekoBot.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HidekoBot.class);
 
     public static void main(String[] args)
     {
 
         // load configuration
-        logger.log("Loading configuration...");
+        LOGGER.info("Loading configuration...");
         String configFilePath = Cache.getExecPath() + File.separator + "config.yml";
         ConfigurationSource configurationSource = new ConfigurationSource(configFilePath);
         configurationSource.initConfig();
         Cache.setConfigurationSource(configurationSource);
-        logger.log("Configuration loaded!");
+        LOGGER.info("Configuration loaded!");
 
         // load properties
-        logger.log("Loading properties...");
+        LOGGER.info("Loading properties...");
         PropertiesSource propertiesSource = new PropertiesSource();
         propertiesSource.load();
         Cache.setPropertiesSourceInstance(propertiesSource);
-        logger.log("Properties loaded!");
+        LOGGER.info("Properties loaded!");
 
         // check loaded bot token
         String botToken = Cache.getBotToken();
         if(botToken == null || botToken.isEmpty())
         {
-            logger.log("Invalid bot token!");
+            LOGGER.error("Invalid bot token!");
             shutdown();
             return;
         }
@@ -76,7 +78,7 @@ public class HidekoBot
             jda = jdaBuilder.build().awaitReady();
         } catch (Exception e)
         {
-            logger.log(e.getMessage()); // print the error message, omit the stack trace.
+            LOGGER.error(e.getMessage()); // print the error message, omit the stack trace.
             shutdown(); // if we failed connecting and authenticating, then quit.
         }
 
@@ -174,19 +176,19 @@ public class HidekoBot
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
 
         // connect to database
-        logger.log("Connecting to database...");
+        LOGGER.info("Connecting to database...");
         String dbFilePath = Cache.getExecPath() + File.separator + "db.sqlite"; // in current directory
         DatabaseSource databaseSource = new DatabaseSource(dbFilePath);
         if(databaseSource.connect() && databaseSource.initDb())
         {
-            logger.log("Database connection initialized!");
+            LOGGER.info("Database connection initialized!");
             Cache.setDatabaseSourceInstance(databaseSource);
 
             // load data here...
 
-            logger.log("Database data loaded into memory!");
+            LOGGER.info("Database data loaded into memory!");
         } else {
-            logger.log("Error initializing database connection!");
+            LOGGER.error("Error initializing database connection!");
         }
 
         // start scheduled runnables
@@ -207,12 +209,12 @@ public class HidekoBot
         Cache.setStartupTime(LocalDateTime.now());
 
         // print the bot logo.
-        logger.log("\n\n" + logger.getLogo() + "\nv" + Cache.getBotVersion() + " - bot is ready!\n", 2);
+        LOGGER.info("\n\n{}\nv{} - bot is ready!\n", FormatUtil.getLogo(), Cache.getBotVersion());
 
 
         // log the invite-link to console so noob users can just click on it.
-        logger.log("Bot User ID: " + botUserId, 3);
-        logger.log("Invite Link: " + Cache.getInviteUrl(), 4);
+        LOGGER.info("Bot User ID: {}", botUserId);
+        LOGGER.info("Invite Link: {}", Cache.getInviteUrl());
 
     }
     public static JDA getAPI()
@@ -222,7 +224,7 @@ public class HidekoBot
 
     public static void shutdown()
     {
-        logger.log("WARNING! Shutting down!");
+        LOGGER.warn("WARNING! Shutting down!");
         if(jda != null) jda.shutdown();
         System.exit(0);
     }

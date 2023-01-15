@@ -1,6 +1,8 @@
 package wtf.beatrice.hidekobot;
 
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
@@ -9,7 +11,6 @@ import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -26,7 +27,7 @@ public class Cache
 
     // todo: make this compatible with the message listener's regex
     private static final String botPrefix = "hideko";
-    private static final Logger logger = new Logger(Cache.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Cache.class);
 
     // the Random instance that we should always use when looking for an RNG based thing.
     // the seed is updated periodically.
@@ -244,7 +245,7 @@ public class Cache
             Field field = Color.class.getField(colorName);
             color = (Color)field.get(null);
         } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
-            logger.log("Unknown color: " + colorName);
+            LOGGER.error("Unknown color: {}", colorName);
         }
         return color == null ? defaultColor : color;
     }

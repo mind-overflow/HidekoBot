@@ -10,10 +10,7 @@ import java.net.URL;
 
 public class HeartBeatTask implements Runnable
 {
-    private final Logger LOGGER = LoggerFactory.getLogger(HeartBeatTask.class);
-
-
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HeartBeatTask.class);
 
     @Override
     public void run()
