@@ -5,7 +5,11 @@
 [![Build Status](https://drone.beatrice.wtf/api/badges/mind-overflow/HidekoBot/status.svg)](https://drone.beatrice.wtf/mind-overflow/HidekoBot) 
 [![Lines of Code](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=ncloc&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
   
-Hideko is a general-purpose Discord bot.  
+Hideko is a general-purpose Discord bot.    
+  
+## Download  
+The latest stable version is always uploaded automatically to the [Maven repository](https://nexus.beatrice.wtf/#browse/browse:maven-releases:wtf%2Fbeatrice%2Fhidekobot%2FHidekoBot).  
+You can download the JAR directly by clicking [here](https://nexus.beatrice.wtf/service/rest/v1/search/assets/download?sort=version&repository=maven-releases&maven.groupId=wtf.beatrice.hidekobot&maven.artifactId=HidekoBot&maven.extension=jar).    
   
 ## Startup
 Download a prebuilt JAR file or build it from source, then run it with:
