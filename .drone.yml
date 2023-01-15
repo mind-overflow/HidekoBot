@@ -7,13 +7,12 @@ trigger:
 
 load: yes
 
-steps:
 
   - name: maven-auth
     image: robertstettner/drone-mvn-auth
     pull: true
     servers:
-      - id: nexus
+      - id: nexus-releases
         username:
           from_secret: nexus_username
         password:
