@@ -1,6 +1,7 @@
 package wtf.beatrice.hidekobot;
 
 import org.jetbrains.annotations.Nullable;
+import org.random.util.RandomOrgRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
@@ -31,7 +32,7 @@ public class Cache
 
     // the Random instance that we should always use when looking for an RNG based thing.
     // the seed is updated periodically.
-    private static final SecureRandom randomInstance = new SecureRandom();
+    private static Random randomInstance = new SecureRandom();
 
     // map to store results of "love calculator", to avoid people re-running the same command until
     // they get what they wanted.
@@ -86,8 +87,22 @@ public class Cache
         return randomInstance;
     }
 
-    public static void setRandomSeed(long seed) {
-        randomInstance.setSeed(seed);
+    public static void initRandomOrg(String apiKey)
+    {
+        /* we use the random.org instance to generate 160 random bytes.
+        then, we're feeding those 160 bytes as a seed for a SecureRandom.
+
+        this is preferred to calling the RandomOrgRandom directly every time,
+        because it has to query the api and (1) takes a long time, especially with big
+        dice rolls, and (2) you'd run in the limits extremely quickly if the bot
+        was run publicly for everyone to use.
+         */
+
+        RandomOrgRandom randomOrg = new RandomOrgRandom(apiKey);
+        byte[] randomBytes = new byte[160];
+        randomOrg.nextBytes(randomBytes);
+
+        randomInstance = new SecureRandom(randomBytes);
     }
 
     /**
@@ -141,6 +156,10 @@ public class Cache
      */
     public static String getBotToken() {
         return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.BOT_TOKEN);
+    }
+
+    public static String getRandomOrgApiKey() {
+        return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.RANDOM_ORG_API_KEY);
     }
 
     /**

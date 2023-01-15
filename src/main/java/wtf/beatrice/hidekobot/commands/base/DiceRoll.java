@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.commands.base;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
+import org.random.util.RandomOrgRandom;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.fun.Dice;
@@ -124,6 +125,9 @@ public class DiceRoll
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
         embedBuilder.setTitle("Dice Roll");
+
+        if(Cache.getRandom() instanceof RandomOrgRandom)
+            embedBuilder.setFooter("Seed provided by Random.org");
 
         StringBuilder message = new StringBuilder();
         int total = 0;

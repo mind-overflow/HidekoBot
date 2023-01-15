@@ -7,6 +7,7 @@ public enum ConfigurationEntry
     BOT_OWNER_ID("bot-owner-id", 100000000000000000L),
     BOT_COLOR("bot-color", "PINK"),
     HEARTBEAT_LINK("heartbeat-link", "https://your-heartbeat-api.com/api/push/apikey?status=up&msg=OK&ping="),
+    RANDOM_ORG_API_KEY("random-org-api-key", "00000000-0000-0000-0000-000000000000"),
 
     ;
 

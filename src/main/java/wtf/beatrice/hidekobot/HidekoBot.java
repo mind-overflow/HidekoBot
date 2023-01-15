@@ -10,12 +10,14 @@ import sun.misc.Signal;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
+import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.*;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
+import wtf.beatrice.hidekobot.runnables.RandomOrgSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.FormatUtil;
@@ -105,6 +107,22 @@ public class HidekoBot
                 if(arg.equals("refresh")) forceUpdateCommands = true;
             }
 
+        }
+
+
+        boolean enableRandomSeedUpdaterTask = false;
+        // initialize random.org object if API key is provided
+        {
+            String apiKey = Cache.getRandomOrgApiKey();
+            if(apiKey != null &&
+                    !apiKey.isEmpty() &&
+                    !apiKey.equals(ConfigurationEntry.RANDOM_ORG_API_KEY.getDefaultValue()))
+            {
+                LOGGER.info("Enabling Random.org integration... This might take a while!");
+                Cache.initRandomOrg(apiKey);
+                enableRandomSeedUpdaterTask = true;
+                LOGGER.info("Random.org integration enabled!");
+            }
         }
 
         // register slash commands and completers
@@ -198,6 +216,11 @@ public class HidekoBot
         scheduler.scheduleAtFixedRate(heartBeatTask, 10L, 30L, TimeUnit.SECONDS); //every 30 seconds
         StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
         scheduler.scheduleAtFixedRate(statusUpdateTask, 0L, 60L * 5L, TimeUnit.SECONDS); // every 5 minutes
+        if(enableRandomSeedUpdaterTask)
+        {
+            RandomOrgSeedTask randomSeedTask = new RandomOrgSeedTask();
+            scheduler.scheduleAtFixedRate(randomSeedTask, 15L, 15L, TimeUnit.MINUTES); // every 15 minutes
+        }
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());
