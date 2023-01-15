@@ -35,17 +35,6 @@ steps:
       SONAR_LOGIN_KEY:
         from_secret: sonar_login_key
 
-  # upload to maven repository
-  - name: maven-deploy
-    image: maven:3-eclipse-temurin-16
-    commands:
-      - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V -gs settings.xml -Dmaven.repo.username=$MAVEN_REPO_USERNAME -Dmaven.repo.password=$MAVEN_REPO_PASSWORD
-    environment:
-      MAVEN_REPO_USERNAME:
-        from_secret: maven_repo_username
-      MAVEN_REPO_PASSWORD:
-        from_secret: maven_repo_password
-
 ---
 
 kind: pipeline
@@ -60,7 +49,7 @@ trigger:
 
 steps:
   # skip all previous steps because they were already ran in the "build" phase; we don't need to re-analyze the code.
-  
+
   # upload to maven repository
   - name: maven-deploy
     image: maven:3-eclipse-temurin-16
