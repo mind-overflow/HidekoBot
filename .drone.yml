@@ -14,9 +14,7 @@ steps:
     image: robertstettner/drone-mvn-auth
     pull: true
     servers:
-      - id: nexus-releases
-        username: $NEXUS_USERNAME
-        password: $NEXUS_PASSWORD
+      from_secret: maven_servers
     profiles:
       - id: default
         repositories:
