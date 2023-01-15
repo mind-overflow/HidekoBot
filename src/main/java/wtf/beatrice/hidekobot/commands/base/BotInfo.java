@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.util.FormatUtil;
+import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
@@ -48,25 +49,35 @@ public class BotInfo
         // keep track of how many total commands we have
         int commandsCount = 0;
 
-        // message commands info fields
-        StringBuilder messageCommandsInfoBuilder = new StringBuilder();
+        // message commands info field
+        String messageCommandsInfo;
         if(Cache.getMessageCommandListener() == null)
-            messageCommandsInfoBuilder.append("❌ disabled");
+            messageCommandsInfo = "❌ disabled";
         else {
-            messageCommandsInfoBuilder.append("✅ available");
+            messageCommandsInfo = "✅ available";
             commandsCount += Cache.getMessageCommandListener().getRegisteredCommands().size();
         }
-        embedBuilder.addField("Message commands", messageCommandsInfoBuilder.toString(), true);
+        embedBuilder.addField("Message commands", messageCommandsInfo, true);
 
-        // slash commands info fields
-        StringBuilder slashCommandsInfoBuilder = new StringBuilder();
+        // slash commands info field
+        String slashCommandsInfo;
         if(Cache.getMessageCommandListener() == null)
-            slashCommandsInfoBuilder.append("❌ disabled");
+            slashCommandsInfo = "❌ disabled";
         else {
-            slashCommandsInfoBuilder.append("✅ available");
+            slashCommandsInfo = "✅ available";
             commandsCount += Cache.getSlashCommandListener().getRegisteredCommands().size();
         }
-        embedBuilder.addField("Slash commands", slashCommandsInfoBuilder.toString(), true);
+        embedBuilder.addField("Slash commands", slashCommandsInfo, true);
+
+        // random.org integration field
+        String randomOrgInfo;
+        if(RandomUtil.isRandomOrgKeyValid())
+        {
+            randomOrgInfo = "✅ connected";
+        } else {
+            randomOrgInfo = "❌ disabled";
+        }
+        embedBuilder.addField("Random.org", randomOrgInfo, true);
 
         // commands count fields
         embedBuilder.addField("Total commands", "Loaded: `" + commandsCount + "`", true);
