@@ -27,7 +27,7 @@ Additionally available parameters are:
   
 ## Initial setup  
   
-Run the startup command once. The bot will generate a `config.yml` file in the directory you were when you ran it.  
+Run the startup command once. The bot will generate a `config.yml` file in your current directory (`$PWD` on GNU/Linux).  
   
 Edit the configuration file and set all values according to your needs.  
   
@@ -37,5 +37,5 @@ already set-up. The bot supports both slash commands and message commands, with 
 commands support both systems, but some of them are limited in one way or another.  
   
 The bot currently supports SQLite as a database backend. A database file will be created after the first boot
-in the same directory that you ran it. Do not delete the database file to avoid corruption and unpredictable
+in your current directory. Do not delete the database file to avoid corruption and unpredictable
 behavior.
