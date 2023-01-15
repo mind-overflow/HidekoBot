@@ -16,7 +16,6 @@ import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.*;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
-import wtf.beatrice.hidekobot.runnables.RandomSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.FormatUtil;
@@ -199,8 +198,6 @@ public class HidekoBot
         scheduler.scheduleAtFixedRate(heartBeatTask, 10L, 30L, TimeUnit.SECONDS); //every 30 seconds
         StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
         scheduler.scheduleAtFixedRate(statusUpdateTask, 0L, 60L * 5L, TimeUnit.SECONDS); // every 5 minutes
-        RandomSeedTask randomSeedTask = new RandomSeedTask();
-        scheduler.scheduleAtFixedRate(randomSeedTask, 0L, 60L, TimeUnit.SECONDS); // every minute
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());
