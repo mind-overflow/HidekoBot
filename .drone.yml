@@ -5,18 +5,24 @@ trigger:
   branch:
     - main
 
+load: yes
+
 steps:
   - name: build
     image: maven:3-eclipse-temurin-16
     commands:
-      - mvn install --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-#      - mvn javadoc:javadoc
+      - mvn package --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+
+  - name: test
+    image: maven:3-eclipse-temurin-16
+    commands:
       - mvn test -B
 
   - name: code-analysis
     image: maven:3-eclipse-temurin-16
     commands:
-      - mvn sonar:sonar --no-transfer-progress -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.login=$SONAR_LOGIN_KEY
+      - mvn sonar:sonar --no-transfer-progress -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_INSTANCE_URL} -Dsonar.login=${SONAR_LOGIN_KEY}
     environment:
       SONAR_PROJECT_KEY:
         from_secret: sonar_project_key
@@ -25,15 +31,34 @@ steps:
       SONAR_LOGIN_KEY:
         from_secret: sonar_login_key
 
-#  - name: upload-artifact
-#    image: appleboy/drone-scp
-#    settings:
-#      host:
-#        from_secret: ssh_host
-#      port: 2222
-#      username: upload
-#      password:
-#        from_secret: ssh_password
-#      source:
-#        - target/*depend*jar
-#      target: /home/upload/sftp
+  - name: maven-auth
+    image: robertstettner/drone-mvn-auth
+    pull: true
+    servers:
+      - id: nexus
+        username: ${NEXUS_USERNAME}
+        password: ${NEXUS_PASSWORD}
+    profiles:
+      - id: default
+        repositories:
+          - id: nexus-releases
+            name: Nexus Releases
+            url: https://nexus.beatrice.wtf/repository/maven-releases/
+            layout: default
+    active_profiles:
+      - default
+    when:
+      event:
+        - promote
+      target:
+        - production
+
+  - name: maven-deploy
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    when:
+      event:
+        - promote
+      target:
+        - production
