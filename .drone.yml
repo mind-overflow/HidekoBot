@@ -14,10 +14,9 @@ steps:
     pull: true
     servers:
       - id: nexus-releases
-        username:
-          from_secret: nexus_username
+        username: ${NEXUS_USERNAME}
         password:
-          from_secret: nexus_password
+          from_secret: ${NEXUS_PASSWORD}
     profiles:
       - id: default
         repositories:
