@@ -219,6 +219,16 @@ public class Cache
     }
 
     /**
+     * Get the bot's source code URL.
+     *
+     * @return a String containing the base URL of the repository, including a <b>trailing slash</b>.
+     */
+    public static String getRepositoryUrl() {
+        String url = propertiesSource.getProperty("repo.base_url");
+        return url.endsWith("/") ? url : url + "/";
+    }
+
+    /**
      * Get the bot's global color.
      *
      * @return the Color object.

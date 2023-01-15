@@ -105,9 +105,10 @@ public class BotInfo
         embedBuilder.addField("Uptime", FormatUtil.getNiceTimeDiff(Cache.getStartupTime()), true);
 
         // issue tracker field
+
+        String link = "[Issue tracker](" + Cache.getRepositoryUrl() + "issues)";
         embedBuilder.addField("Support",
-                "[Issue tracker](https://git.beatrice.wtf/bea/HidekoBot/issues)",
-                true); //todo: we should probably make this a final field in the config class
+                link, true);
 
         // bot birthday field
         embedBuilder.addField("Bot age",
