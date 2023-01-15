@@ -8,17 +8,36 @@ trigger:
 load: yes
 
 steps:
+  - name: build
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn package --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
+
+  - name: test
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn test --no-transfer-progress -B -V
+
+  - name: code-analysis
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn sonar:sonar --no-transfer-progress -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.login=$SONAR_LOGIN_KEY -B -V
+    environment:
+      SONAR_PROJECT_KEY:
+        from_secret: sonar_project_key
+      SONAR_INSTANCE_URL:
+        from_secret: sonar_instance_url
+      SONAR_LOGIN_KEY:
+        from_secret: sonar_login_key
 
   - name: maven-auth
     image: robertstettner/drone-mvn-auth
     pull: true
     servers:
       - id: nexus-releases
-        username:
-          from_secret: nexus_username
-        password:
-          from_secret: nexus_password
+        username: $NEXUS_USERNAME
+        password: $NEXUS_PASSWORD
     profiles:
       - id: default
         repositories:
