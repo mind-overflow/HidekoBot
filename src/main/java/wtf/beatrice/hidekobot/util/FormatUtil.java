@@ -15,6 +15,7 @@ public class FormatUtil
 
     // cosmetic string to print on startup.
     private static final String LOGO = """
+        
         ██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░
         ██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗
         ███████║██║██║░░██║█████╗░░█████═╝░██║░░██║
