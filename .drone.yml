@@ -24,3 +24,16 @@ steps:
         from_secret: sonar_instance_url
       SONAR_LOGIN_KEY:
         from_secret: sonar_login_key
+
+  - name: upload-artifact
+    image: appleboy/drone-scp
+    settings:
+      host:
+        from_secret: ssh_host
+      port: 2222
+      username: upload
+      password:
+        from_secret: ssh_password
+      source:
+        - target/*depend*jar
+      target: /home/upload/sftp
