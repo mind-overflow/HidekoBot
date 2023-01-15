@@ -33,6 +33,7 @@ steps:
   - name: maven-deploy
     image: maven:3-eclipse-temurin-16
     commands:
+      - cat settings.xml
       - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V -gs settings.xml
     when:
       event:
