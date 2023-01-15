@@ -8,6 +8,7 @@ import wtf.beatrice.hidekobot.objects.fun.Dice;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.UUID;
 
 public class DiceRoll
@@ -15,8 +16,8 @@ public class DiceRoll
     public static MessageResponse buildResponse(User author, String[] args)
     {
         LinkedHashMap<Dice, Integer> dicesToRoll = new LinkedHashMap<>();
-        String diceRegex = "d[0-9]+";
-        String amountRegex = "[0-9]+";
+        String diceRegex = "d\\d+";
+        String amountRegex = "\\d+";
 
         Dice currentDice = null;
         int currentAmount;
@@ -106,9 +107,12 @@ public class DiceRoll
             totalRolls = 1;
         }
 
-        for(Dice dice : dicesToRoll.keySet())
+        for(Map.Entry<Dice, Integer> entry : dicesToRoll.entrySet())
         {
-            for(int roll = 0; roll < dicesToRoll.get(dice); roll++)
+            Dice dice = entry.getKey();
+            Integer rollsToMake = entry.getValue();
+            
+            for(int roll = 0; roll < rollsToMake; roll++)
             {
                 dice.roll();
                 rolledDices.add(new Dice(dice));

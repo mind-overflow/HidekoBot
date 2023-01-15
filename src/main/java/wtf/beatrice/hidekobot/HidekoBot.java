@@ -192,13 +192,13 @@ public class HidekoBot
         // start scheduled runnables
         ScheduledExecutorService scheduler = Cache.getTaskScheduler();
         ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask();
-        scheduler.scheduleAtFixedRate(expiredMessageTask, 5, 5, TimeUnit.SECONDS); //every 5 seconds
+        scheduler.scheduleAtFixedRate(expiredMessageTask, 5L, 5L, TimeUnit.SECONDS); //every 5 seconds
         HeartBeatTask heartBeatTask = new HeartBeatTask();
-        scheduler.scheduleAtFixedRate(heartBeatTask, 10, 30, TimeUnit.SECONDS); //every 30 seconds
+        scheduler.scheduleAtFixedRate(heartBeatTask, 10L, 30L, TimeUnit.SECONDS); //every 30 seconds
         StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
-        scheduler.scheduleAtFixedRate(statusUpdateTask, 0, 60 * 5, TimeUnit.SECONDS); // every 5 minutes
+        scheduler.scheduleAtFixedRate(statusUpdateTask, 0L, 60L * 5L, TimeUnit.SECONDS); // every 5 minutes
         RandomSeedTask randomSeedTask = new RandomSeedTask();
-        scheduler.scheduleAtFixedRate(randomSeedTask, 0, 60, TimeUnit.SECONDS); // every minute
+        scheduler.scheduleAtFixedRate(randomSeedTask, 0L, 60L, TimeUnit.SECONDS); // every minute
 
         // register shutdown interrupt signal listener for proper shutdown.
         Signal.handle(new Signal("INT"), signal -> shutdown());

@@ -11,8 +11,6 @@ import java.util.LinkedHashMap;
 
 public class ConfigurationSource
 {
-
-
     private final LinkedHashMap<String, Object> configurationEntries = new LinkedHashMap<>();
     private final Logger logger;
     private final String configFilePath;

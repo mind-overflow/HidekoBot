@@ -217,7 +217,7 @@ public class Cache
     public static long getExpiryTimeSeconds() { return expiryTimeSeconds; }
 
 
-    public static String getBotName() { return botName; };
+    public static String getBotName() { return botName; }
 
     /**
      * Get the bot's version.
