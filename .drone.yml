@@ -9,14 +9,16 @@ load: yes
 
 steps:
 
+
   - name: maven-auth
     image: robertstettner/drone-mvn-auth
     pull: true
     servers:
       - id: nexus-releases
-        username: ${NEXUS_USERNAME}
+        username:
+          from_secret: nexus_username
         password:
-          from_secret: ${NEXUS_PASSWORD}
+          from_secret: nexus_password
     profiles:
       - id: default
         repositories:
@@ -35,7 +37,7 @@ steps:
   - name: maven-deploy
     image: maven:3-eclipse-temurin-16
     commands:
-      - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V -gs settings.xml
     when:
       event:
         - promote
