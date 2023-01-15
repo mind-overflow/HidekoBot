@@ -166,6 +166,7 @@ public class UserPunishment
         Duration duration = null;
 
         AuditableRestAction<Void> punishmentAction = null;
+        boolean impossible = false;
 
         try {
             switch (punishmentType) {
@@ -197,6 +198,14 @@ public class UserPunishment
                 }
             }
         } catch (RuntimeException ignored) {
+            impossible = true;
+        }
+
+        if(punishmentAction == null)
+            impossible = true;
+
+        if(impossible)
+        {
             // todo nicer looking with emojis
             return new MessageResponse("Sorry, I couldn't " + punishmentTypeName + " " + mentioned.getAsMention() + "!",
                     null);

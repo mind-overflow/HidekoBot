@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.beatrice.hidekobot.Cache;
@@ -77,11 +78,19 @@ public class TriviaCommand implements MessageCommand
 
         MessageResponse response = Trivia.generateMainScreen();
 
-        event.getMessage().replyEmbeds(response.embed()).addActionRow(response.components()).queue(message ->
-        {
-            Cache.getDatabaseSource().trackRanCommandReply(message, event.getAuthor());
-            Cache.getDatabaseSource().queueDisabling(message);
-        });
+        Message recvMessage = event.getMessage();
+        MessageCreateAction responseAction = null;
+        if(response.content() != null) responseAction = recvMessage.reply(response.content());
+        else if(response.embed() != null) responseAction = recvMessage.replyEmbeds(response.embed());
+
+        if(responseAction != null) {
+            if(response.components() != null) responseAction = responseAction.addActionRow(response.components());
+
+            responseAction.queue(message -> {
+                Cache.getDatabaseSource().trackRanCommandReply(message, event.getAuthor());
+                Cache.getDatabaseSource().queueDisabling(message);
+            });
+        }
 
 
     }

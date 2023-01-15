@@ -61,9 +61,13 @@ public class Trivia
 
     public static MessageResponse generateMainScreen()
     {
-        // todo null checks
         JSONObject categoriesJson = Trivia.fetchJson(Trivia.getCategoriesLink());
+        if(categoriesJson == null)
+            return new MessageResponse("Error fetching trivia!", null); // todo nicer with emojis
         List<TriviaCategory> categories = Trivia.parseCategories(categoriesJson);
+        if(categories.isEmpty())
+            return new MessageResponse("Error parsing trivia categories!", null); // todo nicer with emojis
+        
         categories.sort(new TriviaCategoryComparator());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
