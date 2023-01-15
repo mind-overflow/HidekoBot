@@ -2,10 +2,10 @@ package wtf.beatrice.hidekobot.commands.base;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import org.random.util.RandomOrgRandom;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.fun.Dice;
+import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -126,8 +126,8 @@ public class DiceRoll
         embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
         embedBuilder.setTitle("Dice Roll");
 
-        if(Cache.getRandom() instanceof RandomOrgRandom)
-            embedBuilder.setFooter("Seed provided by Random.org");
+        if(RandomUtil.isRandomOrgKeyValid())
+            embedBuilder.setFooter("Seed provided by random.org");
 
         StringBuilder message = new StringBuilder();
         int total = 0;

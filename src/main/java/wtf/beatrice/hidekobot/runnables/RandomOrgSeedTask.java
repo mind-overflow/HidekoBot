@@ -3,7 +3,7 @@ package wtf.beatrice.hidekobot.runnables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
+import wtf.beatrice.hidekobot.util.RandomUtil;
 
 /**
  * This runnable pulls a random seed from random.org and used it to feed a SecureRandom,
@@ -21,12 +21,10 @@ public class RandomOrgSeedTask implements Runnable
     public void run()
     {
         String apiKey = Cache.getRandomOrgApiKey();
-        if(apiKey != null &&
-                !apiKey.isEmpty() &&
-                !apiKey.equals(ConfigurationEntry.RANDOM_ORG_API_KEY.getDefaultValue()))
+        if(RandomUtil.isRandomOrgKeyValid())
         {
             if(Cache.isVerbose()) LOGGER.info("Updating Random seed from random.org...");
-            Cache.initRandomOrg(Cache.getRandomOrgApiKey());
+            RandomUtil.initRandomOrg();
             if(Cache.isVerbose()) LOGGER.info("Random.org seed updated!");
         }
     }

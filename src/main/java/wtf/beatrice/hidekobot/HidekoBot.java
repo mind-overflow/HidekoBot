@@ -10,7 +10,6 @@ import sun.misc.Signal;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
-import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
@@ -21,6 +20,7 @@ import wtf.beatrice.hidekobot.runnables.RandomOrgSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.FormatUtil;
+import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -113,13 +113,10 @@ public class HidekoBot
         boolean enableRandomSeedUpdaterTask = false;
         // initialize random.org object if API key is provided
         {
-            String apiKey = Cache.getRandomOrgApiKey();
-            if(apiKey != null &&
-                    !apiKey.isEmpty() &&
-                    !apiKey.equals(ConfigurationEntry.RANDOM_ORG_API_KEY.getDefaultValue()))
+            if(RandomUtil.isRandomOrgKeyValid())
             {
                 LOGGER.info("Enabling Random.org integration... This might take a while!");
-                Cache.initRandomOrg(apiKey);
+                RandomUtil.initRandomOrg();
                 enableRandomSeedUpdaterTask = true;
                 LOGGER.info("Random.org integration enabled!");
             }
