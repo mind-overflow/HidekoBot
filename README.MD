@@ -2,6 +2,7 @@
 [![Reliability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=reliability_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
 [![Maintainability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=sqale_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59) 
 [![Security Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=security_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
+[![Build Status](https://drone.beatrice.wtf/api/badges/mind-overflow/HidekoBot/status.svg)](https://drone.beatrice.wtf/mind-overflow/HidekoBot) 
 [![Lines of Code](https://sonar.beatrice.wtf/api/project_badges/measure?project=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59&metric=ncloc&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=mind-overflow_HidekoBot_AYWyYHsvX-1Ma0D4pJ59)
   
 Hideko is a general-purpose Discord bot.  
