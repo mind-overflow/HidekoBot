@@ -77,7 +77,12 @@ public class HidekoBot
             );
 
             jda = jdaBuilder.build().awaitReady();
-        } catch (Exception e)
+        } catch (InterruptedException e) {
+            LOGGER.error(e.getMessage()); // print the error message, omit the stack trace.
+            Thread.currentThread().interrupt(); // send interrupt to the thread.
+            shutdown(); // if we failed connecting and authenticating, then quit.
+        }
+        catch (Exception e)
         {
             LOGGER.error(e.getMessage()); // print the error message, omit the stack trace.
             shutdown(); // if we failed connecting and authenticating, then quit.

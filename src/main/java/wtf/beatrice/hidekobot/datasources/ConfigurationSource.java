@@ -47,7 +47,14 @@ public class ConfigurationSource
         if(!fsConfigFile.exists())
         {
             // try to create config file
-            try { fsConfigFile.createNewFile(); }
+            try {
+                if(!fsConfigFile.createNewFile())
+                {
+                    LOGGER.error("We tried creating a file that already exists!");
+                    HidekoBot.shutdown();
+                    return;
+                }
+            }
             catch (IOException e) {
                 LOGGER.error("Error creating configuration file!", e);
                 HidekoBot.shutdown();

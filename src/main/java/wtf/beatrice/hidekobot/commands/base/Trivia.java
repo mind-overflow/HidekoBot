@@ -67,7 +67,7 @@ public class Trivia
         List<TriviaCategory> categories = Trivia.parseCategories(categoriesJson);
         if(categories.isEmpty())
             return new MessageResponse("Error parsing trivia categories!", null); // todo nicer with emojis
-        
+
         categories.sort(new TriviaCategoryComparator());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
