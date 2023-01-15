@@ -10,7 +10,7 @@ import java.util.Objects;
 public record MessageResponse(@Nullable String content,
                               @Nullable MessageEmbed embed,
                               @Nullable ItemComponent... components) {
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
