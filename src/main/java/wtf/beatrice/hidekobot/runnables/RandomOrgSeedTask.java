@@ -20,7 +20,6 @@ public class RandomOrgSeedTask implements Runnable
     @Override
     public void run()
     {
-        String apiKey = Cache.getRandomOrgApiKey();
         if(RandomUtil.isRandomOrgKeyValid())
         {
             if(Cache.isVerbose()) LOGGER.info("Updating Random seed from random.org...");
