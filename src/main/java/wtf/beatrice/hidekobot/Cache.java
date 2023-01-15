@@ -13,6 +13,7 @@ import wtf.beatrice.hidekobot.util.Logger;
 
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Random;
@@ -29,7 +30,7 @@ public class Cache
 
     // the Random instance that we should always use when looking for an RNG based thing.
     // the seed is updated periodically.
-    private static final Random randomInstance = new Random();
+    private static final SecureRandom randomInstance = new SecureRandom();
 
     // map to store results of "love calculator", to avoid people re-running the same command until
     // they get what they wanted.
