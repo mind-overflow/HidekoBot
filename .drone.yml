@@ -27,9 +27,9 @@ steps:
 
   # check maven dependencies
   - name: dependency-check
-    image: registry.gitlab.com/gitlab-ci-utils/docker-dependency-check:latest
+    image: maven:3-eclipse-temurin-16
     commands:
-      - /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL
+      - mvn dependency-check:check --no-transfer-progress -B -V
 
   # run code analysis
   - name: code-analysis
