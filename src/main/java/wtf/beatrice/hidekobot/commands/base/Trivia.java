@@ -36,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class Trivia
 {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Trivia.class);
-    private static final String triviaLink = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
-    private static final String categoriesLink = "https://opentdb.com/api_category.php";
+    private static final String TRIVIA_API_LINK = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
+    private static final String TRIVIA_API_CATEGORIES_LINK = "https://opentdb.com/api_category.php";
 
     public static List<String> channelsRunningTrivia = new ArrayList<>();
 
@@ -47,8 +47,8 @@ public class Trivia
     // first string is the channelId, the list contain all score records for that channel
     public static HashMap<String, LinkedList<TriviaScore>> channelAndScores = new HashMap<>();
 
-    public static String getTriviaLink(int categoryId) {return triviaLink + categoryId; }
-    public static String getCategoriesLink() {return categoriesLink; }
+    public static String getTriviaLink(int categoryId) {return TRIVIA_API_LINK + categoryId; }
+    public static String getCategoriesLink() {return TRIVIA_API_CATEGORIES_LINK; }
 
     public static String getNoDMsError() {
         return "\uD83D\uDE22 Sorry! Trivia doesn't work in DMs.";

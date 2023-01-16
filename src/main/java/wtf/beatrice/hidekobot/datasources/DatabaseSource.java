@@ -16,7 +16,7 @@ public class DatabaseSource
 {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DatabaseSource.class);
-    private static final String sqliteURL = "jdbc:sqlite:%path%";
+    private static final String JDBC_URL = "jdbc:sqlite:%path%";
     private Connection dbConnection = null;
     private final String dbPath;
 
@@ -32,7 +32,7 @@ public class DatabaseSource
 
     public boolean connect()
     {
-        String url = sqliteURL.replace("%path%", dbPath);
+        String url = JDBC_URL.replace("%path%", dbPath);
 
         if(!close()) return false;
 

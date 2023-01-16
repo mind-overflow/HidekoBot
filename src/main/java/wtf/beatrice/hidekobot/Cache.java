@@ -24,7 +24,7 @@ public class Cache
 
 
     // todo: make this compatible with the message listener's regex
-    private static final String botPrefix = "hideko";
+    private static final String BOT_PREFIX = "hideko";
     private static final Logger LOGGER = LoggerFactory.getLogger(Cache.class);
 
     // map to store results of "love calculator", to avoid people re-running the same command until
@@ -38,11 +38,11 @@ public class Cache
     private static DatabaseSource databaseSource = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger = null;
-    private static final long botMaintainerId = 979809420714332260L;
-    private static final String expiryTimestampFormat = "yy/MM/dd HH:mm:ss";
+    private static final long BOT_MAINTAINER_ID = 979809420714332260L;
+    private static final String EXPIRY_TIMESTAMP_FORMAT = "yy/MM/dd HH:mm:ss";
 
     // note: discord sets interactions' expiry time to 15 minutes by default, so we can't go higher than that.
-    private static final long expiryTimeSeconds = 30L;
+    private static final long EXPIRY_TIME_SECONDS = 30L;
 
     // used to count e.g. uptime
     private static LocalDateTime startupTime = null;
@@ -53,14 +53,14 @@ public class Cache
     // the scheduler that should always be used when running a scheduled task.
     private static final ScheduledExecutorService taskScheduler = Executors.newSingleThreadScheduledExecutor(); // todo: try-with-resources
 
-    private static final String execPath = System.getProperty("user.dir");
-    private static final String botName = "Hideko";
+    private static final String EXEC_PATH = System.getProperty("user.dir");
+    private static final String BOT_NAME = "Hideko";
 
     private static SlashCommandListener slashCommandListener = null;
     private static SlashCommandCompletionListener slashCommandCompletionListener = null;
     private static MessageCommandListener messageCommandListener = null;
 
-    private static final String defaultInviteLink =
+    private static final String DEFAULT_INVITE_LINK =
             "https://discord.com/api/oauth2/authorize?client_id=%userid%&scope=bot+applications.commands&permissions=8";
 
     private static String botApplicationId = "";
@@ -137,7 +137,7 @@ public class Cache
      * @return a long of the account's id
      */
     
-    public static long getBotMaintainerId() { return botMaintainerId; }
+    public static long getBotMaintainerId() { return BOT_MAINTAINER_ID; }
 
     /**
      * Set the bot's application id.
@@ -162,7 +162,7 @@ public class Cache
      * @return a string containing the invite link
      */
     public static String getInviteUrl() {
-        return defaultInviteLink.replace("%userid%", botApplicationId);
+        return DEFAULT_INVITE_LINK.replace("%userid%", botApplicationId);
     }
 
     /**
@@ -197,17 +197,17 @@ public class Cache
      *
      * @return the String of the DateTimeFormatter format.
      */
-    public static String getExpiryTimestampFormat(){ return  expiryTimestampFormat; }
+    public static String getExpiryTimestampFormat(){ return EXPIRY_TIMESTAMP_FORMAT; }
 
     /**
      * Get the amount of seconds after which a message expires.
      *
      * @return long value of the expiry seconds.
      */
-    public static long getExpiryTimeSeconds() { return expiryTimeSeconds; }
+    public static long getExpiryTimeSeconds() { return EXPIRY_TIME_SECONDS; }
 
 
-    public static String getBotName() { return botName; }
+    public static String getBotName() { return BOT_NAME; }
 
     /**
      * Get the bot's version.
@@ -294,7 +294,7 @@ public class Cache
         return configurationSource == null ? null : (String) configurationSource.getConfigValue(ConfigurationEntry.HEARTBEAT_LINK);
     }
     //todo javadocs
-    public static String getExecPath() { return execPath; }
+    public static String getExecPath() { return EXEC_PATH; }
 
     /*private static ConfigurationSource getConfigurationSource()
     { return configurationSource; }*/
@@ -311,7 +311,7 @@ public class Cache
      *
      * @return a String of the bot's prefix.
      */
-    public static String getBotPrefix() { return botPrefix; }
+    public static String getBotPrefix() { return BOT_PREFIX; }
 
     public static void cacheLoveCalculatorValue(String userId1, String userId2, int value)
     {

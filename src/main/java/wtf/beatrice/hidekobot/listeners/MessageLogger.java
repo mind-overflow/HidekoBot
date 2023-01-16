@@ -13,8 +13,8 @@ public class MessageLogger extends ListenerAdapter
 {
     // this class only gets loaded as a listener if verbosity is set to true on startup.
 
-    private static final String guildChannelFormat = "[%guild%] [#%channel%] %user%: %message%";
-    private static final String dmFormat = "[DM] %user%: %message%";
+    private static final String GUILD_MESSAGE_LOG_FORMAT = "[%guild%] [#%channel%] %user%: %message%";
+    private static final String DIRECT_MESSAGE_LOG_FORMAT = "[DM] %user%: %message%";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageLogger.class);
 
@@ -30,13 +30,13 @@ public class MessageLogger extends ListenerAdapter
             String guildName = ((TextChannel) event.getChannel()).getGuild().getName();
             String channelName = event.getChannel().getName();
 
-            toLog = guildChannelFormat
+            toLog = GUILD_MESSAGE_LOG_FORMAT
                     .replace("%guild%", guildName)
                     .replace("%channel%", channelName);
         }
         else if(event.getChannel() instanceof PrivateChannel)
         {
-            toLog = dmFormat;
+            toLog = DIRECT_MESSAGE_LOG_FORMAT;
         }
 
         toLog = toLog
