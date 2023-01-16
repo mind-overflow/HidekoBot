@@ -148,7 +148,7 @@ public class FormatUtil
         // we won't do any sanitization, because this is a private method, and
         // we are only accessing it with things that we know for sure are already sanitized.
         unitName = unitName.toLowerCase();
-        TemporalUnit timeUnit = null;
+        TemporalUnit timeUnit;
 
         /*
         parsing table
@@ -166,6 +166,7 @@ public class FormatUtil
             case "m", "mi", "min", "minute", "minutes" -> timeUnit = ChronoUnit.MINUTES;
             case "h", "ho", "hr", "hour", "hours" -> timeUnit = ChronoUnit.HOURS;
             case "d", "day", "days" -> timeUnit = ChronoUnit.DAYS;
+            default -> timeUnit = null;
         }
 
         return timeUnit;
