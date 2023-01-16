@@ -27,9 +27,9 @@ steps:
 
   # check maven dependencies
   - name: dependency-check
-    image: maven:3-eclipse-temurin-16
+    image: nbaars/owasp-dependency-check-as-one:latest
     commands:
-      - mvn dependency-check:check --no-transfer-progress -B -V
+      - ./mvnw dependency-check:check --no-transfer-progress -B -V
 
   # run code analysis
   - name: code-analysis
