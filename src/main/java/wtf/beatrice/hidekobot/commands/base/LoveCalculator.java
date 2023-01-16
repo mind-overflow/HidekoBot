@@ -10,6 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 public class LoveCalculator
 {
+
+    private LoveCalculator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static MessageEmbed buildEmbedAndCacheResult(User author, User user1, User user2)
     {
         String userId1 = user1.getId();

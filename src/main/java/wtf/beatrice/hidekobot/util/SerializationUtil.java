@@ -10,6 +10,10 @@ import java.util.List;
 public class SerializationUtil
 {
 
+    private SerializationUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static <T> String serializeBase64(List<T> dataList) {
 
         try (ByteArrayOutputStream bo = new ByteArrayOutputStream();

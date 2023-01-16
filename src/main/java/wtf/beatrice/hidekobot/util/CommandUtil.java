@@ -27,6 +27,10 @@ public class CommandUtil
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtil.class);
 
+    private CommandUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Function to delete a message when a user clicks the "delete" button attached to that message.
      * This will check in the database if that user ran the command originally.

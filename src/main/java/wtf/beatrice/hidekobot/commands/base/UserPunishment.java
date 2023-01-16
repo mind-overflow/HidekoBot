@@ -27,6 +27,10 @@ import java.util.concurrent.TimeUnit;
 public class UserPunishment
 {
 
+    private UserPunishment() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static final Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
     private static final Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
 

@@ -10,6 +10,10 @@ import java.util.Random;
 public class RandomUtil
 {
 
+    private RandomUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     // the Random instance that we should always use when looking for an RNG based thing.
     // the seed is updated periodically, if the random.org integration is enabled.
     private static Random randomInstance = new SecureRandom();

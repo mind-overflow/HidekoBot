@@ -10,6 +10,10 @@ import wtf.beatrice.hidekobot.HidekoBot;
 public class Invite
 {
 
+    private Invite() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static MessageEmbed generateEmbed()
     {
         EmbedBuilder embedBuilder = new EmbedBuilder();

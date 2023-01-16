@@ -25,6 +25,10 @@ import java.util.List;
 public class UrbanDictionary
 {
 
+    private UrbanDictionary() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static LinkedList<String> getCommandLabels()
     { return new LinkedList<>(Arrays.asList("urban", "urbandictionary", "ud")); }
 

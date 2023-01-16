@@ -8,6 +8,11 @@ import wtf.beatrice.hidekobot.objects.MessageResponse;
 
 public class ProfileImage
 {
+
+    private ProfileImage() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static int parseResolution(int resolution)
     {
         int[] acceptedSizes = Cache.getSupportedAvatarResolutions();

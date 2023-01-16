@@ -35,6 +35,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Trivia
 {
+
+    private Trivia() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Trivia.class);
     private static final String TRIVIA_API_LINK = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
     private static final String TRIVIA_API_CATEGORIES_LINK = "https://opentdb.com/api_category.php";

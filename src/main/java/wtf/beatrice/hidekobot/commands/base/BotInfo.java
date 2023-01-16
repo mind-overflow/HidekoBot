@@ -13,6 +13,10 @@ import java.util.List;
 
 public class BotInfo
 {
+    private BotInfo() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static MessageEmbed generateEmbed(List<String> commandLabels)
     {
         EmbedBuilder embedBuilder = new EmbedBuilder();

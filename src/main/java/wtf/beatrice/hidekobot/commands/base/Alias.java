@@ -6,6 +6,10 @@ import java.util.LinkedList;
 
 public class Alias
 {
+    private Alias() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String generateNiceAliases(MessageCommand command)
     {
         LinkedList<String> aliases = command.getCommandLabels();

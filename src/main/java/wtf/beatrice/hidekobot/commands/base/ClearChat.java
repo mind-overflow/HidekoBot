@@ -14,6 +14,9 @@ import java.util.List;
 
 public class ClearChat
 {
+    private ClearChat() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String getLabel() {
         return "clear";

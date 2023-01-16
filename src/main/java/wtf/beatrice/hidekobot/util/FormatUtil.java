@@ -12,6 +12,9 @@ import java.util.Arrays;
 public class FormatUtil
 {
 
+    private FormatUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     // cosmetic string to print on startup.
     private static final String LOGO = """

@@ -14,6 +14,10 @@ import java.util.List;
 public class MagicBall
 {
 
+    private MagicBall() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static LinkedList<String> getLabels()
     {
         return new LinkedList<>(Arrays.asList("8ball", "8b", "eightball", "magicball"));

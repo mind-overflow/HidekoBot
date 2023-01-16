@@ -14,6 +14,11 @@ import java.util.UUID;
 
 public class DiceRoll
 {
+
+    private DiceRoll() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static MessageResponse buildResponse(User author, String[] args)
     {
         LinkedHashMap<Dice, Integer> dicesToRoll = new LinkedHashMap<>();

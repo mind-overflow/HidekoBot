@@ -14,6 +14,9 @@ import java.util.List;
 public class CoinFlip
 {
 
+    private CoinFlip() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Button getReflipButton() {
         return Button.primary("coinflip_reflip", "Flip again")

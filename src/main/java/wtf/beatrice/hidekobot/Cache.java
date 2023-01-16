@@ -22,6 +22,10 @@ import java.util.concurrent.ScheduledExecutorService;
 public class Cache
 {
 
+    private Cache() {
+        throw new IllegalStateException("Utility class");
+    }
+
 
     // todo: make this compatible with the message listener's regex
     private static final String BOT_PREFIX = "hideko";
