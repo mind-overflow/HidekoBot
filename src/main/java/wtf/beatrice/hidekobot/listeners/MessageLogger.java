@@ -25,9 +25,9 @@ public class MessageLogger extends ListenerAdapter
         String userName = event.getAuthor().getAsTag();
         String message = event.getMessage().getContentDisplay();
 
-        if(event.getChannel() instanceof TextChannel)
+        if(event.getChannel() instanceof TextChannel channel)
         {
-            String guildName = ((TextChannel) event.getChannel()).getGuild().getName();
+            String guildName = channel.getGuild().getName();
             String channelName = event.getChannel().getName();
 
             toLog = GUILD_MESSAGE_LOG_FORMAT
