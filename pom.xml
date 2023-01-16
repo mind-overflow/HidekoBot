@@ -150,7 +150,9 @@
                         <format>html</format>
                         <format>json</format>
                     </formats>
-                    <suppressionFiles>suppressions.xml</suppressionFiles>
+                    <suppressionFiles>
+                        <suppressionFile>suppressions.xml</suppressionFile>
+                    </suppressionFiles>
                 </configuration>
             </plugin>
 
