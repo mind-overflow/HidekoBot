@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.Signal;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
@@ -225,7 +224,7 @@ public class HidekoBot
         }
 
         // register shutdown interrupt signal listener for proper shutdown.
-        Signal.handle(new Signal("INT"), signal -> shutdown());
+        Runtime.getRuntime().addShutdownHook(new Thread(HidekoBot::shutdown));
 
         // set startup time.
         Cache.setStartupTime(LocalDateTime.now());
@@ -248,7 +247,5 @@ public class HidekoBot
     {
         LOGGER.warn("WARNING! Shutting down!");
         if(jda != null) jda.shutdown();
-        System.exit(0);
     }
-
 }
