@@ -12,7 +12,7 @@
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
+        <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml</sonar.dependencyCheck.xmlReportPath>
         <sonar.dependencyCheck.summarize>true</sonar.dependencyCheck.summarize>
     </properties>
 
@@ -146,7 +146,7 @@
                 <version>8.0.0</version>
                 <configuration>
                     <formats>
-                        <format>json</format>
+                        <format>xml</format>
                     </formats>
                 </configuration>
             </plugin>
