@@ -25,6 +25,12 @@ steps:
     commands:
       - mvn test --no-transfer-progress -B -V
 
+  # check maven dependencies
+  - name: dependency-check
+    image: maven:3-eclipse-temurin-16
+    commands:
+      - mvn dependency-check:check --no-transfer-progress -B -V
+
   # run code analysis
   - name: code-analysis
     image: maven:3-eclipse-temurin-16

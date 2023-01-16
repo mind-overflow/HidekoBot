@@ -12,6 +12,9 @@
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
+        <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
+        <sonar.dependencyCheck.summarize>true</sonar.dependencyCheck.summarize>
     </properties>
 
     <dependencies>
@@ -136,6 +139,18 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.1.2184</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>8.0.0</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>json</format>
+                    </formats>
+                </configuration>
             </plugin>
 
         </plugins>
