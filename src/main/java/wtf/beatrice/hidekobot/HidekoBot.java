@@ -224,7 +224,7 @@ public class HidekoBot
         }
 
         // register shutdown interrupt signal listener for proper shutdown.
-        Runtime.getRuntime().addShutdownHook(new Thread(HidekoBot::shutdown));
+        Runtime.getRuntime().addShutdownHook(new Thread(HidekoBot::preShutdown));
 
         // set startup time.
         Cache.setStartupTime(LocalDateTime.now());
@@ -245,7 +245,14 @@ public class HidekoBot
 
     public static void shutdown()
     {
+        preShutdown();
+        System.exit(0);
+    }
+
+    private static void preShutdown()
+    {
         LOGGER.warn("WARNING! Shutting down!");
         if(jda != null) jda.shutdown();
     }
+
 }
