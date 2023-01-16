@@ -178,7 +178,7 @@ public class DatabaseSource {
 
     public ChannelType getTrackedMessageChannelType(String messageId) {
         String query = """
-                ""SELECT channel_type
+                SELECT channel_type
                 FROM command_runners
                 WHERE message_id = ?;
                 """;
@@ -202,7 +202,7 @@ public class DatabaseSource {
 
     public String getTrackedReplyUserId(String messageId) {
         String query = """
-                ""SELECT user_id
+                SELECT user_id
                 FROM command_runners
                 WHERE message_id = ?;
                 """;
