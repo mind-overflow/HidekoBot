@@ -11,10 +11,7 @@ import wtf.beatrice.hidekobot.commands.base.Alias;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class HelpCommand implements MessageCommand
 {
@@ -82,10 +79,11 @@ public class HelpCommand implements MessageCommand
                             "\nYou will find a list of commands organized in categories below.",
                     false);
 
-            for(CommandCategory category : commandCategories.keySet())
+            for(Map.Entry<CommandCategory, LinkedList<MessageCommand>> entry : commandCategories.entrySet())
             {
                 StringBuilder commandsList = new StringBuilder();
-                LinkedList<MessageCommand> commandsOfThisCategory = commandCategories.get(category);
+                CommandCategory category = entry.getKey();
+                LinkedList<MessageCommand> commandsOfThisCategory = entry.getValue();
 
                 for(int pos = 0; pos < commandsOfThisCategory.size(); pos++)
                 {

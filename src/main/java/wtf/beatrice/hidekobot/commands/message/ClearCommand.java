@@ -52,8 +52,6 @@ public class ClearCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        String senderId = event.getMessage().getAuthor().getId();
-
         // check if user is trying to run command in dms.
         String error = ClearChat.checkDMs(event.getChannel());
         if (error != null) {

@@ -11,7 +11,6 @@ import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import wtf.beatrice.hidekobot.objects.comparators.MessageCommandAliasesComparator;
-import wtf.beatrice.hidekobot.util.Logger;
 
 import java.util.*;
 
@@ -20,13 +19,13 @@ public class MessageCommandListener extends ListenerAdapter
 
     // map storing command labels and command object alphabetically.
     private final TreeMap<LinkedList<String>, MessageCommand> registeredCommands =
-            new TreeMap<LinkedList<String>, MessageCommand>(new MessageCommandAliasesComparator());
+            new TreeMap<>(new MessageCommandAliasesComparator());
 
     // map commands and their categories.
     // this is not strictly needed but it's better to have it so we avoid looping every time we need to check the cat.
     LinkedHashMap<CommandCategory, LinkedList<MessageCommand>> commandCategories = new LinkedHashMap<>();
 
-    private final String commandRegex = "(?i)^(hideko|hde)\\b";
+    private static final String COMMAND_REGEX = "(?i)^(hideko|hde)\\b";
     // (?i) -> case insensitive flag
     // ^ -> start of string (not in middle of a sentence)
     // \b -> the word has to end here
@@ -39,12 +38,14 @@ public class MessageCommandListener extends ListenerAdapter
 
     public MessageCommand getRegisteredCommand(String label)
     {
-        for(LinkedList<String> aliases : registeredCommands.keySet())
+        for(Map.Entry<LinkedList<String>, MessageCommand> entry : registeredCommands.entrySet())
         {
+            LinkedList<String> aliases = entry.getKey();
+
             for(String currentAlias : aliases)
             {
                 if(label.equals(currentAlias))
-                { return registeredCommands.get(aliases); }
+                { return entry.getValue(); }
             }
         }
 
@@ -53,9 +54,6 @@ public class MessageCommandListener extends ListenerAdapter
 
     public LinkedList<MessageCommand> getRegisteredCommands()
     { return new LinkedList<>(registeredCommands.values()); }
-
-
-    private final Logger logger = new Logger(MessageCommandListener.class);
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
@@ -67,11 +65,11 @@ public class MessageCommandListener extends ListenerAdapter
         String eventMessage = event.getMessage().getContentRaw();
 
         // check if the sent message matches the bot activation regex (prefix, name, ...)
-        if(!eventMessage.toLowerCase().matches("(?s)" + commandRegex + ".*"))
+        if(!eventMessage.toLowerCase().matches("(?s)" + COMMAND_REGEX + ".*"))
             return;
 
         // generate args from the string
-        String argsString = eventMessage.replaceAll(commandRegex + "\\s*", "");
+        String argsString = eventMessage.replaceAll(COMMAND_REGEX + "\\s*", "");
 
 
         // if no args were specified apart from the bot prefix
@@ -115,16 +113,13 @@ public class MessageCommandListener extends ListenerAdapter
             {
                 Member member = event.getMember();
                 GuildChannel channel = event.getGuildChannel(); //todo: what about forum post
-                if(member != null)
+                if(member != null && !member.hasPermission(channel, requiredPermissions))
                 {
-                    if(!member.hasPermission(channel, requiredPermissions))
-                    {
-                        event.getMessage()
-                                .reply("You do not have permissions to run this command!")
-                                .queue(); // todo prettier
-                        // todo: queue message deletion in 15 seconds or so
-                        return;
-                    }
+                    event.getMessage()
+                            .reply("You do not have permissions to run this command!")
+                            .queue(); // todo prettier
+                    // todo: queue message deletion in 15 seconds or so
+                    return;
 
                 }
             }

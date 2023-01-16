@@ -70,7 +70,9 @@ public class FormatUtil
             if(hours == 0)
             {
                 if(minutes == 0)
-                {} else { // i know this if has an empty body but i feel like this reads better
+                {
+                    // empty code block because it makes the code easier to read
+                } else {
                     uptimeStringBuilder.append(minutes).append("m ");
                 }
             } else {

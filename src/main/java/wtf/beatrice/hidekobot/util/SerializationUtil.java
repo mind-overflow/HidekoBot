@@ -10,7 +10,7 @@ import java.util.List;
 public class SerializationUtil
 {
 
-    public static String serializeBase64(List dataList) {
+    public static <T> String serializeBase64(List<T> dataList) {
 
         try (ByteArrayOutputStream bo = new ByteArrayOutputStream();
              ObjectOutputStream so = new ObjectOutputStream(bo)) {
@@ -23,7 +23,7 @@ public class SerializationUtil
         }
     }
 
-    public static LinkedList deserializeBase64(String dataStr) {
+    public static <T> LinkedList<T> deserializeBase64(String dataStr) {
 
         byte[] b = Base64.getDecoder().decode(dataStr);
         ByteArrayInputStream bi = new ByteArrayInputStream(b);

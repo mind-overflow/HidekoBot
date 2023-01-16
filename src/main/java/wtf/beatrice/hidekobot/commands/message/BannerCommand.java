@@ -70,6 +70,7 @@ public class BannerCommand implements MessageCommand
                 resFound = true;
                 break;
             } catch (NumberFormatException ignored) {
+                // ignored because we're running a check after this block
             }
         }
 

@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Deprecated
-public class Logger
+@Deprecated(since = "0.5.16", forRemoval = true)
+public class Logger<T>
 {
 
     // objects that we need to have for a properly formatted message
@@ -17,7 +17,7 @@ public class Logger
 
 
     // when initializing a new logger, save variables in that instance
-    public Logger(Class logClass)
+    public Logger(Class<T> logClass)
     {
         className = logClass.getSimpleName();
     }

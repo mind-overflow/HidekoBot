@@ -9,6 +9,7 @@ import wtf.beatrice.hidekobot.HidekoBot;
 
 import java.io.*;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ConfigurationSource
 {
@@ -94,15 +95,18 @@ public class ConfigurationSource
             // create a new mixed map that will take existing values from the non-missing keys
             // and fill everything else with the default values
             LinkedHashMap<String, Object> filledEntries = new LinkedHashMap<>();
-            for(String key : internalConfigContents.keySet())
+
+            for(Map.Entry<String, Object> entry : internalConfigContents.entrySet())
             {
+                String key = entry.getKey();
+
                 if(fsConfigContents.containsKey(key))
                 {
                     // if the key already exists, copy the original value
                     filledEntries.put(key, fsConfigContents.get(key));
                 } else {
                     // else, copy the value from the example config file
-                    filledEntries.put(key, internalConfigContents.get(key));
+                    filledEntries.put(key, entry.getValue());
                 }
             }
 

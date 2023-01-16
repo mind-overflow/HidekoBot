@@ -263,10 +263,10 @@ public class UrbanDictionary
                             htmlContributor.indexOf("</a>") + 4);
 
                     contributorsNames.add(htmlContributorName
-                            .replaceAll("<.*?>", "")); // remove all html tags;
+                            .replaceAll("<.*?>", "")); // remove all html tags
 
                     submissionDates.add(htmlSubmitDate
-                            .replaceAll("<.*?>", "")); // remove all html tags;
+                            .replaceAll("<.*?>", "")); // remove all html tags
                 }
             }
 

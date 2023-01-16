@@ -33,13 +33,16 @@ public class DiceRollCommand implements MessageCommand
 
     @NotNull
     @Override
-    public String getDescription() {
-        return "Roll dice. You can roll multiple dice at the same time." +
-                "\nExamples:" +
-                "\n - `d8 10` to roll an 8-sided die 10 times." +
-                "\n - `d12 3 d5 10` to roll a 12-sided die 3 times, and then a 5-sided die 10 times." +
-                "\n - `30` to roll a standard 6-sided die 30 times." +
-                "\n - `d10` to roll a 10-sided die once.";
+    public String getDescription()
+    {
+        return """
+                Roll dice. You can roll multiple dice at the same time.
+                Examples:
+                 - `d8 10` to roll an 8-sided die 10 times.
+                 - `d12 3 d5 10` to roll a 12-sided die 3 times, and then a 5-sided die 10 times.
+                 - `30` to roll a standard 6-sided die 30 times.
+                 - `d10` to roll a 10-sided die once.
+                """;
     }
 
     @Nullable
