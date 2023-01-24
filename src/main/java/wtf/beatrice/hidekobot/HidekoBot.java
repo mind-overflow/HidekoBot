@@ -94,9 +94,9 @@ public class HidekoBot
         // store if we have to force refresh commands despite no apparent changes.
         boolean forceUpdateCommands = false;
 
-        // if there is more than 1 arg, then iterate through them because we have additional things to do.
+        // if there is at least one arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
-        if(args.length > 1) {
+        if(args.length > 0) {
             List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
 
