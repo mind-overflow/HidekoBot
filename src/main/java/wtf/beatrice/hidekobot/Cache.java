@@ -98,20 +98,16 @@ public class Cache
     {
         verbose = v;
 
+        if(verbosityLogger != null)
+        {
+            HidekoBot.getAPI().removeEventListener(verbosityLogger);
+            verbosityLogger = null;
+        }
+
         if(v)
         {
-            if(verbosityLogger == null)
-            {
-                verbosityLogger = new MessageLogger();
-            }
-
+            verbosityLogger = new MessageLogger();
             HidekoBot.getAPI().addEventListener(verbosityLogger);
-        } else {
-            if(verbosityLogger != null)
-            {
-                HidekoBot.getAPI().removeEventListener(verbosityLogger);
-                verbosityLogger = null;
-            }
         }
     }
 
