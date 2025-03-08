@@ -42,7 +42,7 @@ public class ExpiredMessageTask implements Runnable {
             if(Cache.isVerbose()) LOGGER.info("expired check: {}", messageId);
 
             String expiryTimestamp = databaseSource.getQueuedExpiringMessageExpiryDate(messageId);
-            if(expiryTimestamp == null || expiryTimestamp.equals("")) // if missing timestamp
+            if(expiryTimestamp == null || expiryTimestamp.isEmpty()) // if missing timestamp
             {
                 // count it as already expired
                 databaseSource.untrackExpiredMessage(messageId);

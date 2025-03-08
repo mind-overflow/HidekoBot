@@ -18,14 +18,14 @@ public class FormatUtil
 
     // cosmetic string to print on startup.
     private static final String LOGO = """
-        
+   \s
         ██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░
         ██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗
         ███████║██║██║░░██║█████╗░░█████═╝░██║░░██║
         ██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║
         ██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝
         ╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░
-    """;
+   \s""";
 
 
     /**
@@ -60,36 +60,26 @@ public class FormatUtil
      *
      * @return the formatted String
      */
-    public static String getNiceDuration(Duration duration)
-    {
-        long seconds = duration.toSecondsPart();
-        long minutes = duration.toMinutesPart();
-        long hours = duration.toHoursPart();
+    public static String getNiceDuration(Duration duration) {
         long days = duration.toDays();
+        long hours = duration.toHoursPart();
+        long minutes = duration.toMinutesPart();
+        long seconds = duration.toSecondsPart();
 
-        StringBuilder uptimeStringBuilder = new StringBuilder();
-        if(days == 0)
-        {
-            if(hours == 0)
-            {
-                if(minutes == 0)
-                {
-                    // empty code block because it makes the code easier to read
-                } else {
-                    uptimeStringBuilder.append(minutes).append("m ");
-                }
-            } else {
-                uptimeStringBuilder.append(hours).append("h ");
-                uptimeStringBuilder.append(minutes).append("m ");
-            }
-        } else {
-            uptimeStringBuilder.append(days).append("d ");
-            uptimeStringBuilder.append(hours).append("h ");
-            uptimeStringBuilder.append(minutes).append("m ");
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) {
+            sb.append(days).append("d ");
+            sb.append(hours).append("h ");
+            sb.append(minutes).append("m ");
+        } else if (hours > 0) {
+            sb.append(hours).append("h ");
+            sb.append(minutes).append("m ");
+        } else if (minutes > 0) {
+            sb.append(minutes).append("m ");
         }
-        uptimeStringBuilder.append(seconds).append("s ");
+        sb.append(seconds).append("s");
 
-        return uptimeStringBuilder.toString();
+        return sb.toString();
     }
 
     /**
