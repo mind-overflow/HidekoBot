@@ -6,7 +6,7 @@
 
     <groupId>wtf.beatrice.hidekobot</groupId>
     <artifactId>HidekoBot</artifactId>
-    <version>0.6.1-SNAPSHOT</version>
+    <version>0.6.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.41.2.2</version>
+            <version>3.49.1.0</version>
         </dependency>
 
         <!-- Dependency used for YAML configuration files -->
