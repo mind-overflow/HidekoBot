@@ -11,7 +11,7 @@ public class Logger<T>
 {
 
     // objects that we need to have for a properly formatted message
-    private String className;
+    private final String className;
     private final String format = "[%date% %time%] [%class%] %message%";
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");

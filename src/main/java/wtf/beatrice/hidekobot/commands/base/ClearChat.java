@@ -81,11 +81,9 @@ public class ClearChat
             // set how many messages to delete for this iteration (usually <limit> unless there's a remainder)
             int iterationSize = limit;
 
-            // if we are at the last iteration...
-            if(iteration+1 == iterations)
-            {
-                // check if we have <limit> or fewer messages to delete
-                if(remainder != 0) iterationSize = remainder;
+            // if we are at the last iteration... check if we have <limit> or fewer messages to delete
+            if(iteration+1 == iterations && remainder != 0) {
+                iterationSize = remainder;
             }
 
             if(iterationSize == 1)
@@ -112,19 +110,19 @@ public class ClearChat
                     outOfBounds = true;
                 } else {
                     // before deleting, we need to grab the <previous to the oldest> message's id for next iteration.
-                    action = channel.getHistoryBefore(messages.get(messages.size() - 1).getIdLong(), 1);
+                    action = channel.getHistoryBefore(messages.getLast().getIdLong(), 1);
 
                     List<Message> previousMessage = action.complete().getRetrievedHistory();
 
                     // if that message exists (we are not out of bounds)... store it
-                    if(!previousMessage.isEmpty()) messageId = previousMessage.get(0).getIdLong();
+                    if(!previousMessage.isEmpty()) messageId = previousMessage.getFirst().getIdLong();
                     else outOfBounds = true;
                 }
 
                 // queue messages for deletion
                 if(messages.size() == 1)
                 {
-                    messages.get(0).delete().queue();
+                    messages.getFirst().delete().queue();
                 }
                 else if(!messages.isEmpty())
                 {
