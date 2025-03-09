@@ -29,7 +29,10 @@ steps:
   - name: dependency-check
     image: maven:3-eclipse-temurin-21
     commands:
-      - mvn dependency-check:check --no-transfer-progress -B -V
+      - mvn dependency-check:check --no-transfer-progress -B -V -DnvdApiKey=$NVD_API_KEY
+    environment:
+      NVD_API_KEY:
+        from_secret: nvd_api_key
 
   # run code analysis
   - name: code-analysis

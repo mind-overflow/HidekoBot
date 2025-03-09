@@ -147,6 +147,7 @@
                 <version>12.1.0</version>
                 <configuration>
                     <failBuildOnCVSS>8</failBuildOnCVSS>
+                    <nvdApiKey>${nvdApiKey}</nvdApiKey>
                     <formats>
                         <format>html</format>
                         <format>json</format>
