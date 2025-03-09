@@ -22,7 +22,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.3</version>
+            <version>5.3.0</version>
         </dependency>
         <!-- JDA depends on SLF4J for logging -->
         <dependency>
@@ -147,6 +147,7 @@
                 <version>12.1.0</version>
                 <configuration>
                     <failBuildOnCVSS>8</failBuildOnCVSS>
+                    <!--suppress UnresolvedMavenProperty -->
                     <nvdApiKey>${nvdApiKey}</nvdApiKey>
                     <formats>
                         <format>html</format>
