@@ -23,7 +23,7 @@ Additionally available parameters are:
   - **verbose**: log every message that the bot receives, plus additional debugging messages. Very spammy and performance heavy.
   - **refresh**: force refresh the slash commands. This is useful in case there was a simple update to a command that did not drastically change it, so no changes are found at bootup (eg: fixing a typo in the command description).
 
-*Note: Java 16 or later is required.*
+*Note: Java 21 or later is required.*
   
 ## Initial setup  
   
