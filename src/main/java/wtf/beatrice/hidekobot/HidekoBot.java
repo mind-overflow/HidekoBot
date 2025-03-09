@@ -187,8 +187,10 @@ public class HidekoBot
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> // todo: try-with-resources
-                CommandUtil.updateSlashCommands(finalForceUpdateCommands), 1, TimeUnit.SECONDS);
+        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+            executor.schedule(() -> CommandUtil.updateSlashCommands(finalForceUpdateCommands),
+                    1, TimeUnit.SECONDS);
+        }
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);

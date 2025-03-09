@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Deprecated(since = "0.5.16", forRemoval = true)
@@ -49,7 +50,9 @@ public class Logger<T>
     {
         // create a new scheduled executor with an anonymous runnable...
         //... after waiting <delay> seconds.
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> log(message), delay, TimeUnit.SECONDS);
+        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+            executor.schedule(() -> log(message), delay, TimeUnit.SECONDS);
+        }
 
     }
 

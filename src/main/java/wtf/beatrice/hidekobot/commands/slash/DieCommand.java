@@ -10,6 +10,7 @@ import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class DieCommand extends SlashCommandImpl
@@ -28,7 +29,9 @@ public class DieCommand extends SlashCommandImpl
             event.reply("Sorry, only the bot owner can run this command!").setEphemeral(true).queue();
         } else {
             event.reply("Going to sleep! Cya ✨").queue();
-            Executors.newSingleThreadScheduledExecutor().schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
+            try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+                executor.schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
+            }
         }
     }
 }
