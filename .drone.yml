@@ -1,9 +1,6 @@
 kind: pipeline
-type: docker
+type: kubernetes
 name: build
-platform:
-  os: linux
-  arch: arm64
 
 trigger:
   branch:
@@ -51,13 +48,9 @@ steps:
         from_secret: sonar_login_key
 
 ---
-
 kind: pipeline
-type: docker
+type: kubernetes
 name: deploy
-platform:
-  os: linux
-  arch: arm64
 
 trigger:
   event:
