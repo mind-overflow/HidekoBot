@@ -1,6 +1,8 @@
 kind: pipeline
 type: kubernetes
 name: build
+node_selector:
+  kubernetes.io/arch: arm64
 
 trigger:
   branch:
@@ -51,6 +53,8 @@ steps:
 kind: pipeline
 type: kubernetes
 name: deploy
+node_selector:
+  kubernetes.io/arch: arm64
 
 trigger:
   event:
