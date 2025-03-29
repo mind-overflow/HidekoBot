@@ -160,6 +160,7 @@
                     <failBuildOnCVSS>8</failBuildOnCVSS>
                     <!--suppress UnresolvedMavenProperty -->
                     <nvdApiKey>${nvdApiKey}</nvdApiKey>
+                    <knownExploitedUrl>https://raw.githubusercontent.com/EugenMayer/cisa-known-exploited-mirror/main/known_exploited_vulnerabilities.json</knownExploitedUrl>
                     <formats>
                         <format>html</format>
                         <format>json</format>
