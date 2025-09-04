@@ -14,7 +14,8 @@ import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 public class BannerCommand extends SlashCommandImpl
 {
     @Override
-    public CommandData getSlashCommandData() {
+    public CommandData getSlashCommandData()
+    {
         return Commands.slash("banner", "Get someone's profile banner.")
                 .addOption(OptionType.USER, "user", "User you want to grab the banner of.")
                 .addOption(OptionType.INTEGER, "size", "The size of the returned image.",
@@ -32,26 +33,28 @@ public class BannerCommand extends SlashCommandImpl
         int resolution;
 
         OptionMapping userArg = event.getOption("user");
-        if(userArg != null)
+        if (userArg != null)
         {
             user = userArg.getAsUser();
-        } else {
+        } else
+        {
             user = event.getUser();
         }
 
         OptionMapping sizeArg = event.getOption("size");
-        if(sizeArg != null)
+        if (sizeArg != null)
         {
             resolution = ProfileImage.parseResolution(sizeArg.getAsInt());
-        } else {
+        } else
+        {
             resolution = ProfileImage.parseResolution(512);
         }
 
         MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.BANNER);
-        if(response.content() != null)
+        if (response.content() != null)
         {
             event.getHook().editOriginal(response.content()).queue();
-        } else if(response.embed() != null)
+        } else if (response.embed() != null)
         {
             event.getHook().editOriginalEmbeds(response.embed()).queue();
         }

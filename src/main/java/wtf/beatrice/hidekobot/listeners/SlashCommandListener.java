@@ -21,17 +21,21 @@ public class SlashCommandListener extends ListenerAdapter
     }
 
     public SlashCommand getRegisteredCommand(String label)
-    { return registeredCommands.get(label); }
+    {
+        return registeredCommands.get(label);
+    }
 
     public LinkedList<SlashCommand> getRegisteredCommands()
-    { return new LinkedList<>(registeredCommands.values()); }
+    {
+        return new LinkedList<>(registeredCommands.values());
+    }
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event)
     {
         String commandName = event.getName().toLowerCase();
         SlashCommand command = registeredCommands.get(commandName);
-        if(command == null) return;
+        if (command == null) return;
 
 
         // finally run the command, in a new thread to avoid locking the main one.

@@ -9,10 +9,12 @@ import java.util.Objects;
 
 public record MessageResponse(@Nullable String content,
                               @Nullable MessageEmbed embed,
-                              @Nullable ItemComponent... components) {
+                              @Nullable ItemComponent... components)
+{
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageResponse response = (MessageResponse) o;
@@ -22,14 +24,16 @@ public record MessageResponse(@Nullable String content,
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int result = Objects.hash(content, embed);
         result = 31 * result + Arrays.hashCode(components);
         return result;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "MessageResponse{" +
                 "content=" + content +
                 ", embed=" + embed +

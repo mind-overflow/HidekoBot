@@ -52,12 +52,12 @@ public class TriviaTask implements Runnable
     public void run()
     {
 
-        if(previousMessage != null)
+        if (previousMessage != null)
         {
             // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
             CommandUtil.disableExpired(previousMessage.getId());
 
-            String previousCorrectAnswer = questions.get(iteration-1).correctAnswer();
+            String previousCorrectAnswer = questions.get(iteration - 1).correctAnswer();
 
             // we need this to be thread-locking to avoid getting out of sync with the rest of the trivia features
             previousMessage.reply("The correct answer was: **" + previousCorrectAnswer + "**!").complete();
@@ -67,7 +67,7 @@ public class TriviaTask implements Runnable
             Trivia.channelAndWhoResponded.put(previousMessage.getChannel().getId(), new ArrayList<>());
         }
 
-        if(iteration >= questions.size())
+        if (iteration >= questions.size())
         {
 
             String scoreboardText = "\uD83D\uDC23 Trivia session is over!";
@@ -77,28 +77,30 @@ public class TriviaTask implements Runnable
             StringBuilder othersBuilder = new StringBuilder();
 
             LinkedList<TriviaScore> triviaScores = Trivia.channelAndScores.get(channel.getId());
-            if(triviaScores == null) triviaScores = new LinkedList<>();
+            if (triviaScores == null) triviaScores = new LinkedList<>();
             else triviaScores.sort(new TriviaScoreComparator());
 
             int pos = 0;
             Integer previousScore = null;
-            for(TriviaScore triviaScore : triviaScores)
+            for (TriviaScore triviaScore : triviaScores)
             {
-                if(pos > 10) break; // cap at top 10
+                if (pos > 10) break; // cap at top 10
 
                 String user = triviaScore.getUser().getAsMention();
                 int score = triviaScore.getScore();
-                if(previousScore == null)
+                if (previousScore == null)
                 {
                     previousScore = score;
                     topScore = score;
                     pos = 1;
-                } else {
-                    if(score != previousScore) pos++;
+                } else
+                {
+                    if (score != previousScore) pos++;
                 }
 
-                if(pos == 1) winners.add(user);
-                else {
+                if (pos == 1) winners.add(user);
+                else
+                {
                     othersBuilder.append("\n").append(pos)
                             .append(" | ").append(user)
                             .append(": ").append(score).append(" points");
@@ -106,14 +108,15 @@ public class TriviaTask implements Runnable
             }
 
             StringBuilder winnersBuilder = new StringBuilder();
-            for(int i = 0; i < winners.size(); i++)
+            for (int i = 0; i < winners.size(); i++)
             {
                 String winner = winners.get(i);
                 winnersBuilder.append(winner);
-                if(i + 1 != winners.size())
+                if (i + 1 != winners.size())
                 {
                     winnersBuilder.append(", "); // separate with comma except on last run
-                } else {
+                } else
+                {
                     winnersBuilder.append(": ").append(topScore).append(" points \uD83C\uDF89");
                 }
             }
@@ -127,10 +130,10 @@ public class TriviaTask implements Runnable
             EmbedBuilder scoreboardBuilder = new EmbedBuilder();
             scoreboardBuilder.setColor(Cache.getBotColor());
             scoreboardBuilder.setTitle("\uD83C\uDF1F Trivia Scoreboard");
-            if(!winnersString.isEmpty()) scoreboardBuilder.addField(winnersTitle, winnersString, false);
+            if (!winnersString.isEmpty()) scoreboardBuilder.addField(winnersTitle, winnersString, false);
             else scoreboardBuilder.addField("\uD83D\uDE22 Sad Trivia",
                     "No one played \uD83D\uDE2D", false);
-            if(!othersString.isEmpty()) scoreboardBuilder.addField("☁️ Others", othersString, false);
+            if (!othersString.isEmpty()) scoreboardBuilder.addField("☁️ Others", othersString, false);
 
             channel.sendMessage(scoreboardText).addEmbeds(scoreboardBuilder.build()).queue();
 
@@ -153,7 +156,7 @@ public class TriviaTask implements Runnable
         answerButtons.add(correctAnswerButton);
 
         int i = 0; // we need to add a number because buttons can't have the same id
-        for(String wrongAnswer : currentTriviaQuestion.wrongAnswers())
+        for (String wrongAnswer : currentTriviaQuestion.wrongAnswers())
         {
             i++;
             Button wrongAnswerButton = Button.primary("trivia_wrong_" + i, wrongAnswer);
@@ -166,9 +169,9 @@ public class TriviaTask implements Runnable
                 "\uD83D\uDFE2", "\uD83D\uDFE1", "\uD83D\uDFE4", "\uD83D\uDFE3", "\uD83D\uDFE0");
 
         // add emojis to buttons
-        for(int emojiPos = 0; emojiPos < buttonEmojis.size(); emojiPos++)
+        for (int emojiPos = 0; emojiPos < buttonEmojis.size(); emojiPos++)
         {
-            if(emojiPos == answerButtons.size()) break;
+            if (emojiPos == answerButtons.size()) break;
 
             String emoji = buttonEmojis.get(emojiPos);
             Button button = answerButtons.get(emojiPos);
@@ -180,7 +183,7 @@ public class TriviaTask implements Runnable
 
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setTitle("\uD83C\uDFB2 Trivia - " + category.categoryName() +
-                " (" + (iteration+1) + "/" + questions.size() + ")");
+                " (" + (iteration + 1) + "/" + questions.size() + ")");
 
         embedBuilder.addField("❓ Question", currentTriviaQuestion.question(), false);
 

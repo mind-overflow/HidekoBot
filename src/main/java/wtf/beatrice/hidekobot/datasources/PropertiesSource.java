@@ -25,8 +25,8 @@ public class PropertiesSource
         {
             properties.load(internalPropertiesStream);
 
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             LOGGER.error(e.getMessage());
             HidekoBot.shutdown();
             return;
@@ -34,5 +34,7 @@ public class PropertiesSource
     }
 
     public String getProperty(String property)
-    { return properties == null ? "" : properties.getProperty(property); }
+    {
+        return properties == null ? "" : properties.getProperty(property);
+    }
 }

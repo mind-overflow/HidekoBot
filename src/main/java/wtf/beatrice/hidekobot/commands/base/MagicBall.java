@@ -14,7 +14,8 @@ import java.util.List;
 public class MagicBall
 {
 
-    private MagicBall() {
+    private MagicBall()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -55,7 +56,7 @@ public class MagicBall
     {
         // add a question mark at the end, if missing.
         // this might not always apply but it's fun
-        if(!question.endsWith("?")) question += "?";
+        if (!question.endsWith("?")) question += "?";
 
         String answer = getRandomAnswer();
 

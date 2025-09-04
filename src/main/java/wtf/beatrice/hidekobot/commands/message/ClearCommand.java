@@ -19,33 +19,41 @@ public class ClearCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList(ClearChat.getLabel()));
     }
 
     @Override
-    public List<Permission> getPermissions() { return Collections.singletonList(ClearChat.getPermission()); }
+    public List<Permission> getPermissions()
+    {
+        return Collections.singletonList(ClearChat.getPermission());
+    }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.MODERATION;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Clear the current channel's chat history.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "[amount]";
     }
 
@@ -54,7 +62,8 @@ public class ClearCommand implements MessageCommand
     {
         // check if user is trying to run command in dms.
         String error = ClearChat.checkDMs(event.getChannel());
-        if (error != null) {
+        if (error != null)
+        {
             event.getMessage().reply(error).queue();
             return;
         }
@@ -64,7 +73,8 @@ public class ClearCommand implements MessageCommand
         if (args.length == 0) toDeleteAmount = 1;
         else
         {
-            try {
+            try
+            {
                 toDeleteAmount = Integer.parseInt(args[0]);
             } catch (NumberFormatException e)
             {
@@ -73,10 +83,11 @@ public class ClearCommand implements MessageCommand
         }
 
         // cap the amount to avoid abuse.
-        if(toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+        if (toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
 
         error = ClearChat.checkDeleteAmount(toDeleteAmount);
-        if (error != null) {
+        if (error != null)
+        {
             event.getMessage().reply(error).queue();
             return;
         }

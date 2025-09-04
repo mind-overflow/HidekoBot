@@ -30,7 +30,7 @@ public class InviteCommand extends SlashCommandImpl
         ReplyCallbackAction replyCallbackAction = event.deferReply();
 
         // only make message permanent in DMs
-        if(event.getChannelType() != ChannelType.PRIVATE)
+        if (event.getChannelType() != ChannelType.PRIVATE)
         {
             replyCallbackAction = replyCallbackAction.setEphemeral(true);
         }

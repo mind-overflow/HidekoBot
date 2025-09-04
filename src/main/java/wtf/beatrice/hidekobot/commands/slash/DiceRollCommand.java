@@ -30,19 +30,19 @@ public class DiceRollCommand extends SlashCommandImpl
 
         OptionMapping textOption = event.getOption("query");
         String messageContent = "";
-        if(textOption != null)
+        if (textOption != null)
         {
-             messageContent = textOption.getAsString();
+            messageContent = textOption.getAsString();
         }
 
         String[] args = messageContent.split("\\s");
 
         MessageResponse response = DiceRoll.buildResponse(event.getUser(), args);
 
-        if(response.content() != null)
+        if (response.content() != null)
         {
             event.getHook().editOriginal(response.content()).queue();
-        } else if(response.embed() != null)
+        } else if (response.embed() != null)
         {
             event.getHook().editOriginalEmbeds(response.embed()).queue();
         }

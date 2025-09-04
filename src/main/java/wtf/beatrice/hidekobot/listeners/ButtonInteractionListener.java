@@ -18,7 +18,8 @@ public class ButtonInteractionListener extends ListenerAdapter
     public void onButtonInteraction(ButtonInteractionEvent event)
     {
 
-        switch (event.getComponentId().toLowerCase()) {
+        switch (event.getComponentId().toLowerCase())
+        {
 
             // coinflip
             case "coinflip_reflip" -> CoinFlip.buttonReFlip(event);

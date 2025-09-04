@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class DieCommand extends SlashCommandImpl
 {
     @Override
-    public CommandData getSlashCommandData() {
+    public CommandData getSlashCommandData()
+    {
         return Commands.slash("die", "Stop the bot's process.")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED);
     }
@@ -24,12 +25,14 @@ public class DieCommand extends SlashCommandImpl
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        if(Cache.getBotOwnerId() != event.getUser().getIdLong())
+        if (Cache.getBotOwnerId() != event.getUser().getIdLong())
         {
             event.reply("Sorry, only the bot owner can run this command!").setEphemeral(true).queue();
-        } else {
+        } else
+        {
             event.reply("Going to sleep! Cya ✨").queue();
-            try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+            try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor())
+            {
                 executor.schedule(HidekoBot::shutdown, 3, TimeUnit.SECONDS);
             }
         }

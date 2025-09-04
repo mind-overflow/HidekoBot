@@ -38,14 +38,16 @@ public class MessageCommandListener extends ListenerAdapter
 
     public MessageCommand getRegisteredCommand(String label)
     {
-        for(Map.Entry<LinkedList<String>, MessageCommand> entry : registeredCommands.entrySet())
+        for (Map.Entry<LinkedList<String>, MessageCommand> entry : registeredCommands.entrySet())
         {
             LinkedList<String> aliases = entry.getKey();
 
-            for(String currentAlias : aliases)
+            for (String currentAlias : aliases)
             {
-                if(label.equals(currentAlias))
-                { return entry.getValue(); }
+                if (label.equals(currentAlias))
+                {
+                    return entry.getValue();
+                }
             }
         }
 
@@ -53,19 +55,21 @@ public class MessageCommandListener extends ListenerAdapter
     }
 
     public LinkedList<MessageCommand> getRegisteredCommands()
-    { return new LinkedList<>(registeredCommands.values()); }
+    {
+        return new LinkedList<>(registeredCommands.values());
+    }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event)
     {
         // check if a bot is sending this message, and ignore it
-        if(event.getAuthor().isBot()) return;
+        if (event.getAuthor().isBot()) return;
 
         // warning: we are getting the RAW value of the message content, not the DISPLAY value!
         String eventMessage = event.getMessage().getContentRaw();
 
         // check if the sent message matches the bot activation regex (prefix, name, ...)
-        if(!eventMessage.toLowerCase().matches("(?s)" + COMMAND_REGEX + ".*"))
+        if (!eventMessage.toLowerCase().matches("(?s)" + COMMAND_REGEX + ".*"))
             return;
 
         // generate args from the string
@@ -77,7 +81,7 @@ public class MessageCommandListener extends ListenerAdapter
         // and that element is the whole string passed as a single argument, which would be empty in this case
         // (or contain text in other cases like "string split ," if the passed text doesn't contain any comma ->
         // it will be the whole text as a single element.
-        if(argsString.isEmpty())
+        if (argsString.isEmpty())
         {
             event.getMessage()
                     .reply("Hello there! ✨ Type `" + Cache.getBotPrefix() + " help` to get started!")
@@ -92,7 +96,7 @@ public class MessageCommandListener extends ListenerAdapter
         String commandLabel = argsRaw[0];
         MessageCommand commandObject = getRegisteredCommand(commandLabel);
 
-        if(commandObject == null)
+        if (commandObject == null)
         {
             /* temporarily disabled because when people talk about the bot, it replies with this spammy message.
 
@@ -107,13 +111,13 @@ public class MessageCommandListener extends ListenerAdapter
 
         // permissions check
         List<Permission> requiredPermissions = commandObject.getPermissions();
-        if(requiredPermissions != null && !requiredPermissions.isEmpty())
+        if (requiredPermissions != null && !requiredPermissions.isEmpty())
         {
-            if(channelType.isGuild()) //todo: what about forum post
+            if (channelType.isGuild()) //todo: what about forum post
             {
                 Member member = event.getMember();
                 GuildChannel channel = event.getGuildChannel(); //todo: what about forum post
-                if(member != null && !member.hasPermission(channel, requiredPermissions))
+                if (member != null && !member.hasPermission(channel, requiredPermissions))
                 {
                     event.getMessage()
                             .reply("You do not have permissions to run this command!")
@@ -126,15 +130,14 @@ public class MessageCommandListener extends ListenerAdapter
         }
 
         String[] commandArgs;
-        if(commandObject.passRawArgs())
+        if (commandObject.passRawArgs())
         {
 
             // remove first argument, which is the command label
             argsString = argsString.replaceAll("^[\\S]+\\s*", "");
             // pass all other arguments as a single argument as the first array element
             commandArgs = new String[]{argsString};
-        }
-        else
+        } else
         {
             // copy all split arguments to the array, except from the command label
             commandArgs = Arrays.copyOfRange(argsRaw, 1, argsRaw.length);

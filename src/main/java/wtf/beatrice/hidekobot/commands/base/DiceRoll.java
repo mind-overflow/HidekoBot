@@ -15,7 +15,8 @@ import java.util.UUID;
 public class DiceRoll
 {
 
-    private DiceRoll() {
+    private DiceRoll()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -30,25 +31,26 @@ public class DiceRoll
         UUID lastPushedDice = null;
         int totalRolls = 0;
 
-        for(String arg : args)
+        for (String arg : args)
         {
-            if(totalRolls > 200)
+            if (totalRolls > 200)
             {
                 return new MessageResponse("Too many total rolls!", null);
             }
 
-            if(arg.matches(amountRegex))
+            if (arg.matches(amountRegex))
             {
                 currentAmount = Integer.parseInt(arg);
 
-                if(currentDice == null)
+                if (currentDice == null)
                 {
                     currentDice = new Dice(6);
-                } else {
+                } else
+                {
                     currentDice = new Dice(currentDice);
                 }
 
-                if(currentAmount > 100)
+                if (currentAmount > 100)
                 {
                     return new MessageResponse("Too many rolls (`" + currentAmount + "`)!", null);
                 }
@@ -56,25 +58,24 @@ public class DiceRoll
                 lastPushedDice = currentDice.getUUID();
                 dicesToRoll.put(currentDice, currentAmount);
                 totalRolls += currentAmount;
-            }
-            else if(arg.matches(diceRegex))
+            } else if (arg.matches(diceRegex))
             {
                 int sides = Integer.parseInt(arg.substring(1));
 
-                if(sides > 10000)
+                if (sides > 10000)
                 {
                     return new MessageResponse("Too many sides (`" + sides + "`)!", null);
                 }
 
-                if(args.length == 1)
+                if (args.length == 1)
                 {
                     dicesToRoll.put(new Dice(sides), 1);
                     totalRolls++;
                 } else
                 {
-                    if(currentDice != null)
+                    if (currentDice != null)
                     {
-                        if(lastPushedDice == null || !lastPushedDice.equals(currentDice.getUUID()))
+                        if (lastPushedDice == null || !lastPushedDice.equals(currentDice.getUUID()))
                         {
                             dicesToRoll.put(currentDice, 1);
                             lastPushedDice = currentDice.getUUID();
@@ -87,16 +88,16 @@ public class DiceRoll
             }
         }
 
-        if(lastPushedDice == null)
+        if (lastPushedDice == null)
         {
-            if(currentDice != null)
+            if (currentDice != null)
             {
                 dicesToRoll.put(currentDice, 1);
                 totalRolls++;
             }
         } else
         {
-            if(!lastPushedDice.equals(currentDice.getUUID()))
+            if (!lastPushedDice.equals(currentDice.getUUID()))
             {
                 dicesToRoll.put(new Dice(currentDice), 1);
                 totalRolls++;
@@ -106,19 +107,19 @@ public class DiceRoll
         LinkedList<Dice> rolledDices = new LinkedList<>();
 
         // in case no dice was specified (or invalid), roll a standard 6-sided dice.
-        if(dicesToRoll.isEmpty())
+        if (dicesToRoll.isEmpty())
         {
             Dice standardDice = new Dice(6);
             dicesToRoll.put(standardDice, 1);
             totalRolls = 1;
         }
 
-        for(Map.Entry<Dice, Integer> entry : dicesToRoll.entrySet())
+        for (Map.Entry<Dice, Integer> entry : dicesToRoll.entrySet())
         {
             Dice dice = entry.getKey();
             Integer rollsToMake = entry.getValue();
-            
-            for(int roll = 0; roll < rollsToMake; roll++)
+
+            for (int roll = 0; roll < rollsToMake; roll++)
             {
                 dice.roll();
                 rolledDices.add(new Dice(dice));
@@ -131,20 +132,23 @@ public class DiceRoll
         embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
         embedBuilder.setTitle("Dice Roll");
 
-        if(RandomUtil.isRandomOrgKeyValid())
+        if (RandomUtil.isRandomOrgKeyValid())
             embedBuilder.setFooter("Seed provided by random.org");
 
         StringBuilder message = new StringBuilder();
         int total = 0;
 
         int previousDiceSides = 0;
-        for (Dice dice : rolledDices) {
+        for (Dice dice : rolledDices)
+        {
             int diceSize = dice.getSides();
 
-            if (previousDiceSides != diceSize) {
+            if (previousDiceSides != diceSize)
+            {
                 message.append("\nd").append(diceSize).append(": ");
                 previousDiceSides = diceSize;
-            } else if (previousDiceSides != 0) {
+            } else if (previousDiceSides != 0)
+            {
                 message.append(", ");
             }
 
@@ -154,7 +158,7 @@ public class DiceRoll
         }
 
         // discord doesn't allow embed fields to be longer than 1024 and errors out
-        if(message.length() > 1024)
+        if (message.length() > 1024)
         {
             return new MessageResponse("Too many rolls!", null);
         }

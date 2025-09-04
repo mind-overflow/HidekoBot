@@ -27,7 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class UserPunishment
 {
 
-    private UserPunishment() {
+    private UserPunishment()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -42,24 +43,24 @@ public class UserPunishment
         User targetUser = null;
 
         OptionMapping targetUserArg = event.getOption("target");
-        if(targetUserArg != null)
+        if (targetUserArg != null)
         {
             targetUser = targetUserArg.getAsUser();
         }
 
         List<IMentionable> mentions = null;
-        if(targetUser != null) mentions = new ArrayList<>(Collections.singletonList(targetUser));
+        if (targetUser != null) mentions = new ArrayList<>(Collections.singletonList(targetUser));
 
         String reason = null;
         OptionMapping reasonArg = event.getOption("reason");
-        if(reasonArg != null)
+        if (reasonArg != null)
         {
             reason = reasonArg.getAsString();
         }
 
         String timeDiff = null;
         OptionMapping timeDiffArg = event.getOption("duration");
-        if(timeDiffArg != null)
+        if (timeDiffArg != null)
         {
             timeDiff = timeDiffArg.getAsString();
         }
@@ -71,13 +72,13 @@ public class UserPunishment
         // we should probably rework the it so that it works better in both scenarios.
         String[] reasonSplit = null;
         // generate the arguments array by splitting the string
-        if(reason != null) reasonSplit = reason.split("\\s+");
+        if (reason != null) reasonSplit = reason.split("\\s+");
         //prepend timediff at index 0
-        if(timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, timeDiff);
+        if (timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, timeDiff);
         // in message-commands, the first arg would contain the user mention. since we have no one mentioned here,
         // because it's in its own argument, we just prepend an empty string. note that this makes relying on the
         // first argument BAD, because it is no longer ensured that it contains the user mention.
-        if(timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, "");
+        if (timeDiff != null) reasonSplit = ArrayUtils.insert(0, reasonSplit, "");
 
         MessageResponse response = getResponse(event.getUser(),
                 punishmentType,
@@ -85,9 +86,9 @@ public class UserPunishment
                 mentions,
                 reasonSplit);
 
-        if(response.embed() != null)
+        if (response.embed() != null)
             event.getHook().editOriginalEmbeds(response.embed()).queue();
-        else if(response.content() != null)
+        else if (response.content() != null)
             event.getHook().editOriginal(response.content()).queue();
     }
 
@@ -102,9 +103,9 @@ public class UserPunishment
                 mentions,
                 args);
 
-        if(response.embed() != null)
+        if (response.embed() != null)
             event.getMessage().replyEmbeds(response.embed()).queue();
-        else if(response.content() != null)
+        else if (response.content() != null)
             event.getMessage().reply(response.content()).queue();
     }
 
@@ -117,13 +118,13 @@ public class UserPunishment
         String punishmentTypeName = punishmentType.name().toLowerCase();
 
 
-        if(!(channel instanceof TextChannel))
+        if (!(channel instanceof TextChannel))
         {
             // todo nicer looking with emojis
             return new MessageResponse("Sorry! I can't " + punishmentTypeName + " people in DMs.", null);
         }
 
-        if(mentions == null || mentions.isEmpty())
+        if (mentions == null || mentions.isEmpty())
         {
             // todo nicer looking with emojis
             return new MessageResponse("You have to tell me who to " + punishmentTypeName + "!", null);
@@ -132,7 +133,8 @@ public class UserPunishment
         String mentionedId = mentions.get(0).getId();
         User mentioned = null;
 
-        try {
+        try
+        {
             mentioned = HidekoBot.getAPI().retrieveUserById(mentionedId).complete();
         } catch (RuntimeException ignored)
         {
@@ -146,21 +148,21 @@ public class UserPunishment
         // some commands require an additional parameter before the reason, so in that case, we should start at 2.
         int startingPoint = punishmentType == PunishmentType.TIMEOUT ? 2 : 1;
 
-        if(args != null && args.length > startingPoint)
+        if (args != null && args.length > startingPoint)
         {
-            for(int i = startingPoint; i < args.length; i++)
+            for (int i = startingPoint; i < args.length; i++)
             {
                 String arg = args[i];
                 reasonBuilder.append(arg);
 
-                if(i + 1 != arg.length())
+                if (i + 1 != arg.length())
                     reasonBuilder.append(" "); // separate args with a space except on last iteration.
             }
 
             reason = reasonBuilder.toString();
         }
 
-        if(mentioned == null)
+        if (mentioned == null)
         {
             // todo nicer looking with emojis
             return new MessageResponse("I can't " + punishmentTypeName + " that user!", null);
@@ -172,12 +174,15 @@ public class UserPunishment
         AuditableRestAction<Void> punishmentAction = null;
         boolean impossible = false;
 
-        try {
-            switch (punishmentType) {
+        try
+        {
+            switch (punishmentType)
+            {
                 case BAN -> punishmentAction = guild.ban(mentioned, 0, TimeUnit.SECONDS);
                 case KICK -> punishmentAction = guild.kick(mentioned);
-                case TIMEOUT -> {
-                    if(args != null)
+                case TIMEOUT ->
+                {
+                    if (args != null)
                     {
                         String durationStr = args[1];
                         duration = FormatUtil.parseDuration(durationStr);
@@ -185,14 +190,14 @@ public class UserPunishment
 
                     boolean isDurationValid = true;
 
-                    if(duration == null) isDurationValid = false;
+                    if (duration == null) isDurationValid = false;
                     else
                     {
-                        if(duration.compareTo(maxTimeoutDuration) > 0) isDurationValid = false;
-                        if(minTimeoutDuration.compareTo(duration) > 0) isDurationValid = false;
+                        if (duration.compareTo(maxTimeoutDuration) > 0) isDurationValid = false;
+                        if (minTimeoutDuration.compareTo(duration) > 0) isDurationValid = false;
                     }
 
-                    if(duration == null || !isDurationValid)
+                    if (duration == null || !isDurationValid)
                     {
                         // todo nicer looking with emojis
                         return new MessageResponse("Sorry, but the specified duration is invalid!", null);
@@ -201,24 +206,26 @@ public class UserPunishment
                     punishmentAction = guild.timeoutFor(mentioned, duration);
                 }
             }
-        } catch (RuntimeException ignored) {
+        } catch (RuntimeException ignored)
+        {
             impossible = true;
         }
 
-        if(punishmentAction == null)
+        if (punishmentAction == null)
             impossible = true;
 
-        if(impossible)
+        if (impossible)
         {
             // todo nicer looking with emojis
             return new MessageResponse("Sorry, I couldn't " + punishmentTypeName + " " + mentioned.getAsMention() + "!",
                     null);
         }
 
-        if(!reason.isEmpty() && !reasonBuilder.isEmpty())
+        if (!reason.isEmpty() && !reasonBuilder.isEmpty())
             punishmentAction.reason("[" + author.getAsTag() + "] " + reason);
 
-        try {
+        try
+        {
             punishmentAction.complete();
         } catch (RuntimeException ignored)
         {
@@ -235,10 +242,10 @@ public class UserPunishment
 
         embedBuilder.addField("\uD83D\uDC64 User", mentioned.getAsMention(), false);
         embedBuilder.addField("✂️ By", author.getAsMention(), false);
-        if(duration != null)
+        if (duration != null)
             embedBuilder.addField("⏱️ Duration", FormatUtil.getNiceDuration(duration), false);
 
-        if(reason.isEmpty())
+        if (reason.isEmpty())
             reason = "*No reason specified*";
 
         embedBuilder.addField("\uD83D\uDCD6 Reason", reason, false);
@@ -248,7 +255,8 @@ public class UserPunishment
 
     }
 
-    public enum PunishmentType {
+    public enum PunishmentType
+    {
         KICK("kicked"),
         BAN("banned"),
         TIMEOUT("timed out"),

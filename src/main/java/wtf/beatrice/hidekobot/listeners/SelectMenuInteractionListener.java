@@ -14,7 +14,8 @@ public class SelectMenuInteractionListener extends ListenerAdapter
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event)
     {
-        switch (event.getComponentId().toLowerCase()) {
+        switch (event.getComponentId().toLowerCase())
+        {
 
             // trivia
             case "trivia_categories" -> Trivia.handleMenuSelection(event);

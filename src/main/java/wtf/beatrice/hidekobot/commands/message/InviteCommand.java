@@ -19,36 +19,42 @@ public class InviteCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList("invite"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null;
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Get the bot's invite link.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return null;
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.MODERATION;
     }
 
@@ -61,7 +67,7 @@ public class InviteCommand implements MessageCommand
         Button inviteButton = Invite.getInviteButton();
 
         // if this is a guild, don't spam the invite in public but DM it
-        if(event.getChannelType().isGuild())
+        if (event.getChannelType().isGuild())
         {
             event.getAuthor().openPrivateChannel().queue(privateChannel ->
             {
@@ -70,7 +76,8 @@ public class InviteCommand implements MessageCommand
                         .queue();
                 event.getMessage().addReaction(Emoji.fromUnicode("✅")).queue();
             }, error -> event.getMessage().addReaction(Emoji.fromUnicode("❌")).queue());
-        } else {
+        } else
+        {
             event.getMessage()
                     .replyEmbeds(inviteEmbed)
                     .addActionRow(inviteButton)

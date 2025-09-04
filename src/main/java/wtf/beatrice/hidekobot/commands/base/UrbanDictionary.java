@@ -25,15 +25,19 @@ import java.util.List;
 public class UrbanDictionary
 {
 
-    private UrbanDictionary() {
+    private UrbanDictionary()
+    {
         throw new IllegalStateException("Utility class");
     }
 
     public static LinkedList<String> getCommandLabels()
-    { return new LinkedList<>(Arrays.asList("urban", "urbandictionary", "ud")); }
+    {
+        return new LinkedList<>(Arrays.asList("urban", "urbandictionary", "ud"));
+    }
 
 
-    public static String getBaseUrl() {
+    public static String getBaseUrl()
+    {
         return "https://www.urbandictionary.com/define.php?term=";
     }
 
@@ -55,7 +59,8 @@ public class UrbanDictionary
                 .withEmoji(Emoji.fromFormatted("\uD83D\uDDD1️"));
     }
 
-    public static String getNoArgsError() {
+    public static String getNoArgsError()
+    {
         return "\uD83D\uDE22 I need to know what to search for!";
     }
 
@@ -63,7 +68,7 @@ public class UrbanDictionary
     {
         term = term.replaceAll("[^\\w\\s]", ""); // only keep letters, numbers and spaces
         term = WordUtils.capitalizeFully(term); // Make Every Word Start With A Capital Letter
-        if(forUrl) term = term.replaceAll("\\s+", "+"); // replace all whitespaces with + for the url
+        if (forUrl) term = term.replaceAll("\\s+", "+"); // replace all whitespaces with + for the url
         if (term.length() > 64) term = term.substring(0, 64); // cut it to length to avoid abuse
         return term;
     }
@@ -74,10 +79,10 @@ public class UrbanDictionary
     }
 
     public static MessageEmbed buildEmbed(String term,
-                                   String url,
-                                   User author,
-                                   UrbanSearch search,
-                                   int page)
+                                          String url,
+                                          User author,
+                                          UrbanSearch search,
+                                          int page)
     {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -87,7 +92,7 @@ public class UrbanDictionary
         embedBuilder.addField("\uD83D\uDCD6 Definition", search.getPlaintextMeanings().get(page), false);
         embedBuilder.addField("\uD83D\uDCAD Example", search.getPlaintextExamples().get(page), false);
         embedBuilder.addField("\uD83D\uDCCC Submission",
-                "*Entry " + (page+1) + " | Sent by " + search.getContributorsNames().get(page) +
+                "*Entry " + (page + 1) + " | Sent by " + search.getContributorsNames().get(page) +
                         " on" + search.getSubmissionDates().get(page) + "*",
                 false);
 
@@ -118,7 +123,8 @@ public class UrbanDictionary
         DatabaseSource database = Cache.getDatabaseSource();
 
         // check if the user interacting is the same one who ran the command
-        if (!(database.isUserTrackedFor(event.getUser().getId(), messageId))) {
+        if (!(database.isUserTrackedFor(event.getUser().getId(), messageId)))
+        {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
         }
@@ -140,9 +146,9 @@ public class UrbanDictionary
                 serializedExamples, serializedContributors, serializedDates);
 
         // move to new page
-        if(changeType == ChangeType.NEXT)
+        if (changeType == ChangeType.NEXT)
             page++;
-        else if(changeType == ChangeType.PREVIOUS)
+        else if (changeType == ChangeType.PREVIOUS)
             page--;
 
         term = UrbanDictionary.sanitizeArgs(term, false);
@@ -153,17 +159,19 @@ public class UrbanDictionary
         // get all attached components and check which ones need to be enabled or disabled
         List<ItemComponent> components = new ArrayList<>();
 
-        if(page > 0)
+        if (page > 0)
         {
             components.add(UrbanDictionary.getPreviousPageButton().asEnabled());
-        } else {
+        } else
+        {
             components.add(UrbanDictionary.getPreviousPageButton().asDisabled());
         }
 
-        if(page + 1 == search.getPages())
+        if (page + 1 == search.getPages())
         {
             components.add(UrbanDictionary.getNextPageButton().asDisabled());
-        } else {
+        } else
+        {
             components.add(UrbanDictionary.getNextPageButton().asEnabled());
         }
 
@@ -216,10 +224,10 @@ public class UrbanDictionary
             contributorsNames = new LinkedList<>();
             submissionDates = new LinkedList<>();
 
-            for(Element definition : definitions)
+            for (Element definition : definitions)
             {
                 Elements meaningSingleton = definition.getElementsByClass("meaning");
-                if(meaningSingleton.isEmpty())
+                if (meaningSingleton.isEmpty())
                 {
                     plaintextMeanings.add(" ");
                 } else
@@ -231,13 +239,13 @@ public class UrbanDictionary
                     // this is used to fix eg. &amp; being shown literally instead of being parsed
                     text = StringEscapeUtils.unescapeHtml4(text);
                     // discord only allows 1024 characters for embed fields
-                    if(text.length() > 1024) text = text.substring(0, 1020) + "...";
+                    if (text.length() > 1024) text = text.substring(0, 1020) + "...";
                     plaintextMeanings.add(text);
                 }
 
                 Elements exampleSingleton = definition.getElementsByClass("example");
 
-                if(exampleSingleton.isEmpty())
+                if (exampleSingleton.isEmpty())
                 {
                     plaintextExamples.add(" ");
                 } else
@@ -249,12 +257,12 @@ public class UrbanDictionary
                     // this is used to fix eg. &amp; being shown literally instead of being parsed
                     text = StringEscapeUtils.unescapeHtml4(text);
                     // discord only allows 1024 characters for embed fields
-                    if(text.length() > 1024) text = text.substring(0, 1020) + "...";
+                    if (text.length() > 1024) text = text.substring(0, 1020) + "...";
                     plaintextExamples.add(text);
                 }
 
                 Elements contributorSingleton = definition.getElementsByClass("contributor");
-                if(contributorSingleton.isEmpty())
+                if (contributorSingleton.isEmpty())
                 {
                     contributorsNames.add("Unknown");
                 } else
@@ -282,39 +290,48 @@ public class UrbanDictionary
             pages = submissionDates.size();
         }
 
-        public List<String> getPlaintextMeanings() {
+        public List<String> getPlaintextMeanings()
+        {
             return this.plaintextMeanings;
         }
 
-        public List<String> getPlaintextExamples() {
+        public List<String> getPlaintextExamples()
+        {
             return this.plaintextExamples;
         }
 
-        public List<String> getContributorsNames() {
+        public List<String> getContributorsNames()
+        {
             return this.contributorsNames;
         }
 
-        public List<String> getSubmissionDates() {
+        public List<String> getSubmissionDates()
+        {
             return this.submissionDates;
         }
 
-        public String getSerializedMeanings() {
+        public String getSerializedMeanings()
+        {
             return serializedMeanings;
         }
 
-        public String getSerializedExamples() {
+        public String getSerializedExamples()
+        {
             return serializedExamples;
         }
 
-        public String getSerializedContributors() {
+        public String getSerializedContributors()
+        {
             return serializedContributors;
         }
 
-        public String getSerializedDates() {
+        public String getSerializedDates()
+        {
             return serializedDates;
         }
 
-        public int getPages() {
+        public int getPages()
+        {
             return pages;
         }
     }

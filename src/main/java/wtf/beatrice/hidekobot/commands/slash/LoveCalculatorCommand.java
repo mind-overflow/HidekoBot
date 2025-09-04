@@ -18,7 +18,7 @@ public class LoveCalculatorCommand extends SlashCommandImpl
     {
 
         return Commands.slash("lovecalc",
-                "Calculate how much two people love each other.")
+                        "Calculate how much two people love each other.")
 
                 .addOption(OptionType.MENTIONABLE,
                         "first",
@@ -37,10 +37,11 @@ public class LoveCalculatorCommand extends SlashCommandImpl
         User firstUser, secondUser;
 
         OptionMapping firsUserArg = event.getOption("first");
-        if(firsUserArg != null)
+        if (firsUserArg != null)
         {
             firstUser = firsUserArg.getAsUser(); //todo null check?
-        } else {
+        } else
+        {
             event.reply("\uD83D\uDE22 I need to know who to check! Please mention them.")
                     .setEphemeral(true)
                     .queue();
@@ -48,10 +49,11 @@ public class LoveCalculatorCommand extends SlashCommandImpl
         }
 
         OptionMapping secondUserArg = event.getOption("second");
-        if(secondUserArg != null)
+        if (secondUserArg != null)
         {
             secondUser = secondUserArg.getAsUser(); //todo null check?
-        } else {
+        } else
+        {
             secondUser = event.getUser();
         }
 

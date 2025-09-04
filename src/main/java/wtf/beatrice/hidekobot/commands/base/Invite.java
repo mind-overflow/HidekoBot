@@ -10,7 +10,8 @@ import wtf.beatrice.hidekobot.HidekoBot;
 public class Invite
 {
 
-    private Invite() {
+    private Invite()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -22,7 +23,7 @@ public class Invite
         {
             embedBuilder.setColor(Cache.getBotColor());
             String avatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
-            if(avatarUrl != null) embedBuilder.setThumbnail(avatarUrl);
+            if (avatarUrl != null) embedBuilder.setThumbnail(avatarUrl);
             embedBuilder.setTitle("Invite");
             embedBuilder.appendDescription("Click on the button below to invite " +
                     Cache.getBotName() +

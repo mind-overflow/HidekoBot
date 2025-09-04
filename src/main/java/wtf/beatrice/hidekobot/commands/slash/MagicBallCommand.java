@@ -17,7 +17,7 @@ public class MagicBallCommand extends SlashCommandImpl
     {
 
         return Commands.slash(MagicBall.getLabels().get(0),
-                "Ask a question to the magic ball.")
+                        "Ask a question to the magic ball.")
                 .addOption(OptionType.STRING, "question",
                         "The question to ask.",
                         true,
@@ -30,12 +30,12 @@ public class MagicBallCommand extends SlashCommandImpl
         // get the asked question
         OptionMapping textOption = event.getOption("question");
         String question = "";
-        if(textOption != null)
+        if (textOption != null)
         {
             question = textOption.getAsString();
         }
 
-        if(textOption == null || question.isEmpty())
+        if (textOption == null || question.isEmpty())
         {
             event.reply("\uD83D\uDE20 Hey, you have to ask me a question!")
                     .setEphemeral(true)

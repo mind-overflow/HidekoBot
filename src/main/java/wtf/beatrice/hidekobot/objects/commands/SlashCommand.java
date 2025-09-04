@@ -21,6 +21,7 @@ public interface SlashCommand
      * @return the command data object.
      */
     CommandData getSlashCommandData();
+
     /**
      * Run the command logic by parsing the event and replying accordingly.
      *

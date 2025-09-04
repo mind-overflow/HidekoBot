@@ -12,6 +12,7 @@ public interface SlashArgumentsCompleter
      * @return the command object.
      */
     SlashCommand getCommand();
+
     /**
      * Run the argument-completion logic by parsing the event and replying accordingly.
      *

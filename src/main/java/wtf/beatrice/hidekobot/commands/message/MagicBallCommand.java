@@ -15,58 +15,64 @@ public class MagicBallCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return MagicBall.getLabels();
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; // anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Ask a question to the Magic Ball.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "<question>";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        if(args.length == 0)
+        if (args.length == 0)
         {
             event.getMessage().reply("You need to specify a question!").queue();
             return;
         }
 
         StringBuilder questionBuilder = new StringBuilder();
-        for(int i = 0; i < args.length; i++)
+        for (int i = 0; i < args.length; i++)
         {
             String arg = args[i];
             questionBuilder.append(arg);
-            if(i + 1 != args.length) // don't add a separator on the last iteration
+            if (i + 1 != args.length) // don't add a separator on the last iteration
                 questionBuilder.append(" ");
         }
 
-       String question = questionBuilder.toString();
+        String question = questionBuilder.toString();
 
 
         event.getChannel().sendMessageEmbeds(MagicBall.generateEmbed(question, event.getAuthor())).queue();

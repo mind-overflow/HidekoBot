@@ -24,7 +24,7 @@ public class UrbanDictionaryCommand extends SlashCommandImpl
     {
 
         return Commands.slash(UrbanDictionary.getCommandLabels().get(0),
-                "Look up a term on Urban Dictionary.")
+                        "Look up a term on Urban Dictionary.")
                 .addOption(OptionType.STRING, "term", "The term to look up", true);
     }
 
@@ -36,12 +36,12 @@ public class UrbanDictionaryCommand extends SlashCommandImpl
         // get the term to look up
         OptionMapping textOption = event.getOption("term");
         String term = "";
-        if(textOption != null)
+        if (textOption != null)
         {
             term = textOption.getAsString();
         }
 
-        if(textOption == null || term.isEmpty())
+        if (textOption == null || term.isEmpty())
         {
             event.reply(UrbanDictionary.getNoArgsError())
                     .setEphemeral(true)
@@ -54,9 +54,11 @@ public class UrbanDictionaryCommand extends SlashCommandImpl
 
         Document doc;
 
-        try {
+        try
+        {
             doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             event.reply(UrbanDictionary.getTermNotFoundError())
                     .setEphemeral(true)
                     .queue();
@@ -69,7 +71,7 @@ public class UrbanDictionaryCommand extends SlashCommandImpl
 
         // disable next page if we only have one result
         Button nextPageBtnLocal = UrbanDictionary.getNextPageButton();
-        if(search.getPages() == 1) nextPageBtnLocal = nextPageBtnLocal.asDisabled();
+        if (search.getPages() == 1) nextPageBtnLocal = nextPageBtnLocal.asDisabled();
 
         ActionRow actionRow = ActionRow.of(UrbanDictionary.getPreviousPageButton().asDisabled(),
                 //disabled by default because we're on page 0

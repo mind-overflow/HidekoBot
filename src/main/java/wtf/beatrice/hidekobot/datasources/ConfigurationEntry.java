@@ -14,12 +14,20 @@ public enum ConfigurationEntry
 
     private String path;
     private Object defaultValue;
+
     ConfigurationEntry(String path, Object defaultValue)
     {
         this.path = path;
         this.defaultValue = defaultValue;
     }
 
-    public String getPath() { return path; }
-    public Object getDefaultValue() { return defaultValue; }
+    public String getPath()
+    {
+        return path;
+    }
+
+    public Object getDefaultValue()
+    {
+        return defaultValue;
+    }
 }

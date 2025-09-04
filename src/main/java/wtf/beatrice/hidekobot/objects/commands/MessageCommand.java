@@ -70,12 +70,10 @@ public interface MessageCommand
      *
      * @param event the received message event. It should not be used for parsing message contents data as
      *              the arguments already account for it in a better way.
-     *
      * @param label the command label that was used, taken from all available command aliases.
-     *
-     * @param args a pre-formatted list of arguments, excluding the bot prefix and the command name.
-     *             This is useful because command logic won't have to change in case the bot prefix is changed,
-     *             removed, or we switch to another method of triggering commands (ping, trigger words, ...).
+     * @param args  a pre-formatted list of arguments, excluding the bot prefix and the command name.
+     *              This is useful because command logic won't have to change in case the bot prefix is changed,
+     *              removed, or we switch to another method of triggering commands (ping, trigger words, ...).
      */
     void runCommand(MessageReceivedEvent event, String label, String[] args);
 }

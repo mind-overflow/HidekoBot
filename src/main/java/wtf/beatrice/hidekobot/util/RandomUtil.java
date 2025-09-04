@@ -10,7 +10,8 @@ import java.util.Random;
 public class RandomUtil
 {
 
-    private RandomUtil() {
+    private RandomUtil()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -27,8 +28,8 @@ public class RandomUtil
      */
     public static int getRandomNumber(int min, int max)
     {
-        if(min == max) return min; // dumbass
-        if(min > max) // swap em
+        if (min == max) return min; // dumbass
+        if (min > max) // swap em
         {
             min = min - max;
             max = min + max;
@@ -47,7 +48,8 @@ public class RandomUtil
     }
 
 
-    public static Random getRandom() {
+    public static Random getRandom()
+    {
         return randomInstance;
     }
 
