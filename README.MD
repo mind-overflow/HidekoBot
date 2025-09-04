@@ -2,7 +2,7 @@
 [![Reliability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot&metric=reliability_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot)
 [![Maintainability Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot&metric=sqale_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot) 
 [![Security Rating](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot&metric=security_rating&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot)
-[![Build Status](https://drone.prod.panic.haus/api/badges/bea/HidekoBot/status.svg)](https://drone.prod.panic.haus/bea/HidekoBot) 
+[![Build Status](https://drone.beatrice.wtf/api/badges/bea/HidekoBot/status.svg)](https://drone.beatrice.wtf/bea/HidekoBot)
 [![Lines of Code](https://sonar.beatrice.wtf/api/project_badges/measure?project=HidekoBot&metric=ncloc&token=0a63c149148555d6d2ee40665af1afae8f67cc3f)](https://sonar.beatrice.wtf/dashboard?id=HidekoBot)
   
 Hideko is a general-purpose Discord bot.  
