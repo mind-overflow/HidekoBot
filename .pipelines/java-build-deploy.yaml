@@ -1,0 +1,88 @@
+---
+kind: pipeline
+type: docker
+name: build
+platform:
+  os: {{ .input.os }}
+  arch: {{ .input.arch }}
+
+trigger:
+  branch:
+    {{- range .input.build_branches }}
+    - {{ . }}
+    {{- end }}
+  event:
+    {{- range .input.build_events }}
+    - {{ . }}
+    {{- end }}
+
+# Global project-specific environment variables
+environment:
+  {{- range .input.envs }}
+    {{ .name }}: {{ .value }}
+    {{- end }}
+
+steps:
+  # Test if it compiles correctly
+  - name: build
+    image: maven:3-eclipse-temurin-21
+    commands:
+      - mvn verify --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+  # Run unit tests
+  - name: test
+    image: maven:3-eclipse-temurin-21
+    commands:
+      - mvn test --no-transfer-progress -B -V
+
+  # Check maven dependencies
+  - name: dependency-check
+    image: owasp/dependency-check:latest
+    commands:
+      - dependency-check --scan /src --format ALL --out /src/target --nvdApiKey $NVD_API_KEY
+    environment:
+      NVD_API_KEY:
+        from_secret: nvd_api_key
+
+  # Run code analysis
+  - name: code-analysis
+    when:
+      event:
+        - push
+    image: maven:3-eclipse-temurin-21
+    commands:
+      - mvn sonar:sonar --no-transfer-progress -Dsonar.projectKey={{ .input.sonar_project_key }} -Dsonar.host.url=$SONAR_INSTANCE_URL -Dsonar.token=$SONAR_LOGIN_KEY -B -V
+    environment:
+      SONAR_INSTANCE_URL:
+        from_secret: sonar_instance_url
+      SONAR_LOGIN_KEY:
+        from_secret: sonar_login_key
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+trigger:
+  event:
+    - promote
+  target:
+    {{- range .input.deploy_targets }}
+    - {{ . }}
+    {{- end }}
+
+# Global project-specific environment variables
+environment:
+  {{- range .input.envs }}
+    {{ .name }}: {{ .value }}
+    {{- end }}
+
+steps:
+  # Upload to Maven repository
+  - name: maven-deploy
+    image: maven:3-eclipse-temurin-21
+    commands:
+      - mvn deploy --no-transfer-progress -DskipTests=true -Dmaven.javadoc.skip=true -B -V -gs settings.xml -Dmaven.repo.username=$MAVEN_REPO_USERNAME -Dmaven.repo.password=$MAVEN_REPO_PASSWORD
+    environment:
+      MAVEN_REPO_USERNAME:
+        from_secret: maven_repo_username
+      MAVEN_REPO_PASSWORD:
+        from_secret: maven_repo_password
