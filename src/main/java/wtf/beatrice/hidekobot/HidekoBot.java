@@ -20,7 +20,7 @@ import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.runnables.RandomOrgSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
 import wtf.beatrice.hidekobot.services.DatabaseService;
-import wtf.beatrice.hidekobot.util.CommandUtil;
+import wtf.beatrice.hidekobot.services.CommandService;
 import wtf.beatrice.hidekobot.util.FormatUtil;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 import wtf.beatrice.hidekobot.util.Services;
@@ -70,10 +70,10 @@ public class HidekoBot
 
         ConfigurableApplicationContext context = SpringApplication.run(HidekoBot.class, args);
 
-        CommandUtil commandUtil = context.getBean(CommandUtil.class);
+        CommandService commandService = context.getBean(CommandService.class);
         DatabaseService databaseService = context.getBean(DatabaseService.class);
         Services services = new wtf.beatrice.hidekobot.util.Services(
-                commandUtil,
+                commandService,
                 databaseService
         );
         Cache.setServices(services);
@@ -206,7 +206,7 @@ public class HidekoBot
         final boolean finalForceUpdateCommands = forceUpdateCommands;
         try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor())
         {
-            executor.schedule(() -> commandUtil.updateSlashCommands(finalForceUpdateCommands),
+            executor.schedule(() -> commandService.updateSlashCommands(finalForceUpdateCommands),
                     1, TimeUnit.SECONDS);
         }
 
@@ -215,7 +215,7 @@ public class HidekoBot
 
         // start scheduled runnables
         ScheduledExecutorService scheduler = Cache.getTaskScheduler();
-        ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask(services.databaseService(), services.commandUtil());
+        ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask(services.databaseService(), services.commandService());
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5L, 5L, TimeUnit.SECONDS); //every 5 seconds
 
         HeartBeatTask heartBeatTask = new HeartBeatTask();

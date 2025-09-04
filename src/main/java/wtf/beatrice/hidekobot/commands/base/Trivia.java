@@ -259,7 +259,7 @@ public class Trivia
         }
 
         // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
-        Cache.getServices().commandUtil().disableExpired(event.getMessageId());
+        Cache.getServices().commandService().disableExpired(event.getMessageId());
 
         SelectOption pickedOption = event.getInteraction().getSelectedOptions().get(0);
         String categoryName = pickedOption.getLabel();
@@ -293,7 +293,7 @@ public class Trivia
 
 
         TriviaTask triviaTask = new TriviaTask(author, channel, category,
-                Cache.getServices().databaseService(), Cache.getServices().commandUtil());
+                Cache.getServices().databaseService(), Cache.getServices().commandService());
         ScheduledFuture<?> future =
                 Cache.getTaskScheduler().scheduleAtFixedRate(triviaTask,
                         0,

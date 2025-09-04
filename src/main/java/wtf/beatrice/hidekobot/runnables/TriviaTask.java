@@ -14,7 +14,7 @@ import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 import wtf.beatrice.hidekobot.services.DatabaseService;
-import wtf.beatrice.hidekobot.util.CommandUtil;
+import wtf.beatrice.hidekobot.services.CommandService;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
@@ -23,7 +23,7 @@ public class TriviaTask implements Runnable
 {
 
     private final DatabaseService databaseService;
-    private final CommandUtil commandUtil;
+    private final CommandService commandService;
 
     private final User author;
     private final MessageChannel channel;
@@ -42,13 +42,13 @@ public class TriviaTask implements Runnable
                       MessageChannel channel,
                       TriviaCategory category,
                       DatabaseService databaseService,
-                      CommandUtil commandUtil)
+                      CommandService commandService)
     {
         this.author = author;
         this.channel = channel;
         this.category = category;
         this.databaseService = databaseService;
-        this.commandUtil = commandUtil;
+        this.commandService = commandService;
 
         triviaJson = Trivia.fetchJson(Trivia.getTriviaLink(category.categoryId()));
         questions = Trivia.parseQuestions(triviaJson); //todo: null check, rate limiting...
@@ -66,7 +66,7 @@ public class TriviaTask implements Runnable
         if (previousMessage != null)
         {
             // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
-            commandUtil.disableExpired(previousMessage.getId());
+            commandService.disableExpired(previousMessage.getId());
 
             String previousCorrectAnswer = questions.get(iteration - 1).correctAnswer();
 

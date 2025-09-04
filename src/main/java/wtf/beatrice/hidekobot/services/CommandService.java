@@ -1,4 +1,4 @@
-package wtf.beatrice.hidekobot.util;
+package wtf.beatrice.hidekobot.services;
 
 
 import net.dv8tion.jda.api.JDA;
@@ -19,20 +19,19 @@ import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
-import wtf.beatrice.hidekobot.services.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CommandUtil
+public class CommandService
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandService.class);
 
     private final DatabaseService databaseService;
 
-    public CommandUtil(@Autowired DatabaseService databaseService)
+    public CommandService(@Autowired DatabaseService databaseService)
     {
         this.databaseService = databaseService;
     }
@@ -43,7 +42,7 @@ public class CommandUtil
      *
      * @param event the button interaction event.
      */
-    public void delete(ButtonInteractionEvent event)
+    public void deleteUserLinkedMessage(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
         if (!databaseService.isUserTrackedFor(event.getUser().getId(), event.getMessageId()))

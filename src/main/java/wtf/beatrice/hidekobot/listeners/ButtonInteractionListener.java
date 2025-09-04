@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.commands.base.Trivia;
 import wtf.beatrice.hidekobot.commands.base.UrbanDictionary;
-import wtf.beatrice.hidekobot.util.CommandUtil;
+import wtf.beatrice.hidekobot.services.CommandService;
 
 @Component
 public class ButtonInteractionListener extends ListenerAdapter
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ButtonInteractionListener.class);
 
-    private final CommandUtil commandUtil;
+    private final CommandService commandService;
 
-    public ButtonInteractionListener(CommandUtil commandUtil)
+    public ButtonInteractionListener(CommandService commandService)
     {
-        this.commandUtil = commandUtil;
+        this.commandService = commandService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ButtonInteractionListener extends ListenerAdapter
             case "coinflip_reflip" -> CoinFlip.buttonReFlip(event);
 
             // generic dismiss button
-            case "generic_dismiss" -> commandUtil.delete(event);
+            case "generic_dismiss" -> commandService.deleteUserLinkedMessage(event);
 
             // urban dictionary navigation
             case "urban_nextpage" -> UrbanDictionary.changePage(event, UrbanDictionary.ChangeType.NEXT);

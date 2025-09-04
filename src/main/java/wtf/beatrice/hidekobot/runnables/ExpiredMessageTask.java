@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.services.DatabaseService;
-import wtf.beatrice.hidekobot.util.CommandUtil;
+import wtf.beatrice.hidekobot.services.CommandService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,17 +14,17 @@ public class ExpiredMessageTask implements Runnable
 {
 
     private final DatabaseService databaseService;
-    private final CommandUtil commandUtil;
+    private final CommandService commandService;
 
     private final DateTimeFormatter formatter;
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpiredMessageTask.class);
 
 
     public ExpiredMessageTask(DatabaseService databaseService,
-                              CommandUtil commandUtil)
+                              CommandService commandService)
     {
         this.databaseService = databaseService;
-        this.commandUtil = commandUtil;
+        this.commandService = commandService;
         String format = Cache.getExpiryTimestampFormat();
         formatter = DateTimeFormatter.ofPattern(format);
     }
@@ -58,7 +58,7 @@ public class ExpiredMessageTask implements Runnable
             if (now.isAfter(expiryDate))
             {
                 if (Cache.isVerbose()) LOGGER.info("expired: {}", messageId);
-                commandUtil.disableExpired(messageId);
+                commandService.disableExpired(messageId);
             }
         }
 
