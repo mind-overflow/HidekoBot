@@ -5,6 +5,7 @@ data:
   os: linux
   build_branches:
     - main
+    - develop
   build_events:
     - push
     - pull_request
