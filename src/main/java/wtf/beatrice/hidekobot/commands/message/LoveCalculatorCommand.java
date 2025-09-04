@@ -29,30 +29,35 @@ public class LoveCalculatorCommand implements MessageCommand
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; //anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Calculate how much two people love each other. You can mention two people or just one.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "<person 1> [person 2]";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
@@ -64,7 +69,7 @@ public class LoveCalculatorCommand implements MessageCommand
         List<IMentionable> mentions = mentionsObj.getMentions();
 
 
-        if(args.length == 0 || mentions.isEmpty())
+        if (args.length == 0 || mentions.isEmpty())
         {
             event.getMessage()
                     .reply("\uD83D\uDE22 I need to know who to check! Please mention them.")
@@ -77,10 +82,11 @@ public class LoveCalculatorCommand implements MessageCommand
         String mentionedUserId = mentions.get(0).getId();
         user1 = HidekoBot.getAPI().retrieveUserById(mentionedUserId).complete();
 
-        if(mentions.size() == 1)
+        if (mentions.size() == 1)
         {
             user2 = event.getAuthor();
-        } else {
+        } else
+        {
             mentionedUserId = mentions.get(1).getId();
             user2 = HidekoBot.getAPI().retrieveUserById(mentionedUserId).complete();
         }

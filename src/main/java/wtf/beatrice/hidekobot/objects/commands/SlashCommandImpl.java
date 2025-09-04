@@ -8,17 +8,20 @@ public class SlashCommandImpl implements SlashCommand
 {
 
     @Override
-    public String getCommandName() {
+    public String getCommandName()
+    {
         return getSlashCommandData().getName();
     }
 
     @Override
-    public CommandData getSlashCommandData() {
+    public CommandData getSlashCommandData()
+    {
         return null;
     }
 
     @Override
-    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event) {
+    public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
+    {
         event.reply("Base command implementation").queue();
     }
 }

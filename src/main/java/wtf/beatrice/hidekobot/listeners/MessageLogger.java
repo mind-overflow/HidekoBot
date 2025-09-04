@@ -25,7 +25,7 @@ public class MessageLogger extends ListenerAdapter
         String userName = event.getAuthor().getAsTag();
         String message = event.getMessage().getContentDisplay();
 
-        if(event.getChannel() instanceof TextChannel channel)
+        if (event.getChannel() instanceof TextChannel channel)
         {
             String guildName = channel.getGuild().getName();
             String channelName = event.getChannel().getName();
@@ -33,8 +33,7 @@ public class MessageLogger extends ListenerAdapter
             toLog = GUILD_MESSAGE_LOG_FORMAT
                     .replace("%guild%", guildName)
                     .replace("%channel%", channelName);
-        }
-        else if(event.getChannel() instanceof PrivateChannel)
+        } else if (event.getChannel() instanceof PrivateChannel)
         {
             toLog = DIRECT_MESSAGE_LOG_FORMAT;
         }
@@ -45,9 +44,9 @@ public class MessageLogger extends ListenerAdapter
 
         LOGGER.info(toLog);
 
-        if(!event.getMessage().getAttachments().isEmpty())
+        if (!event.getMessage().getAttachments().isEmpty())
         {
-            for(Message.Attachment atch : event.getMessage().getAttachments())
+            for (Message.Attachment atch : event.getMessage().getAttachments())
             {
                 LOGGER.info(atch.getUrl());
             }

@@ -13,7 +13,8 @@ import java.util.List;
 
 public class BotInfo
 {
-    private BotInfo() {
+    private BotInfo()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -25,7 +26,7 @@ public class BotInfo
 
         // thumbnail
         String botAvatarUrl = HidekoBot.getAPI().getSelfUser().getAvatarUrl();
-        if(botAvatarUrl != null) embedBuilder.setThumbnail(botAvatarUrl);
+        if (botAvatarUrl != null) embedBuilder.setThumbnail(botAvatarUrl);
 
         // help field
         long ownerId = Cache.getBotOwnerId();
@@ -37,12 +38,12 @@ public class BotInfo
 
         // type-specific commands list field
         StringBuilder commandsListBuilder = new StringBuilder();
-        commandsListBuilder.append(commandLabels.size()).append( " total - ");
-        for(int i = 0; i < commandLabels.size(); i++)
+        commandsListBuilder.append(commandLabels.size()).append(" total - ");
+        for (int i = 0; i < commandLabels.size(); i++)
         {
             commandsListBuilder.append("`").append(commandLabels.get(i)).append("`");
 
-            if(i + 1 != commandLabels.size()) // don't add comma in last iteration
+            if (i + 1 != commandLabels.size()) // don't add comma in last iteration
             {
                 commandsListBuilder.append(", ");
             }
@@ -55,9 +56,10 @@ public class BotInfo
 
         // message commands info field
         String messageCommandsInfo;
-        if(Cache.getMessageCommandListener() == null)
+        if (Cache.getMessageCommandListener() == null)
             messageCommandsInfo = "❌ disabled";
-        else {
+        else
+        {
             messageCommandsInfo = "✅ available";
             commandsCount += Cache.getMessageCommandListener().getRegisteredCommands().size();
         }
@@ -65,9 +67,10 @@ public class BotInfo
 
         // slash commands info field
         String slashCommandsInfo;
-        if(Cache.getMessageCommandListener() == null)
+        if (Cache.getMessageCommandListener() == null)
             slashCommandsInfo = "❌ disabled";
-        else {
+        else
+        {
             slashCommandsInfo = "✅ available";
             commandsCount += Cache.getSlashCommandListener().getRegisteredCommands().size();
         }
@@ -75,10 +78,11 @@ public class BotInfo
 
         // random.org integration field
         String randomOrgInfo;
-        if(RandomUtil.isRandomOrgKeyValid())
+        if (RandomUtil.isRandomOrgKeyValid())
         {
             randomOrgInfo = "✅ connected";
-        } else {
+        } else
+        {
             randomOrgInfo = "❌ disabled";
         }
         embedBuilder.addField("Random.org", randomOrgInfo, true);

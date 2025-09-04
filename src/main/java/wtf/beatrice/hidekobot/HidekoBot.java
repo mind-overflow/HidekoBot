@@ -56,7 +56,7 @@ public class HidekoBot
 
         // check loaded bot token
         String botToken = Cache.getBotToken();
-        if(botToken == null || botToken.isEmpty())
+        if (botToken == null || botToken.isEmpty())
         {
             LOGGER.error("Invalid bot token!");
             shutdown();
@@ -76,12 +76,12 @@ public class HidekoBot
             );
 
             jda = jdaBuilder.build().awaitReady();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             LOGGER.error(e.getMessage()); // print the error message, omit the stack trace.
             Thread.currentThread().interrupt(); // send interrupt to the thread.
             shutdown(); // if we failed connecting and authenticating, then quit.
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             LOGGER.error(e.getMessage()); // print the error message, omit the stack trace.
             shutdown(); // if we failed connecting and authenticating, then quit.
@@ -96,19 +96,20 @@ public class HidekoBot
 
         // if there is at least one arg, then iterate through them because we have additional things to do.
         // we are doing this at the end because we might need the API to be already initialized for some things.
-        if(args.length > 0) {
+        if (args.length > 0)
+        {
             List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
 
             // NOTE: do not replace with enhanced for, since we might need
             // to know what position we're at or do further elaboration of the string.
             // we were using this for api key parsing in the past.
-            for(int i = 0; i < argsList.size(); i++)
+            for (int i = 0; i < argsList.size(); i++)
             {
                 String arg = argsList.get(i);
 
-                if(arg.equals("verbose")) Cache.setVerbose(true);
-                if(arg.equals("refresh")) forceUpdateCommands = true;
+                if (arg.equals("verbose")) Cache.setVerbose(true);
+                if (arg.equals("refresh")) forceUpdateCommands = true;
             }
 
         }
@@ -117,7 +118,7 @@ public class HidekoBot
         boolean enableRandomSeedUpdaterTask = false;
         // initialize random.org object if API key is provided
         {
-            if(RandomUtil.isRandomOrgKeyValid())
+            if (RandomUtil.isRandomOrgKeyValid())
             {
                 LOGGER.info("Enabling Random.org integration... This might take a while!");
                 RandomUtil.initRandomOrg();
@@ -187,7 +188,8 @@ public class HidekoBot
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
-        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor())
+        {
             executor.schedule(() -> CommandUtil.updateSlashCommands(finalForceUpdateCommands),
                     1, TimeUnit.SECONDS);
         }
@@ -199,7 +201,7 @@ public class HidekoBot
         LOGGER.info("Connecting to database...");
         String dbFilePath = Cache.getExecPath() + File.separator + "db.sqlite"; // in current directory
         DatabaseSource databaseSource = new DatabaseSource(dbFilePath);
-        if(databaseSource.connect() && databaseSource.initDb())
+        if (databaseSource.connect() && databaseSource.initDb())
         {
             LOGGER.info("Database connection initialized!");
             Cache.setDatabaseSourceInstance(databaseSource);
@@ -207,7 +209,8 @@ public class HidekoBot
             // load data here...
 
             LOGGER.info("Database data loaded into memory!");
-        } else {
+        } else
+        {
             LOGGER.error("Error initializing database connection!");
         }
 
@@ -219,7 +222,7 @@ public class HidekoBot
         scheduler.scheduleAtFixedRate(heartBeatTask, 10L, 30L, TimeUnit.SECONDS); //every 30 seconds
         StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
         scheduler.scheduleAtFixedRate(statusUpdateTask, 0L, 60L * 5L, TimeUnit.SECONDS); // every 5 minutes
-        if(enableRandomSeedUpdaterTask)
+        if (enableRandomSeedUpdaterTask)
         {
             RandomOrgSeedTask randomSeedTask = new RandomOrgSeedTask();
             scheduler.scheduleAtFixedRate(randomSeedTask, 15L, 15L, TimeUnit.MINUTES); // every 15 minutes
@@ -240,6 +243,7 @@ public class HidekoBot
         LOGGER.info("Invite Link: {}", Cache.getInviteUrl());
 
     }
+
     public static JDA getAPI()
     {
         return jda;
@@ -254,7 +258,7 @@ public class HidekoBot
     private static void preShutdown()
     {
         LOGGER.warn("WARNING! Shutting down!");
-        if(jda != null) jda.shutdown();
+        if (jda != null) jda.shutdown();
     }
 
 }

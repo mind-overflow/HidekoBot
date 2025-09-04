@@ -27,7 +27,8 @@ public class CommandUtil
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtil.class);
 
-    private CommandUtil() {
+    private CommandUtil()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -40,7 +41,8 @@ public class CommandUtil
     public static void delete(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId()))) {
+        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
         }
@@ -63,8 +65,10 @@ public class CommandUtil
 
         // populate commands list from registered commands
         List<CommandData> allCommands = new ArrayList<>();
-        for(SlashCommand cmd : Cache.getSlashCommandListener().getRegisteredCommands())
-        { allCommands.add(cmd.getSlashCommandData()); }
+        for (SlashCommand cmd : Cache.getSlashCommandListener().getRegisteredCommands())
+        {
+            allCommands.add(cmd.getSlashCommandData());
+        }
 
         JDA jdaInstance = HidekoBot.getAPI();
 
@@ -73,22 +77,22 @@ public class CommandUtil
 
         boolean update = false;
 
-        if(force)
+        if (force)
         {
             update = true;
         } else
         {
 
             // for each command that we have already registered...
-            for(Command currRegCmd : registeredCommands)
+            for (Command currRegCmd : registeredCommands)
             {
                 boolean found = false;
 
                 // iterate through all "recognized" commands
-                for(CommandData cmdData : allCommands)
+                for (CommandData cmdData : allCommands)
                 {
                     // if we find the same command...
-                    if(cmdData.getName().equals(currRegCmd.getName()))
+                    if (cmdData.getName().equals(currRegCmd.getName()))
                     {
                         // quit the loop since we found it.
                         found = true;
@@ -98,7 +102,7 @@ public class CommandUtil
 
                 // if no match was found, we need to send an updated command list because
                 // an old command was probably removed.
-                if(!found)
+                if (!found)
                 {
                     update = true;
 
@@ -108,18 +112,18 @@ public class CommandUtil
             }
 
             // if an update is not already queued...
-            if(!update)
+            if (!update)
             {
                 // for each "recognized" valid command
-                for(CommandData currCmdData : allCommands)
+                for (CommandData currCmdData : allCommands)
                 {
                     boolean found = false;
 
                     // iterate through all already registered commands.
-                    for(Command cmd : registeredCommands)
+                    for (Command cmd : registeredCommands)
                     {
                         // if this command was already registered...
-                        if(cmd.getName().equals(currCmdData.getName()))
+                        if (cmd.getName().equals(currCmdData.getName()))
                         {
                             // quit the loop since we found a match.
                             found = true;
@@ -129,7 +133,7 @@ public class CommandUtil
 
                     // if no match was found, we need to send an updated command list because
                     // a new command was probably added.
-                    if(!found)
+                    if (!found)
                     {
                         update = true;
 
@@ -142,7 +146,7 @@ public class CommandUtil
 
         LOGGER.info("Found {} commands.", registeredCommands.size());
 
-        if(update)
+        if (update)
         {
             // send updated command list.
             jdaInstance.updateCommands().addCommands(allCommands).queue();
@@ -169,18 +173,18 @@ public class CommandUtil
         MessageChannel textChannel = null;
 
         // this should never happen, but only message channels are supported.
-        if(!msgChannelType.isMessage())
+        if (!msgChannelType.isMessage())
         {
             databaseSource.untrackExpiredMessage(messageId);
             return;
         }
 
         // if this is a DM
-        if(!(msgChannelType.isGuild()))
+        if (!(msgChannelType.isGuild()))
         {
             String userId = databaseSource.getTrackedReplyUserId(messageId);
             User user = userId == null ? null : HidekoBot.getAPI().retrieveUserById(userId).complete();
-            if(user == null)
+            if (user == null)
             {
                 // if user is not found, consider it expired
                 // (deleted profile, or blocked the bot)
@@ -189,12 +193,11 @@ public class CommandUtil
             }
 
             textChannel = user.openPrivateChannel().complete();
-        }
-        else
+        } else
         {
             String guildId = databaseSource.getQueuedExpiringMessageGuild(messageId);
             Guild guild = guildId == null ? null : HidekoBot.getAPI().getGuildById(guildId);
-            if(guild == null)
+            if (guild == null)
             {
                 // if guild is not found, consider it expired
                 // (server was deleted or bot was kicked)
@@ -204,7 +207,7 @@ public class CommandUtil
             textChannel = guild.getTextChannelById(channelId);
         }
 
-        if(textChannel == null)
+        if (textChannel == null)
         {
             // if channel is not found, count it as expired
             // (channel was deleted or bot permissions restricted)
@@ -215,11 +218,11 @@ public class CommandUtil
         RestAction<Message> retrieveAction = textChannel.retrieveMessageById(messageId);
 
 
-        if(Cache.isVerbose()) LOGGER.info("cleaning up: {}", messageId);
+        if (Cache.isVerbose()) LOGGER.info("cleaning up: {}", messageId);
 
         retrieveAction.queue(
                 message -> {
-                    if(message == null)
+                    if (message == null)
                     {
                         databaseSource.untrackExpiredMessage(messageId);
                         return;

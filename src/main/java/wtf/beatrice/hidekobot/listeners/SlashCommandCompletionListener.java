@@ -21,16 +21,21 @@ public class SlashCommandCompletionListener extends ListenerAdapter
     }
 
     public SlashArgumentsCompleter getRegisteredCompleter(String label)
-    { return registeredCompleters.get(label); }
+    {
+        return registeredCompleters.get(label);
+    }
 
     public LinkedList<SlashArgumentsCompleter> getRegisteredCompleters()
-    { return new LinkedList<>(registeredCompleters.values()); }
+    {
+        return new LinkedList<>(registeredCompleters.values());
+    }
+
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event)
     {
         String commandName = event.getName().toLowerCase();
         SlashArgumentsCompleter completer = registeredCompleters.get(commandName);
-        if(completer == null) return;
+        if (completer == null) return;
 
         // not running in a thread because nothing heavy should be done here...
         completer.runCompletion(event);

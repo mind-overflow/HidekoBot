@@ -16,18 +16,21 @@ import java.util.List;
 public class DiceRollCommand implements MessageCommand
 {
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Arrays.asList("diceroll", "droll", "roll"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; // anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
@@ -47,13 +50,15 @@ public class DiceRollCommand implements MessageCommand
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "[dice size] [rolls]";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
@@ -63,10 +68,10 @@ public class DiceRollCommand implements MessageCommand
 
         MessageResponse response = DiceRoll.buildResponse(event.getAuthor(), args);
 
-        if(response.content() != null)
+        if (response.content() != null)
         {
             event.getMessage().reply(response.content()).queue();
-        } else if(response.embed() != null)
+        } else if (response.embed() != null)
         {
             event.getMessage().replyEmbeds(response.embed()).queue();
         }

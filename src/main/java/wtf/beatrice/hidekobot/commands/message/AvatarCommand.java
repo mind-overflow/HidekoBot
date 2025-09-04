@@ -16,40 +16,46 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AvatarCommand  implements MessageCommand
+public class AvatarCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList("avatar"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; // anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Get someone's avatar, or your own. You can additionally specify a resolution.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "[mentioned user] [resolution]";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.TOOLS;
     }
 
@@ -63,23 +69,26 @@ public class AvatarCommand  implements MessageCommand
         // (mentions are handled differently by a specific method)
         boolean resFound = false;
 
-        for (String arg : args) {
-            try {
+        for (String arg : args)
+        {
+            try
+            {
                 int givenRes = Integer.parseInt(arg);
                 resolution = ProfileImage.parseResolution(givenRes);
                 resFound = true;
                 break;
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException ignored)
+            {
                 // ignored because we're running a check after this block
             }
         }
 
         // fallback in case we didn't find any specified resolution
-        if(!resFound) resolution = ProfileImage.parseResolution(512);
+        if (!resFound) resolution = ProfileImage.parseResolution(512);
 
         // check if someone is mentioned
         Mentions mentions = event.getMessage().getMentions();
-        if(mentions.getMentions().isEmpty())
+        if (mentions.getMentions().isEmpty())
         {
             user = event.getAuthor();
         } else
@@ -89,14 +98,14 @@ public class AvatarCommand  implements MessageCommand
         }
 
         // in case of issues, fallback to the sender
-        if(user == null) user = event.getAuthor();
+        if (user == null) user = event.getAuthor();
 
         // send a response
         MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.AVATAR);
-        if(response.content() != null)
+        if (response.content() != null)
         {
             event.getMessage().reply(response.content()).queue();
-        } else if(response.embed() != null)
+        } else if (response.embed() != null)
         {
             event.getMessage().replyEmbeds(response.embed()).queue();
         }

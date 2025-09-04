@@ -16,41 +16,48 @@ public class CoinFlipCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Arrays.asList("coinflip", "flip", "flipcoin"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; // null because it can be used anywhere
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Flip a coin.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return null;
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
     @Override
-    public void runCommand(MessageReceivedEvent event, String label, String[] args) {
+    public void runCommand(MessageReceivedEvent event, String label, String[] args)
+    {
 
         // perform coin flip
         event.getMessage().reply(CoinFlip.genRandom())
@@ -59,6 +66,7 @@ public class CoinFlipCommand implements MessageCommand
                 {
                     // set the command as expiring and restrict it to the user who ran it
                     CoinFlip.trackAndRestrict(message, event.getAuthor());
-                }, (error) -> {});
+                }, (error) -> {
+                });
     }
 }

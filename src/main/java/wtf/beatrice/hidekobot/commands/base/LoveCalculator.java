@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class LoveCalculator
 {
 
-    private LoveCalculator() {
+    private LoveCalculator()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -21,7 +22,7 @@ public class LoveCalculator
         String userId2 = user2.getId();
 
         Integer loveAmount = Cache.getLoveCalculatorValue(userId1, userId2);
-        if(loveAmount == null)
+        if (loveAmount == null)
         {
             loveAmount = RandomUtil.getRandomNumber(0, 100);
             Cache.cacheLoveCalculatorValue(userId1, userId2, loveAmount);
@@ -30,9 +31,9 @@ public class LoveCalculator
         }
 
         String formattedAmount = loveAmount + "%";
-        if(loveAmount <= 30) formattedAmount += "... \uD83D\uDE22";
-        else if(loveAmount < 60) formattedAmount += "! \uD83E\uDDD0";
-        else if(loveAmount < 75) formattedAmount += "!!! \uD83E\uDD73";
+        if (loveAmount <= 30) formattedAmount += "... \uD83D\uDE22";
+        else if (loveAmount < 60) formattedAmount += "! \uD83E\uDDD0";
+        else if (loveAmount < 75) formattedAmount += "!!! \uD83E\uDD73";
         else formattedAmount = "✨ " + formattedAmount + "!!! \uD83D\uDE0D\uD83D\uDCA5";
 
         EmbedBuilder embedBuilder = new EmbedBuilder();

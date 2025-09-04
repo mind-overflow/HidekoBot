@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ExpiredMessageTask implements Runnable {
+public class ExpiredMessageTask implements Runnable
+{
 
     private final DateTimeFormatter formatter;
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpiredMessageTask.class);
@@ -26,23 +27,24 @@ public class ExpiredMessageTask implements Runnable {
 
 
     @Override
-    public void run() {
+    public void run()
+    {
 
         databaseSource = Cache.getDatabaseSource();
-        if(databaseSource == null) return;
+        if (databaseSource == null) return;
 
         List<String> expiringMessages = Cache.getDatabaseSource().getQueuedExpiringMessages();
-        if(expiringMessages == null || expiringMessages.isEmpty()) return;
+        if (expiringMessages == null || expiringMessages.isEmpty()) return;
 
         LocalDateTime now = LocalDateTime.now();
 
-        for(String messageId : expiringMessages)
+        for (String messageId : expiringMessages)
         {
 
-            if(Cache.isVerbose()) LOGGER.info("expired check: {}", messageId);
+            if (Cache.isVerbose()) LOGGER.info("expired check: {}", messageId);
 
             String expiryTimestamp = databaseSource.getQueuedExpiringMessageExpiryDate(messageId);
-            if(expiryTimestamp == null || expiryTimestamp.isEmpty()) // if missing timestamp
+            if (expiryTimestamp == null || expiryTimestamp.isEmpty()) // if missing timestamp
             {
                 // count it as already expired
                 databaseSource.untrackExpiredMessage(messageId);
@@ -52,9 +54,9 @@ public class ExpiredMessageTask implements Runnable {
 
 
             LocalDateTime expiryDate = LocalDateTime.parse(expiryTimestamp, formatter);
-            if(now.isAfter(expiryDate))
+            if (now.isAfter(expiryDate))
             {
-                if(Cache.isVerbose()) LOGGER.info("expired: {}", messageId);
+                if (Cache.isVerbose()) LOGGER.info("expired: {}", messageId);
                 CommandUtil.disableExpired(messageId);
             }
         }

@@ -17,7 +17,8 @@ public class ClearCommand extends SlashCommandImpl
 {
 
     @Override
-    public CommandData getSlashCommandData() {
+    public CommandData getSlashCommandData()
+    {
         return Commands.slash(ClearChat.getLabel(),
                         ClearChat.getDescription())
                 .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
@@ -32,7 +33,7 @@ public class ClearCommand extends SlashCommandImpl
 
         // check if user is trying to run command in dms.
         String error = ClearChat.checkDMs(event.getChannel());
-        if(error != null)
+        if (error != null)
         {
             event.getHook().editOriginal(error).queue();
             return;
@@ -45,10 +46,10 @@ public class ClearCommand extends SlashCommandImpl
         int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
 
         // cap the amount to avoid abuse.
-        if(toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+        if (toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
 
         error = ClearChat.checkDeleteAmount(toDeleteAmount);
-        if(error != null)
+        if (error != null)
         {
             event.getHook().editOriginal(error).queue();
             return;

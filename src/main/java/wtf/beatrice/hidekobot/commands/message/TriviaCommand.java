@@ -23,36 +23,42 @@ public class TriviaCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList("trivia"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null;
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Start a Trivia session and play with others!";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return null;
     }
 
@@ -61,13 +67,13 @@ public class TriviaCommand implements MessageCommand
     {
         MessageChannel channel = event.getChannel();
 
-        if(!(channel instanceof TextChannel))
+        if (!(channel instanceof TextChannel))
         {
             channel.sendMessage(Trivia.getNoDMsError()).queue();
             return;
         }
 
-        if(Trivia.channelsRunningTrivia.contains(channel.getId()))
+        if (Trivia.channelsRunningTrivia.contains(channel.getId()))
         {
             // todo: also what if the bot stops (database...?)
             // todo: also what if the message is already deleted
@@ -80,11 +86,12 @@ public class TriviaCommand implements MessageCommand
 
         Message recvMessage = event.getMessage();
         MessageCreateAction responseAction = null;
-        if(response.content() != null) responseAction = recvMessage.reply(response.content());
-        else if(response.embed() != null) responseAction = recvMessage.replyEmbeds(response.embed());
+        if (response.content() != null) responseAction = recvMessage.reply(response.content());
+        else if (response.embed() != null) responseAction = recvMessage.replyEmbeds(response.embed());
 
-        if(responseAction != null) {
-            if(response.components() != null) responseAction = responseAction.addActionRow(response.components());
+        if (responseAction != null)
+        {
+            if (response.components() != null) responseAction = responseAction.addActionRow(response.components());
 
             responseAction.queue(message -> {
                 Cache.getDatabaseSource().trackRanCommandReply(message, event.getAuthor());

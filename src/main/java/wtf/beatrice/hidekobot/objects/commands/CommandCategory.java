@@ -9,10 +9,14 @@ public enum CommandCategory
     ;
 
     private String emoji;
+
     CommandCategory(String emoji)
     {
         this.emoji = emoji;
     }
 
-    public String getEmoji() { return emoji; }
+    public String getEmoji()
+    {
+        return emoji;
+    }
 }

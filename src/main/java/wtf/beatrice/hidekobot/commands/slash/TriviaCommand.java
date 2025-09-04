@@ -26,13 +26,13 @@ public class TriviaCommand extends SlashCommandImpl
     {
         MessageChannel channel = event.getChannel();
 
-        if(!(channel instanceof TextChannel))
+        if (!(channel instanceof TextChannel))
         {
             event.reply(Trivia.getNoDMsError()).queue();
             return;
         }
 
-        if(Trivia.channelsRunningTrivia.contains(channel.getId()))
+        if (Trivia.channelsRunningTrivia.contains(channel.getId()))
         {
             event.reply(Trivia.getTriviaAlreadyRunningError()).setEphemeral(true).queue();
             return;

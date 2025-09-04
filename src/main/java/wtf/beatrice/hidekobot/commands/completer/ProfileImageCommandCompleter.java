@@ -13,23 +13,25 @@ import java.util.List;
 public class ProfileImageCommandCompleter extends SlashArgumentsCompleterImpl
 {
 
-    public ProfileImageCommandCompleter(SlashCommand parentCommand) {
+    public ProfileImageCommandCompleter(SlashCommand parentCommand)
+    {
         super(parentCommand);
     }
 
     @Override
-    public void runCompletion(@NotNull CommandAutoCompleteInteractionEvent event) {
-        if(event.getFocusedOption().getName().equals("size"))
+    public void runCompletion(@NotNull CommandAutoCompleteInteractionEvent event)
+    {
+        if (event.getFocusedOption().getName().equals("size"))
         {
 
             List<Command.Choice> options = new ArrayList<>();
 
-            for(int res : Cache.getSupportedAvatarResolutions())
+            for (int res : Cache.getSupportedAvatarResolutions())
             {
                 String resString = String.valueOf(res);
                 String userInput = event.getFocusedOption().getValue();
 
-                if(resString.startsWith(userInput))
+                if (resString.startsWith(userInput))
                     options.add(new Command.Choice(resString, res));
             }
 

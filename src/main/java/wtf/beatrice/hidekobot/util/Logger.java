@@ -44,13 +44,14 @@ public class Logger<T>
      * Logs a message to console, after delaying it.
      *
      * @param message the message to log
-     * @param delay the time to wait before logging, in seconds
+     * @param delay   the time to wait before logging, in seconds
      */
     public void log(String message, int delay)
     {
         // create a new scheduled executor with an anonymous runnable...
         //... after waiting <delay> seconds.
-        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+        try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor())
+        {
             executor.schedule(() -> log(message), delay, TimeUnit.SECONDS);
         }
 

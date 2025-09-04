@@ -16,9 +16,10 @@ public class HeartBeatTask implements Runnable
     public void run()
     {
         String urlString = Cache.getFullHeartBeatLink();
-        if(urlString == null || urlString.isEmpty()) return;
+        if (urlString == null || urlString.isEmpty()) return;
 
-        try {
+        try
+        {
 
             URL heartbeatUrl = new URL(urlString);
 
@@ -28,17 +29,17 @@ public class HeartBeatTask implements Runnable
             connection.setReadTimeout(5000);
 
             int responseCode = connection.getResponseCode();
-            if(200 <= responseCode && responseCode < 300)
+            if (200 <= responseCode && responseCode < 300)
             {
                 // only log ok response codes when verbosity is enabled
-                if(Cache.isVerbose()) LOGGER.info("Heartbeat response code: {}", responseCode);
-            }
-            else
+                if (Cache.isVerbose()) LOGGER.info("Heartbeat response code: {}", responseCode);
+            } else
             {
                 LOGGER.error("Heartbeat returned problematic response code: {}", responseCode);
             }
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             LOGGER.error("Error while trying to push heartbeat", e);
         }
 

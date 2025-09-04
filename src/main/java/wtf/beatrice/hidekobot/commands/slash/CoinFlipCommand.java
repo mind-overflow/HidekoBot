@@ -29,12 +29,11 @@ public class CoinFlipCommand extends SlashCommandImpl
                     interaction.retrieveOriginal().queue((message) ->
                     {
                         CoinFlip.trackAndRestrict(message, event.getUser());
-                    }, (error) -> {});
-                }, (error) -> {});
+                    }, (error) -> {
+                    });
+                }, (error) -> {
+                });
     }
-
-
-
 
 
 }

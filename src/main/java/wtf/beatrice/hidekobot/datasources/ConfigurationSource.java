@@ -32,12 +32,12 @@ public class ConfigurationSource
          * we used to have a config.yml file in the "resources" folder, but that is no longer necessary.
          */
         LinkedHashMap<String, Object> internalConfigContents = new LinkedHashMap<>(); // map holding all file entries
-        for(ConfigurationEntry entry : ConfigurationEntry.values())
+        for (ConfigurationEntry entry : ConfigurationEntry.values())
         {
             internalConfigContents.put(entry.getPath(), entry.getDefaultValue());
         }
 
-        if(internalConfigContents.isEmpty())
+        if (internalConfigContents.isEmpty())
         {
             LOGGER.error("Error reading internal configuration!");
             HidekoBot.shutdown();
@@ -46,18 +46,19 @@ public class ConfigurationSource
 
         // check if config files exists in filesystem
         File fsConfigFile = new File(configFilePath);
-        if(!fsConfigFile.exists())
+        if (!fsConfigFile.exists())
         {
             // try to create config file
-            try {
-                if(!fsConfigFile.createNewFile())
+            try
+            {
+                if (!fsConfigFile.createNewFile())
                 {
                     LOGGER.error("We tried creating a file that already exists!");
                     HidekoBot.shutdown();
                     return;
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e)
+            {
                 LOGGER.error("Error creating configuration file!", e);
                 HidekoBot.shutdown();
                 return;
@@ -68,11 +69,15 @@ public class ConfigurationSource
         Yaml fsConfigYaml = new Yaml(new SafeConstructor(options));
         LinkedHashMap<String, Object> fsConfigContents = null; // map holding all file entries
         try (InputStream fsConfigStream = new FileInputStream(fsConfigFile))
-        { fsConfigContents = fsConfigYaml.load(fsConfigStream); }
-        catch (IOException e) { LOGGER.error(e.getMessage()); }
+        {
+            fsConfigContents = fsConfigYaml.load(fsConfigStream);
+        } catch (IOException e)
+        {
+            LOGGER.error(e.getMessage());
+        }
 
 
-        if(fsConfigContents == null) // if file contents are empty or corrupted...
+        if (fsConfigContents == null) // if file contents are empty or corrupted...
         {
             // "clean" them (this effectively forces a config file reset)
             fsConfigContents = new LinkedHashMap<>();
@@ -80,10 +85,10 @@ public class ConfigurationSource
 
         // check for missing keys
         boolean missingKeys = false;
-        for(String key : internalConfigContents.keySet())
+        for (String key : internalConfigContents.keySet())
         {
             // if key is missing
-            if(!fsConfigContents.containsKey(key))
+            if (!fsConfigContents.containsKey(key))
             {
                 // quit and flag it, as we need to complete the file with the missing ones
                 missingKeys = true;
@@ -92,27 +97,29 @@ public class ConfigurationSource
         }
 
         // if keys are missing
-        if(missingKeys)
+        if (missingKeys)
         {
             // create a new mixed map that will take existing values from the non-missing keys
             // and fill everything else with the default values
             LinkedHashMap<String, Object> filledEntries = new LinkedHashMap<>();
 
-            for(Map.Entry<String, Object> entry : internalConfigContents.entrySet())
+            for (Map.Entry<String, Object> entry : internalConfigContents.entrySet())
             {
                 String key = entry.getKey();
 
-                if(fsConfigContents.containsKey(key))
+                if (fsConfigContents.containsKey(key))
                 {
                     // if the key already exists, copy the original value
                     filledEntries.put(key, fsConfigContents.get(key));
-                } else {
+                } else
+                {
                     // else, copy the value from the example config file
                     filledEntries.put(key, entry.getValue());
                 }
             }
 
-            try {
+            try
+            {
                 // new writer to actually write the contents to the file
                 PrintWriter missingKeysWriter = new PrintWriter(fsConfigFile);
 
@@ -125,7 +132,8 @@ public class ConfigurationSource
                 // create the yaml object and dump the values to filesystem
                 Yaml yaml = new Yaml(dumperOptions);
                 yaml.dump(filledEntries, missingKeysWriter);
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e)
+            {
                 LOGGER.error(e.getMessage());
                 HidekoBot.shutdown();
                 return;
@@ -133,7 +141,8 @@ public class ConfigurationSource
 
             // finally, dump all entries to cache.
             loadConfig(filledEntries);
-        } else {
+        } else
+        {
             // if no key is missing, just cache all entries and values from filesystem.
             loadConfig(fsConfigContents);
         }
@@ -144,6 +153,7 @@ public class ConfigurationSource
     {
         this.configurationEntries.putAll(configurationEntries);
     }
+
     public Object getConfigValue(ConfigurationEntry key)
     {
         return configurationEntries.get(key.getPath());

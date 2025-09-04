@@ -12,20 +12,21 @@ import java.util.Arrays;
 public class FormatUtil
 {
 
-    private FormatUtil() {
+    private FormatUtil()
+    {
         throw new IllegalStateException("Utility class");
     }
 
     // cosmetic string to print on startup.
     private static final String LOGO = """
-   \s
-        ██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░
-        ██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗
-        ███████║██║██║░░██║█████╗░░█████═╝░██║░░██║
-        ██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║
-        ██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝
-        ╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░
-   \s""";
+            \s
+                 ██╗░░██╗██╗██████╗░███████╗██╗░░██╗░█████╗░
+                 ██║░░██║██║██╔══██╗██╔════╝██║░██╔╝██╔══██╗
+                 ███████║██║██║░░██║█████╗░░█████═╝░██║░░██║
+                 ██╔══██║██║██║░░██║██╔══╝░░██╔═██╗░██║░░██║
+                 ██║░░██║██║██████╔╝███████╗██║░╚██╗╚█████╔╝
+                 ╚═╝░░╚═╝╚═╝╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░
+            \s""";
 
 
     /**
@@ -60,21 +61,25 @@ public class FormatUtil
      *
      * @return the formatted String
      */
-    public static String getNiceDuration(Duration duration) {
+    public static String getNiceDuration(Duration duration)
+    {
         long days = duration.toDays();
         long hours = duration.toHoursPart();
         long minutes = duration.toMinutesPart();
         long seconds = duration.toSecondsPart();
 
         StringBuilder sb = new StringBuilder();
-        if (days > 0) {
+        if (days > 0)
+        {
             sb.append(days).append("d ");
             sb.append(hours).append("h ");
             sb.append(minutes).append("m ");
-        } else if (hours > 0) {
+        } else if (hours > 0)
+        {
             sb.append(hours).append("h ");
             sb.append(minutes).append("m ");
-        } else if (minutes > 0) {
+        } else if (minutes > 0)
+        {
             sb.append(minutes).append("m ");
         }
         sb.append(seconds).append("s");
@@ -93,7 +98,7 @@ public class FormatUtil
     public static Duration parseDuration(String duration)
     {
         // sanitize a bit to avoid cluttering with garbled strings
-        if(duration.length() > 16) duration = duration.substring(0, 16);
+        if (duration.length() > 16) duration = duration.substring(0, 16);
         duration = duration.replaceAll("[^\\w]", ""); //only keep digits and word characters
         duration = duration.toLowerCase();
 
@@ -105,7 +110,7 @@ public class FormatUtil
         {1,10} is used to limit the size of the input to parse, to avoid stack overflows.
         no one should be typing more than 10 arguments, or more than 10 digits for a single argument anyway.
          */
-        if(!duration.matches("(\\d{1,10}[a-zA-Z]{1,10}){1,10}"))
+        if (!duration.matches("(\\d{1,10}[a-zA-Z]{1,10}){1,10}"))
             return null;
 
         String[] durationTimes = duration.split("[a-zA-Z]+");
@@ -116,7 +121,7 @@ public class FormatUtil
 
         Duration fullDuration = Duration.ZERO;
 
-        for(int i = 0; i < durationTimes.length; i++)
+        for (int i = 0; i < durationTimes.length; i++)
         {
             String durationTimeStr = durationTimes[i];
             String durationUnitStr = durationUnits[i];
@@ -124,7 +129,7 @@ public class FormatUtil
             int durationValue = Integer.parseInt(durationTimeStr);
             TemporalUnit unit = parseTimeUnit(durationUnitStr);
 
-            if(unit != null)
+            if (unit != null)
                 fullDuration = fullDuration.plus(durationValue, unit);
             else return null; // if we failed finding the time unit, instantly quit with failed parsing.
         }

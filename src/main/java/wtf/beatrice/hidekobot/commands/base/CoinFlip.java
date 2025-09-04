@@ -14,11 +14,13 @@ import java.util.List;
 public class CoinFlip
 {
 
-    private CoinFlip() {
+    private CoinFlip()
+    {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Button getReflipButton() {
+    public static Button getReflipButton()
+    {
         return Button.primary("coinflip_reflip", "Flip again")
                 .withEmoji(Emoji.fromUnicode("\uD83E\uDE99"));
     }
@@ -28,10 +30,11 @@ public class CoinFlip
         int rand = RandomUtil.getRandomNumber(0, 1);
         String msg;
 
-        if(rand == 1)
+        if (rand == 1)
         {
             msg = ":coin: It's **Heads**!";
-        } else {
+        } else
+        {
             msg = "It's **Tails**! :coin:";
         }
 
@@ -41,7 +44,7 @@ public class CoinFlip
     public static void buttonReFlip(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if(!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -59,7 +62,8 @@ public class CoinFlip
                 {
                     // set the command as expiring and restrict it to the user who ran it
                     trackAndRestrict(message, event.getUser());
-                }, (error) -> {});
+                }, (error) -> {
+                });
     }
 
     public static void trackAndRestrict(Message replyMessage, User user)

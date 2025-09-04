@@ -6,13 +6,16 @@ import org.jetbrains.annotations.NotNull;
 public class SlashArgumentsCompleterImpl implements SlashArgumentsCompleter
 {
     private final SlashCommand parentCommand;
+
     public SlashArgumentsCompleterImpl(SlashCommand parentCommand)
     {
         this.parentCommand = parentCommand;
     }
 
     public SlashCommand getCommand()
-    { return parentCommand; }
+    {
+        return parentCommand;
+    }
 
     public void runCompletion(@NotNull CommandAutoCompleteInteractionEvent event)
     {

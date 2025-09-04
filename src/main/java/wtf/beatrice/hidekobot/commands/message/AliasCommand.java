@@ -17,43 +17,49 @@ public class AliasCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Arrays.asList("alias", "aliases"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; // anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.TOOLS;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "See other command aliases.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "<command>";
     }
 
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        if(args.length == 0)
+        if (args.length == 0)
         {
             event.getMessage().reply("\uD83D\uDE20 Hey, you have to specify a command!").queue();
             return;
@@ -61,14 +67,14 @@ public class AliasCommand implements MessageCommand
 
         String commandLabel = args[0].toLowerCase();
         MessageCommand command = Cache.getMessageCommandListener().getRegisteredCommand(commandLabel);
-        if(command == null)
+        if (command == null)
         {
             event.getMessage().reply("Unrecognized command: `" + commandLabel + "`!").queue(); // todo prettier
             return;
         }
 
         String aliases = Alias.generateNiceAliases(command);
-        aliases =  "Aliases for **" + command.getCommandLabels().get(0) + "**: " + aliases;
+        aliases = "Aliases for **" + command.getCommandLabels().get(0) + "**: " + aliases;
 
         event.getMessage()
                 .reply(aliases)

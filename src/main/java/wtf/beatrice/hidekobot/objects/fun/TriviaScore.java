@@ -18,9 +18,15 @@ public class TriviaScore
         score += add;
     }
 
-    public int getScore() { return score; }
+    public int getScore()
+    {
+        return score;
+    }
 
-    public User getUser() { return user; }
+    public User getUser()
+    {
+        return user;
+    }
 
     @Override
     public String toString()

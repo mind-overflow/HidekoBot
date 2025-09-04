@@ -18,34 +18,42 @@ public class HelpCommand implements MessageCommand
 
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList("help"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() { return null; }
+    public List<Permission> getPermissions()
+    {
+        return null;
+    }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Get general help on the bot. Specify a command if you want specific help about that command.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "[command]";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.TOOLS;
     }
 
@@ -54,14 +62,14 @@ public class HelpCommand implements MessageCommand
     {
         LinkedHashMap<CommandCategory, LinkedList<MessageCommand>> commandCategories = new LinkedHashMap<>();
 
-        if(args.length == 0)
+        if (args.length == 0)
         {
-            for(CommandCategory category : CommandCategory.values())
+            for (CommandCategory category : CommandCategory.values())
             {
                 LinkedList<MessageCommand> commandsOfThisCategory = new LinkedList<>();
                 for (MessageCommand command : Cache.getMessageCommandListener().getRegisteredCommands())
                 {
-                    if(command.getCategory().equals(category))
+                    if (command.getCategory().equals(category))
                     {
                         commandsOfThisCategory.add(command);
                     }
@@ -79,18 +87,18 @@ public class HelpCommand implements MessageCommand
                             "\nYou will find a list of commands organized in categories below.",
                     false);
 
-            for(Map.Entry<CommandCategory, LinkedList<MessageCommand>> entry : commandCategories.entrySet())
+            for (Map.Entry<CommandCategory, LinkedList<MessageCommand>> entry : commandCategories.entrySet())
             {
                 StringBuilder commandsList = new StringBuilder();
                 CommandCategory category = entry.getKey();
                 LinkedList<MessageCommand> commandsOfThisCategory = entry.getValue();
 
-                for(int pos = 0; pos < commandsOfThisCategory.size(); pos++)
+                for (int pos = 0; pos < commandsOfThisCategory.size(); pos++)
                 {
                     MessageCommand command = commandsOfThisCategory.get(pos);
                     commandsList.append("`").append(command.getCommandLabels().get(0)).append("`");
 
-                    if(pos + 1 != commandsOfThisCategory.size())
+                    if (pos + 1 != commandsOfThisCategory.size())
                         commandsList.append(", "); // separate with comma except on last run
                 }
 
@@ -102,11 +110,12 @@ public class HelpCommand implements MessageCommand
             }
 
             event.getMessage().replyEmbeds(embedBuilder.build()).queue();
-        } else {
+        } else
+        {
 
             String commandLabel = args[0].toLowerCase();
             MessageCommand command = Cache.getMessageCommandListener().getRegisteredCommand(commandLabel);
-            if(command == null)
+            if (command == null)
             {
                 event.getMessage().reply("Unrecognized command: `" + commandLabel + "`!").queue(); // todo prettier
                 return;
@@ -115,23 +124,24 @@ public class HelpCommand implements MessageCommand
             commandLabel = command.getCommandLabels().get(0);
             String usage = "`" + Cache.getBotPrefix() + " " + commandLabel;
             String internalUsage = command.getUsage();
-            if(internalUsage != null) usage += " " + internalUsage;
+            if (internalUsage != null) usage += " " + internalUsage;
             usage += "`";
 
             String aliases = Alias.generateNiceAliases(command);
 
             List<Permission> permissions = command.getPermissions();
             StringBuilder permissionsStringBuilder = new StringBuilder();
-            if(permissions == null)
+            if (permissions == null)
             {
                 permissionsStringBuilder = new StringBuilder("Available to everyone");
-            } else {
-                for(int i = 0; i < permissions.size(); i++)
+            } else
+            {
+                for (int i = 0; i < permissions.size(); i++)
                 {
                     Permission permission = permissions.get(i);
                     permissionsStringBuilder.append("**").append(permission.getName()).append("**");
 
-                    if(i + 1 != permissions.size())
+                    if (i + 1 != permissions.size())
                         permissionsStringBuilder.append(", "); // separate with comma expect on last iteration
                 }
             }

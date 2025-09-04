@@ -18,34 +18,42 @@ public class SayCommand implements MessageCommand
 
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return new LinkedList<>(Collections.singletonList("say"));
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() { return Collections.singletonList(Say.getPermission()); }
+    public List<Permission> getPermissions()
+    {
+        return Collections.singletonList(Say.getPermission());
+    }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return true;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Make the bot say something for you.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "<text>";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.TOOLS;
     }
 

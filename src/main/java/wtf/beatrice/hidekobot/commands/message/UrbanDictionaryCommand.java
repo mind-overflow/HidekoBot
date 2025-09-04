@@ -21,36 +21,42 @@ public class UrbanDictionaryCommand implements MessageCommand
 {
 
     @Override
-    public LinkedList<String> getCommandLabels() {
+    public LinkedList<String> getCommandLabels()
+    {
         return UrbanDictionary.getCommandLabels();
     }
 
     @Nullable
     @Override
-    public List<Permission> getPermissions() {
+    public List<Permission> getPermissions()
+    {
         return null; //anyone can use it
     }
 
     @Override
-    public boolean passRawArgs() {
+    public boolean passRawArgs()
+    {
         return false;
     }
 
     @NotNull
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Look something up in the Urban Dictionary.";
     }
 
     @Nullable
     @Override
-    public String getUsage() {
+    public String getUsage()
+    {
         return "<query>";
     }
 
     @NotNull
     @Override
-    public CommandCategory getCategory() {
+    public CommandCategory getCategory()
+    {
         return CommandCategory.FUN;
     }
 
@@ -58,7 +64,7 @@ public class UrbanDictionaryCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        if(args.length == 0)
+        if (args.length == 0)
         {
             event.getMessage().reply(UrbanDictionary.getNoArgsError()).queue();
             return;
@@ -66,11 +72,12 @@ public class UrbanDictionaryCommand implements MessageCommand
 
         // sanitize args by only keeping letters and numbers, and adding "+" instead of spaces for HTML parsing
         StringBuilder termBuilder = new StringBuilder();
-        for (int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++)
+        {
             String arg = args[i];
             termBuilder.append(arg);
 
-            if(i + 1 != args.length) // add spaces between args, but not on the last run
+            if (i + 1 != args.length) // add spaces between args, but not on the last run
                 termBuilder.append(" ");
         }
 
@@ -79,9 +86,11 @@ public class UrbanDictionaryCommand implements MessageCommand
 
         Document doc;
 
-        try {
+        try
+        {
             doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             event.getMessage().reply(UrbanDictionary.getTermNotFoundError()).queue();
             return;
         }
@@ -92,7 +101,7 @@ public class UrbanDictionaryCommand implements MessageCommand
 
         // disable next page if we only have one result
         Button nextPageBtnLocal = UrbanDictionary.getNextPageButton();
-        if(search.getPages() == 1) nextPageBtnLocal = nextPageBtnLocal.asDisabled();
+        if (search.getPages() == 1) nextPageBtnLocal = nextPageBtnLocal.asDisabled();
 
         event.getChannel()
                 .sendMessageEmbeds(embed)

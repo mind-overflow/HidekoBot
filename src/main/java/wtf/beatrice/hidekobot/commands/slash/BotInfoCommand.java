@@ -16,7 +16,8 @@ import java.util.List;
 public class BotInfoCommand extends SlashCommandImpl
 {
     @Override
-    public CommandData getSlashCommandData() {
+    public CommandData getSlashCommandData()
+    {
         return Commands.slash("botinfo", "Get info about the bot.");
     }
 
@@ -29,7 +30,7 @@ public class BotInfoCommand extends SlashCommandImpl
         // get a list of slash commands
         List<SlashCommand> registeredCommands = Cache.getSlashCommandListener().getRegisteredCommands();
         LinkedList<String> registeredCommandNames = new LinkedList<>();
-        for(SlashCommand command : registeredCommands)
+        for (SlashCommand command : registeredCommands)
         {
             // node: adding slash so people realize that this is specific about slash commands.
             registeredCommandNames.add("/" + command.getCommandName());

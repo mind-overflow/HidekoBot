@@ -22,7 +22,8 @@ public class StatusUpdateTask implements Runnable
     );
 
     @Override
-    public void run() {
+    public void run()
+    {
         int randomPos = RandomUtil.getRandomNumber(0, statuses.size() - 1);
         String status = statuses.get(randomPos) + " | " + Cache.getBotPrefix() + " help";
         HidekoBot.getAPI().getPresence().setActivity(Activity.playing(status));

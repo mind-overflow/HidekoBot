@@ -36,7 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class Trivia
 {
 
-    private Trivia() {
+    private Trivia()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -52,14 +53,23 @@ public class Trivia
     // first string is the channelId, the list contain all score records for that channel
     public static HashMap<String, LinkedList<TriviaScore>> channelAndScores = new HashMap<>();
 
-    public static String getTriviaLink(int categoryId) {return TRIVIA_API_LINK + categoryId; }
-    public static String getCategoriesLink() {return TRIVIA_API_CATEGORIES_LINK; }
+    public static String getTriviaLink(int categoryId)
+    {
+        return TRIVIA_API_LINK + categoryId;
+    }
 
-    public static String getNoDMsError() {
+    public static String getCategoriesLink()
+    {
+        return TRIVIA_API_CATEGORIES_LINK;
+    }
+
+    public static String getNoDMsError()
+    {
         return "\uD83D\uDE22 Sorry! Trivia doesn't work in DMs.";
     }
 
-    public static String getTriviaAlreadyRunningError() {
+    public static String getTriviaAlreadyRunningError()
+    {
         // todo nicer looking
         return "Trivia is already running here!";
     }
@@ -67,10 +77,10 @@ public class Trivia
     public static MessageResponse generateMainScreen()
     {
         JSONObject categoriesJson = Trivia.fetchJson(Trivia.getCategoriesLink());
-        if(categoriesJson == null)
+        if (categoriesJson == null)
             return new MessageResponse("Error fetching trivia!", null); // todo nicer with emojis
         List<TriviaCategory> categories = Trivia.parseCategories(categoriesJson);
-        if(categories.isEmpty())
+        if (categories.isEmpty())
             return new MessageResponse("Error parsing trivia categories!", null); // todo nicer with emojis
 
         categories.sort(new TriviaCategoryComparator());
@@ -90,7 +100,7 @@ public class Trivia
 
         StringSelectMenu.Builder menuBuilder = StringSelectMenu.create("trivia_categories");
 
-        for(TriviaCategory category : categories)
+        for (TriviaCategory category : categories)
         {
             String name = category.categoryName();
             int id = category.categoryId();
@@ -102,20 +112,22 @@ public class Trivia
 
     public static JSONObject fetchJson(String link)
     {
-        try {
+        try
+        {
             URL url = new URL(link);
             URLConnection connection = url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             String currentChar;
             StringBuilder jsonStrBuilder = new StringBuilder();
-            while((currentChar = bufferedReader.readLine()) != null)
+            while ((currentChar = bufferedReader.readLine()) != null)
             {
                 jsonStrBuilder.append(currentChar);
             }
             bufferedReader.close();
             return new JSONObject(jsonStrBuilder.toString());
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             LOGGER.error("JSON Parsing Exception", e);
         }
 
@@ -128,7 +140,7 @@ public class Trivia
 
         JSONArray results = jsonObject.getJSONArray("results");
 
-        for(Object currentQuestionGeneric : results)
+        for (Object currentQuestionGeneric : results)
         {
             JSONObject questionJson = (JSONObject) currentQuestionGeneric;
             String question = StringEscapeUtils.unescapeHtml4(questionJson.getString("question"));
@@ -137,7 +149,7 @@ public class Trivia
             List<String> incorrectAnswersList = new ArrayList<>();
 
             JSONArray incorrectAnswers = questionJson.getJSONArray("incorrect_answers");
-            for(Object incorrectAnswerGeneric : incorrectAnswers)
+            for (Object incorrectAnswerGeneric : incorrectAnswers)
             {
                 String incorrectAnswer = (String) incorrectAnswerGeneric;
                 incorrectAnswersList.add(StringEscapeUtils.unescapeHtml4(incorrectAnswer));
@@ -154,7 +166,7 @@ public class Trivia
     {
         List<TriviaCategory> categories = new ArrayList<>();
         JSONArray categoriesArray = jsonObject.getJSONArray("trivia_categories");
-        for(Object categoryObject : categoriesArray)
+        for (Object categoryObject : categoriesArray)
         {
             JSONObject categoryJson = (JSONObject) categoryObject;
 
@@ -172,14 +184,14 @@ public class Trivia
         User user = event.getUser();
         String channelId = event.getChannel().getId();
 
-        if(trackResponse(user, event.getChannel()))
+        if (trackResponse(user, event.getChannel()))
         {
             LinkedList<TriviaScore> scores = channelAndScores.get(channelId);
-            if(scores == null) scores = new LinkedList<>();
+            if (scores == null) scores = new LinkedList<>();
             TriviaScore currentUserScore = null;
-            for(TriviaScore score : scores)
+            for (TriviaScore score : scores)
             {
-                if(score.getUser().equals(user))
+                if (score.getUser().equals(user))
                 {
                     currentUserScore = score;
                     scores.remove(score);
@@ -187,29 +199,31 @@ public class Trivia
                 }
             }
 
-            if(currentUserScore == null)
+            if (currentUserScore == null)
             {
                 currentUserScore = new TriviaScore(user);
             }
 
-            if(answerType.equals(AnswerType.CORRECT))
+            if (answerType.equals(AnswerType.CORRECT))
             {
 
                 event.reply(user.getAsMention() + " got it right! \uD83E\uDD73 (**+3**)").queue();
                 currentUserScore.changeScore(3);
 
-            } else {
+            } else
+            {
                 event.reply("❌ " + user.getAsMention() + ", that's not the right answer! (**-1**)").queue();
                 currentUserScore.changeScore(-1);
             }
 
             scores.add(currentUserScore);
             channelAndScores.put(channelId, scores);
-        } else {
+        } else
+        {
             event.reply("☹️ " + user.getAsMention() + ", you can't answer twice!")
                     .queue(interaction ->
-                    Cache.getTaskScheduler().schedule(() ->
-                            interaction.deleteOriginal().queue(), 3, TimeUnit.SECONDS));
+                            Cache.getTaskScheduler().schedule(() ->
+                                    interaction.deleteOriginal().queue(), 3, TimeUnit.SECONDS));
         }
     }
 
@@ -220,17 +234,18 @@ public class Trivia
 
         List<String> responders = channelAndWhoResponded.get(channelId);
 
-        if(responders == null)
+        if (responders == null)
         {
             responders = new ArrayList<>();
         }
 
-        if(responders.isEmpty() || !responders.contains(userId))
+        if (responders.isEmpty() || !responders.contains(userId))
         {
             responders.add(userId);
             channelAndWhoResponded.put(channelId, responders);
             return true; // response was successfully tracked
-        } else {
+        } else
+        {
             return false; // response wasn't tracked because there already was an entry
         }
     }
@@ -238,7 +253,7 @@ public class Trivia
     public static void handleMenuSelection(StringSelectInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if(!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -263,7 +278,7 @@ public class Trivia
         Message message = event.getMessage();
         MessageChannel channel = message.getChannel();
 
-        if(Trivia.channelsRunningTrivia.contains(channel.getId()))
+        if (Trivia.channelsRunningTrivia.contains(channel.getId()))
         {
             // todo nicer looking
             // todo: also what if the bot stops (database...?)
@@ -271,7 +286,8 @@ public class Trivia
             Message err = event.reply("Trivia is already running here!").complete().retrieveOriginal().complete();
             Cache.getTaskScheduler().schedule(() -> err.delete().queue(), 10, TimeUnit.SECONDS);
             return;
-        } else {
+        } else
+        {
             // todo nicer looking
             event.reply("Starting new Trivia session!").queue();
         }
@@ -288,7 +304,8 @@ public class Trivia
         Trivia.channelsRunningTrivia.add(channel.getId());
     }
 
-    public enum AnswerType {
+    public enum AnswerType
+    {
         CORRECT, WRONG
     }
 

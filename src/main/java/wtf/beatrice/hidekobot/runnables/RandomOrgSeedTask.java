@@ -20,11 +20,11 @@ public class RandomOrgSeedTask implements Runnable
     @Override
     public void run()
     {
-        if(RandomUtil.isRandomOrgKeyValid())
+        if (RandomUtil.isRandomOrgKeyValid())
         {
-            if(Cache.isVerbose()) LOGGER.info("Updating Random seed from random.org...");
+            if (Cache.isVerbose()) LOGGER.info("Updating Random seed from random.org...");
             RandomUtil.initRandomOrg();
-            if(Cache.isVerbose()) LOGGER.info("Random.org seed updated!");
+            if (Cache.isVerbose()) LOGGER.info("Random.org seed updated!");
         }
     }
 }

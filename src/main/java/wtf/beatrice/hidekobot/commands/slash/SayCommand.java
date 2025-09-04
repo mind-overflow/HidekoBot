@@ -33,12 +33,12 @@ public class SayCommand extends SlashCommandImpl
         // get the text to send
         OptionMapping textOption = event.getOption("text");
         String messageContent = "";
-        if(textOption != null)
+        if (textOption != null)
         {
-             messageContent = textOption.getAsString();
+            messageContent = textOption.getAsString();
         }
 
-        if(textOption == null || messageContent.isEmpty())
+        if (textOption == null || messageContent.isEmpty())
         {
             event.reply("\uD83D\uDE20 Hey, you have to tell me what to say!")
                     .setEphemeral(true)
