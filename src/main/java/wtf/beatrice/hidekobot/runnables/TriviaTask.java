@@ -13,8 +13,8 @@ import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
-import wtf.beatrice.hidekobot.services.DatabaseService;
 import wtf.beatrice.hidekobot.services.CommandService;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;

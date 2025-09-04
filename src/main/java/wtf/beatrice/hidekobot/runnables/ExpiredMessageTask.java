@@ -3,8 +3,8 @@ package wtf.beatrice.hidekobot.runnables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.services.DatabaseService;
 import wtf.beatrice.hidekobot.services.CommandService;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

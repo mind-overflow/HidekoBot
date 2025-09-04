@@ -176,6 +176,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.4.5</version>
+                <configuration>
+                    <!-- Replace the main artifact (no classifier) -->
+                    <classifier></classifier>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
