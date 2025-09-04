@@ -14,7 +14,7 @@ import org.apache.commons.text.WordUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import wtf.beatrice.hidekobot.Cache;
-import wtf.beatrice.hidekobot.datasources.DatabaseSource;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 import wtf.beatrice.hidekobot.util.SerializationUtil;
 
 import java.util.ArrayList;
@@ -107,9 +107,9 @@ public class UrbanDictionary
 
     public static void track(Message message, User user, UrbanSearch search, String sanitizedTerm)
     {
-        Cache.getDatabaseSource().queueDisabling(message);
-        Cache.getDatabaseSource().trackRanCommandReply(message, user);
-        Cache.getDatabaseSource().trackUrban(search.getSerializedMeanings(),
+        Cache.getServices().databaseService().queueDisabling(message);
+        Cache.getServices().databaseService().trackRanCommandReply(message, user);
+        Cache.getServices().databaseService().trackUrban(search.getSerializedMeanings(),
                 search.getSerializedExamples(),
                 search.getSerializedContributors(),
                 search.getSerializedDates(),
@@ -120,7 +120,7 @@ public class UrbanDictionary
     public static void changePage(ButtonInteractionEvent event, ChangeType changeType)
     {
         String messageId = event.getMessageId();
-        DatabaseSource database = Cache.getDatabaseSource();
+        DatabaseService database = Cache.getServices().databaseService();
 
         // check if the user interacting is the same one who ran the command
         if (!(database.isUserTrackedFor(event.getUser().getId(), messageId)))
@@ -130,7 +130,7 @@ public class UrbanDictionary
         }
 
         // get current page and calculate how many pages there are
-        int page = Cache.getDatabaseSource().getUrbanPage(messageId);
+        int page = database.getUrbanPage(messageId);
 
         String term = database.getUrbanTerm(messageId);
         String url = generateUrl(term);

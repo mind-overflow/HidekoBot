@@ -108,8 +108,8 @@ public class ClearCommand implements MessageCommand
         Message finalMessage = event.getChannel().sendMessage(content).setActionRow(dismiss).complete();
 
         // add the message to database.
-        Cache.getDatabaseSource().queueDisabling(finalMessage);
-        Cache.getDatabaseSource().trackRanCommandReply(finalMessage, event.getAuthor());
+        Cache.getServices().databaseService().queueDisabling(finalMessage);
+        Cache.getServices().databaseService().trackRanCommandReply(finalMessage, event.getAuthor());
 
         // delete the sender's message.
         event.getMessage().delete().queue();

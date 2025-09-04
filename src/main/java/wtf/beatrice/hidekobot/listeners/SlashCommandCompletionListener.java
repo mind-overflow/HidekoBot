@@ -2,11 +2,13 @@ package wtf.beatrice.hidekobot.listeners;
 
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.objects.commands.SlashArgumentsCompleter;
 
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+@Component
 public class SlashCommandCompletionListener extends ListenerAdapter
 {
 

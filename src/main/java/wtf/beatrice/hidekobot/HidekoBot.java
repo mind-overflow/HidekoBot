@@ -6,20 +6,24 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
-import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.*;
 import wtf.beatrice.hidekobot.runnables.ExpiredMessageTask;
 import wtf.beatrice.hidekobot.runnables.HeartBeatTask;
 import wtf.beatrice.hidekobot.runnables.RandomOrgSeedTask;
 import wtf.beatrice.hidekobot.runnables.StatusUpdateTask;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 import wtf.beatrice.hidekobot.util.FormatUtil;
 import wtf.beatrice.hidekobot.util.RandomUtil;
+import wtf.beatrice.hidekobot.util.Services;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -30,6 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@SpringBootApplication
 public class HidekoBot
 {
     private static JDA jda;
@@ -62,6 +67,16 @@ public class HidekoBot
             shutdown();
             return;
         }
+
+        ConfigurableApplicationContext context = SpringApplication.run(HidekoBot.class, args);
+
+        CommandUtil commandUtil = context.getBean(CommandUtil.class);
+        DatabaseService databaseService = context.getBean(DatabaseService.class);
+        Services services = new wtf.beatrice.hidekobot.util.Services(
+                commandUtil,
+                databaseService
+        );
+        Cache.setServices(services);
 
         try
         {
@@ -114,7 +129,6 @@ public class HidekoBot
 
         }
 
-
         boolean enableRandomSeedUpdaterTask = false;
         // initialize random.org object if API key is provided
         {
@@ -128,8 +142,11 @@ public class HidekoBot
         }
 
         // register slash commands and completers
-        SlashCommandListener slashCommandListener = new SlashCommandListener();
-        SlashCommandCompletionListener slashCommandCompletionListener = new SlashCommandCompletionListener();
+        SlashCommandListener slashCommandListener = context.getBean(SlashCommandListener.class);
+        SlashCommandCompletionListener slashCommandCompletionListener = context.getBean(SlashCommandCompletionListener.class);
+        MessageCommandListener messageCommandListener = context.getBean(MessageCommandListener.class);
+        ButtonInteractionListener buttonInteractionListener = context.getBean(ButtonInteractionListener.class);
+        SelectMenuInteractionListener selectMenuInteractionListener = context.getBean(SelectMenuInteractionListener.class);
         AvatarCommand avatarCommand = new AvatarCommand();
         ProfileImageCommandCompleter avatarCommandCompleter = new ProfileImageCommandCompleter(avatarCommand);
         slashCommandListener.registerCommand(avatarCommand);
@@ -156,7 +173,6 @@ public class HidekoBot
         slashCommandListener.registerCommand(new UrbanDictionaryCommand());
 
         // register message commands
-        MessageCommandListener messageCommandListener = new MessageCommandListener();
         messageCommandListener.registerCommand(new HelloCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AliasCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AvatarCommand());
@@ -183,43 +199,28 @@ public class HidekoBot
         jda.addEventListener(messageCommandListener);
         jda.addEventListener(slashCommandListener);
         jda.addEventListener(slashCommandCompletionListener);
-        jda.addEventListener(new ButtonInteractionListener());
-        jda.addEventListener(new SelectMenuInteractionListener());
+        jda.addEventListener(buttonInteractionListener);
+        jda.addEventListener(selectMenuInteractionListener);
 
         // update slash commands (delayed)
         final boolean finalForceUpdateCommands = forceUpdateCommands;
         try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor())
         {
-            executor.schedule(() -> CommandUtil.updateSlashCommands(finalForceUpdateCommands),
+            executor.schedule(() -> commandUtil.updateSlashCommands(finalForceUpdateCommands),
                     1, TimeUnit.SECONDS);
         }
 
         // set the bot's status
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
 
-        // connect to database
-        LOGGER.info("Connecting to database...");
-        String dbFilePath = Cache.getExecPath() + File.separator + "db.sqlite"; // in current directory
-        DatabaseSource databaseSource = new DatabaseSource(dbFilePath);
-        if (databaseSource.connect() && databaseSource.initDb())
-        {
-            LOGGER.info("Database connection initialized!");
-            Cache.setDatabaseSourceInstance(databaseSource);
-
-            // load data here...
-
-            LOGGER.info("Database data loaded into memory!");
-        } else
-        {
-            LOGGER.error("Error initializing database connection!");
-        }
-
         // start scheduled runnables
         ScheduledExecutorService scheduler = Cache.getTaskScheduler();
-        ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask();
+        ExpiredMessageTask expiredMessageTask = new ExpiredMessageTask(services.databaseService(), services.commandUtil());
         scheduler.scheduleAtFixedRate(expiredMessageTask, 5L, 5L, TimeUnit.SECONDS); //every 5 seconds
+
         HeartBeatTask heartBeatTask = new HeartBeatTask();
         scheduler.scheduleAtFixedRate(heartBeatTask, 10L, 30L, TimeUnit.SECONDS); //every 30 seconds
+
         StatusUpdateTask statusUpdateTask = new StatusUpdateTask();
         scheduler.scheduleAtFixedRate(statusUpdateTask, 0L, 60L * 5L, TimeUnit.SECONDS); // every 5 minutes
         if (enableRandomSeedUpdaterTask)

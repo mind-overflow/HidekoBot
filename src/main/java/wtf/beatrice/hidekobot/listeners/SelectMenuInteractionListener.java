@@ -4,8 +4,10 @@ import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionE
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.Trivia;
 
+@Component
 public class SelectMenuInteractionListener extends ListenerAdapter
 {
 

@@ -72,8 +72,8 @@ public class ClearCommand extends SlashCommandImpl
         botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
 
         // add the message to database.
-        Cache.getDatabaseSource().queueDisabling(botMessage);
-        Cache.getDatabaseSource().trackRanCommandReply(botMessage, event.getUser());
+        Cache.getServices().databaseService().queueDisabling(botMessage);
+        Cache.getServices().databaseService().trackRanCommandReply(botMessage, event.getUser());
 
     }
 }

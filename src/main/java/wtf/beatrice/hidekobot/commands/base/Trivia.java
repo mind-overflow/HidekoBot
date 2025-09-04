@@ -19,7 +19,6 @@ import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
 import wtf.beatrice.hidekobot.runnables.TriviaTask;
-import wtf.beatrice.hidekobot.util.CommandUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -253,14 +252,14 @@ public class Trivia
     public static void handleMenuSelection(StringSelectInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if (!(Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
         }
 
         // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
-        CommandUtil.disableExpired(event.getMessageId());
+        Cache.getServices().commandUtil().disableExpired(event.getMessageId());
 
         SelectOption pickedOption = event.getInteraction().getSelectedOptions().get(0);
         String categoryName = pickedOption.getLabel();
@@ -293,7 +292,8 @@ public class Trivia
         }
 
 
-        TriviaTask triviaTask = new TriviaTask(author, channel, category);
+        TriviaTask triviaTask = new TriviaTask(author, channel, category,
+                Cache.getServices().databaseService(), Cache.getServices().commandUtil());
         ScheduledFuture<?> future =
                 Cache.getTaskScheduler().scheduleAtFixedRate(triviaTask,
                         0,

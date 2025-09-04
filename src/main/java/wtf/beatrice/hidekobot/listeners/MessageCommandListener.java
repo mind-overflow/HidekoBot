@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -14,6 +15,7 @@ import wtf.beatrice.hidekobot.objects.comparators.MessageCommandAliasesComparato
 
 import java.util.*;
 
+@Component
 public class MessageCommandListener extends ListenerAdapter
 {
 

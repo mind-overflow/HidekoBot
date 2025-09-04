@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessageLogger extends ListenerAdapter
 {
     // this class only gets loaded as a listener if verbosity is set to true on startup.

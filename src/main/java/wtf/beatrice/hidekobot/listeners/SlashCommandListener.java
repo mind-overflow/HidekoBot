@@ -3,11 +3,13 @@ package wtf.beatrice.hidekobot.listeners;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
 
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+@Component
 public class SlashCommandListener extends ListenerAdapter
 {
 

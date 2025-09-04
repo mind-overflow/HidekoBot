@@ -5,12 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.beatrice.hidekobot.datasources.ConfigurationEntry;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
-import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
 import wtf.beatrice.hidekobot.listeners.MessageCommandListener;
 import wtf.beatrice.hidekobot.listeners.MessageLogger;
 import wtf.beatrice.hidekobot.listeners.SlashCommandCompletionListener;
 import wtf.beatrice.hidekobot.listeners.SlashCommandListener;
+import wtf.beatrice.hidekobot.util.Services;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -27,10 +27,21 @@ public class Cache
         throw new IllegalStateException("Utility class");
     }
 
-
     // todo: make this compatible with the message listener's regex
     private static final String BOT_PREFIX = "hideko";
     private static final Logger LOGGER = LoggerFactory.getLogger(Cache.class);
+
+    private static Services SERVICES;
+
+    public static void setServices(Services services)
+    {
+        SERVICES = services;
+    }
+
+    public static Services getServices()
+    {
+        return SERVICES;
+    }
 
     // map to store results of "love calculator", to avoid people re-running the same command until
     // they get what they wanted.
@@ -40,7 +51,6 @@ public class Cache
 
     private static PropertiesSource propertiesSource = null;
     private static ConfigurationSource configurationSource = null;
-    private static DatabaseSource databaseSource = null;
     private static boolean verbose = false;
     private static MessageLogger verbosityLogger = null;
     private static final long BOT_MAINTAINER_ID = 979809420714332260L;
@@ -179,26 +189,6 @@ public class Cache
     public static String getInviteUrl()
     {
         return DEFAULT_INVITE_LINK.replace("%userid%", botApplicationId);
-    }
-
-    /**
-     * Set the already fully-initialized DatabaseSource instance, ready to be accessed and used.
-     *
-     * @param databaseSourceInstance the fully-initialized DatabaseSource instance.
-     */
-    public static void setDatabaseSourceInstance(DatabaseSource databaseSourceInstance)
-    {
-        databaseSource = databaseSourceInstance;
-    }
-
-    /**
-     * Get the fully-initialized DatabaseSource instance, ready to be used.
-     *
-     * @return the DatabaseSource instance.
-     */
-    public static @Nullable DatabaseSource getDatabaseSource()
-    {
-        return databaseSource;
     }
 
     /**

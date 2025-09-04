@@ -44,8 +44,8 @@ public class TriviaCommand extends SlashCommandImpl
 
         event.getHook().editOriginalEmbeds(response.embed()).setActionRow(response.components()).queue(message ->
         {
-            Cache.getDatabaseSource().trackRanCommandReply(message, event.getUser());
-            Cache.getDatabaseSource().queueDisabling(message);
+            Cache.getServices().databaseService().trackRanCommandReply(message, event.getUser());
+            Cache.getServices().databaseService().queueDisabling(message);
         });
     }
 }

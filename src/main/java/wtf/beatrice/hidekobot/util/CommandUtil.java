@@ -14,22 +14,27 @@ import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
-import wtf.beatrice.hidekobot.datasources.DatabaseSource;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CommandUtil
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtil.class);
 
-    private CommandUtil()
+    private final DatabaseService databaseService;
+
+    public CommandUtil(@Autowired DatabaseService databaseService)
     {
-        throw new IllegalStateException("Utility class");
+        this.databaseService = databaseService;
     }
 
     /**
@@ -38,10 +43,10 @@ public class CommandUtil
      *
      * @param event the button interaction event.
      */
-    public static void delete(ButtonInteractionEvent event)
+    public void delete(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if (!databaseService.isUserTrackedFor(event.getUser().getId(), event.getMessageId()))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -60,7 +65,7 @@ public class CommandUtil
      *
      * @param force a boolean specifying if the update should be forced even if no differences were found.
      */
-    public static void updateSlashCommands(boolean force)
+    public void updateSlashCommands(boolean force)
     {
 
         // populate commands list from registered commands
@@ -160,48 +165,46 @@ public class CommandUtil
      *
      * @param messageId the message id to disable.
      */
-    public static void disableExpired(String messageId)
+    public void disableExpired(String messageId)
     {
-        DatabaseSource databaseSource = Cache.getDatabaseSource();
-
-        String channelId = databaseSource.getQueuedExpiringMessageChannel(messageId);
+        String channelId = databaseService.getQueuedExpiringMessageChannel(messageId);
 
         // todo: warning, the following method + related if check are thread-locking.
         // todo: we should probably merge the two tables somehow, since they have redundant information.
-        ChannelType msgChannelType = databaseSource.getTrackedMessageChannelType(messageId);
+        ChannelType msgChannelType = databaseService.getTrackedMessageChannelType(messageId);
 
         MessageChannel textChannel = null;
 
         // this should never happen, but only message channels are supported.
         if (!msgChannelType.isMessage())
         {
-            databaseSource.untrackExpiredMessage(messageId);
+            databaseService.untrackExpiredMessage(messageId);
             return;
         }
 
         // if this is a DM
         if (!(msgChannelType.isGuild()))
         {
-            String userId = databaseSource.getTrackedReplyUserId(messageId);
+            String userId = databaseService.getTrackedReplyUserId(messageId);
             User user = userId == null ? null : HidekoBot.getAPI().retrieveUserById(userId).complete();
             if (user == null)
             {
                 // if user is not found, consider it expired
                 // (deleted profile, or blocked the bot)
-                databaseSource.untrackExpiredMessage(messageId);
+                databaseService.untrackExpiredMessage(messageId);
                 return;
             }
 
             textChannel = user.openPrivateChannel().complete();
         } else
         {
-            String guildId = databaseSource.getQueuedExpiringMessageGuild(messageId);
+            String guildId = databaseService.getQueuedExpiringMessageGuild(messageId);
             Guild guild = guildId == null ? null : HidekoBot.getAPI().getGuildById(guildId);
             if (guild == null)
             {
                 // if guild is not found, consider it expired
                 // (server was deleted or bot was kicked)
-                databaseSource.untrackExpiredMessage(messageId);
+                databaseService.untrackExpiredMessage(messageId);
                 return;
             }
             textChannel = guild.getTextChannelById(channelId);
@@ -211,7 +214,7 @@ public class CommandUtil
         {
             // if channel is not found, count it as expired
             // (channel was deleted or bot permissions restricted)
-            databaseSource.untrackExpiredMessage(messageId);
+            databaseService.untrackExpiredMessage(messageId);
             return;
         }
 
@@ -224,7 +227,7 @@ public class CommandUtil
                 message -> {
                     if (message == null)
                     {
-                        databaseSource.untrackExpiredMessage(messageId);
+                        databaseService.untrackExpiredMessage(messageId);
                         return;
                     }
 
@@ -237,9 +240,9 @@ public class CommandUtil
                     }
 
                     message.editMessageComponents(newComponents).queue();
-                    databaseSource.untrackExpiredMessage(messageId);
+                    databaseService.untrackExpiredMessage(messageId);
                 },
 
-                error -> databaseSource.untrackExpiredMessage(messageId));
+                error -> databaseService.untrackExpiredMessage(messageId));
     }
 }

@@ -44,7 +44,7 @@ public class CoinFlip
     public static void buttonReFlip(ButtonInteractionEvent event)
     {
         // check if the user interacting is the same one who ran the command
-        if (!(Cache.getDatabaseSource().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+        if (!(Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
         {
             event.reply("❌ You did not run this command!").setEphemeral(true).queue();
             return;
@@ -68,7 +68,7 @@ public class CoinFlip
 
     public static void trackAndRestrict(Message replyMessage, User user)
     {
-        Cache.getDatabaseSource().queueDisabling(replyMessage);
-        Cache.getDatabaseSource().trackRanCommandReply(replyMessage, user);
+        Cache.getServices().databaseService().queueDisabling(replyMessage);
+        Cache.getServices().databaseService().trackRanCommandReply(replyMessage, user);
     }
 }

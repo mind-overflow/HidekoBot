@@ -13,6 +13,7 @@ import wtf.beatrice.hidekobot.objects.comparators.TriviaScoreComparator;
 import wtf.beatrice.hidekobot.objects.fun.TriviaCategory;
 import wtf.beatrice.hidekobot.objects.fun.TriviaQuestion;
 import wtf.beatrice.hidekobot.objects.fun.TriviaScore;
+import wtf.beatrice.hidekobot.services.DatabaseService;
 import wtf.beatrice.hidekobot.util.CommandUtil;
 
 import java.util.*;
@@ -20,6 +21,10 @@ import java.util.concurrent.ScheduledFuture;
 
 public class TriviaTask implements Runnable
 {
+
+    private final DatabaseService databaseService;
+    private final CommandUtil commandUtil;
+
     private final User author;
     private final MessageChannel channel;
 
@@ -33,11 +38,17 @@ public class TriviaTask implements Runnable
 
     private int iteration = 0;
 
-    public TriviaTask(User author, MessageChannel channel, TriviaCategory category)
+    public TriviaTask(User author,
+                      MessageChannel channel,
+                      TriviaCategory category,
+                      DatabaseService databaseService,
+                      CommandUtil commandUtil)
     {
         this.author = author;
         this.channel = channel;
         this.category = category;
+        this.databaseService = databaseService;
+        this.commandUtil = commandUtil;
 
         triviaJson = Trivia.fetchJson(Trivia.getTriviaLink(category.categoryId()));
         questions = Trivia.parseQuestions(triviaJson); //todo: null check, rate limiting...
@@ -55,7 +66,7 @@ public class TriviaTask implements Runnable
         if (previousMessage != null)
         {
             // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
-            CommandUtil.disableExpired(previousMessage.getId());
+            commandUtil.disableExpired(previousMessage.getId());
 
             String previousCorrectAnswer = questions.get(iteration - 1).correctAnswer();
 
@@ -193,12 +204,12 @@ public class TriviaTask implements Runnable
                 .complete();
 
 
-        Cache.getDatabaseSource().trackRanCommandReply(previousMessage, author);
+        databaseService.trackRanCommandReply(previousMessage, author);
         // todo: ^ we should get rid of this tracking, since we don't need to know who started the trivia.
         // todo: however, for now, that's the only way to avoid a thread-locking scenario as some data is
         // todo: only stored in that table. this should be solved when we merge / fix the two main tables.
         // todo: then, we can remove this instruction.
-        Cache.getDatabaseSource().queueDisabling(previousMessage);
+        databaseService.queueDisabling(previousMessage);
 
         iteration++;
     }

@@ -94,8 +94,8 @@ public class TriviaCommand implements MessageCommand
             if (response.components() != null) responseAction = responseAction.addActionRow(response.components());
 
             responseAction.queue(message -> {
-                Cache.getDatabaseSource().trackRanCommandReply(message, event.getAuthor());
-                Cache.getDatabaseSource().queueDisabling(message);
+                Cache.getServices().databaseService().trackRanCommandReply(message, event.getAuthor());
+                Cache.getServices().databaseService().queueDisabling(message);
             });
         }
 
