@@ -234,7 +234,7 @@ public class Cache
      */
     public static String getBotVersion()
     {
-        return propertiesSource.getProperty("bot.version");
+        return propertiesSource.getProperty("bot.version").toLowerCase();
     }
 
     /**
