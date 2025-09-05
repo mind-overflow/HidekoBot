@@ -26,9 +26,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -44,13 +45,13 @@ public class Trivia
     private static final String TRIVIA_API_LINK = "https://opentdb.com/api.php?amount=10&type=multiple&category=";
     private static final String TRIVIA_API_CATEGORIES_LINK = "https://opentdb.com/api_category.php";
 
-    public static List<String> channelsRunningTrivia = new ArrayList<>();
+    public static List<String> channelsRunningTrivia = Collections.synchronizedList(new ArrayList<>());
 
     // first string is the channelId, the list contain all users who responded there
-    public static HashMap<String, List<String>> channelAndWhoResponded = new HashMap<>();
+    public static ConcurrentHashMap<String, List<String>> channelAndWhoResponded = new ConcurrentHashMap<>();
 
     // first string is the channelId, the list contain all score records for that channel
-    public static HashMap<String, LinkedList<TriviaScore>> channelAndScores = new HashMap<>();
+    public static ConcurrentHashMap<String, LinkedList<TriviaScore>> channelAndScores = new ConcurrentHashMap<>();
 
     public static String getTriviaLink(int categoryId)
     {
@@ -180,53 +181,63 @@ public class Trivia
 
     public static void handleAnswer(ButtonInteractionEvent event, AnswerType answerType)
     {
-        User user = event.getUser();
-        String channelId = event.getChannel().getId();
+        // Ack immediately with an ephemeral deferral to avoid 3s timeout
+        event.deferReply(true).queue(hook -> {
+            User user = event.getUser();
+            String channelId = event.getChannel().getId();
 
-        if (trackResponse(user, event.getChannel()))
-        {
-            LinkedList<TriviaScore> scores = channelAndScores.get(channelId);
-            if (scores == null) scores = new LinkedList<>();
-            TriviaScore currentUserScore = null;
-            for (TriviaScore score : scores)
+            if (trackResponse(user, event.getChannel()))
             {
-                if (score.getUser().equals(user))
+                LinkedList<TriviaScore> scores = channelAndScores.get(channelId);
+                if (scores == null) scores = new LinkedList<>();
+
+                TriviaScore currentUserScore = null;
+                for (TriviaScore score : scores)
                 {
-                    currentUserScore = score;
-                    scores.remove(score);
-                    break;
+                    if (score.getUser().equals(user))
+                    {
+                        currentUserScore = score;
+                        scores.remove(score);
+                        break;
+                    }
                 }
-            }
 
-            if (currentUserScore == null)
-            {
-                currentUserScore = new TriviaScore(user);
-            }
+                if (currentUserScore == null)
+                {
+                    currentUserScore = new TriviaScore(user);
+                }
 
-            if (answerType.equals(AnswerType.CORRECT))
-            {
+                if (answerType.equals(AnswerType.CORRECT))
+                {
+                    // Public message in channel
+                    event.getChannel().sendMessage(user.getAsMention() + " got it right! \uD83E\uDD73 (**+3**)").queue();
+                    currentUserScore.changeScore(3);
+                } else
+                {
+                    event.getChannel().sendMessage("❌ " + user.getAsMention() + ", that's not the right answer! (**-1**)").queue();
+                    currentUserScore.changeScore(-1);
+                }
 
-                event.reply(user.getAsMention() + " got it right! \uD83E\uDD73 (**+3**)").queue();
-                currentUserScore.changeScore(3);
-
+                scores.add(currentUserScore);
+                channelAndScores.put(channelId, scores);
             } else
             {
-                event.reply("❌ " + user.getAsMention() + ", that's not the right answer! (**-1**)").queue();
-                currentUserScore.changeScore(-1);
+                // Show the warning **in the original ephemeral message**, then delete it after 5s.
+                hook.editOriginal("☹️ " + user.getAsMention() + ", you can't answer twice!").queue(v ->
+                        hook.deleteOriginal().queueAfter(3, TimeUnit.SECONDS, null, __ -> {
+                        })
+                );
+                return; // don't run the generic cleanup below; we want the message visible for ~5s
             }
 
-            scores.add(currentUserScore);
-            channelAndScores.put(channelId, scores);
-        } else
-        {
-            event.reply("☹️ " + user.getAsMention() + ", you can't answer twice!")
-                    .queue(interaction ->
-                            Cache.getTaskScheduler().schedule(() ->
-                                    interaction.deleteOriginal().queue(), 3, TimeUnit.SECONDS));
-        }
+            // Clean up the ephemeral deferral (no visible ephemeral message left) for the normal path
+            hook.deleteOriginal().queue(null, __ -> {
+            });
+        }, __ -> {
+        });
     }
 
-    private static boolean trackResponse(User user, MessageChannel channel)
+    private static synchronized boolean trackResponse(User user, MessageChannel channel)
     {
         String userId = user.getId();
         String channelId = channel.getId();
@@ -251,24 +262,32 @@ public class Trivia
 
     public static void handleMenuSelection(StringSelectInteractionEvent event)
     {
-        // check if the user interacting is the same one who ran the command
-        if (!(Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
-        {
-            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
-            return;
-        }
+        // Ack immediately (ephemeral) so we can safely do DB/work
+        event.deferReply(true).queue(hook -> {
+            // check if the user interacting is the same one who ran the command
+            if (!(Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
+            {
+                hook.sendMessage("❌ You did not run this command!").setEphemeral(true).queue();
+                return;
+            }
 
-        // todo: we shouldn't use this method, since it messes with the database... look at coin reflip
-        Cache.getServices().commandService().disableExpired(event.getMessageId());
+            // Disable buttons on the original message via service (uses separate REST calls)
+            Cache.getServices().commandService().disableExpired(event.getMessageId());
 
-        SelectOption pickedOption = event.getInteraction().getSelectedOptions().get(0);
-        String categoryName = pickedOption.getLabel();
-        String categoryIdString = pickedOption.getValue();
-        Integer categoryId = Integer.parseInt(categoryIdString);
+            SelectOption pickedOption = event.getInteraction().getSelectedOptions().get(0);
+            String categoryName = pickedOption.getLabel();
+            String categoryIdString = pickedOption.getValue();
+            Integer categoryId = Integer.parseInt(categoryIdString);
 
-        TriviaCategory category = new TriviaCategory(categoryName, categoryId);
+            TriviaCategory category = new TriviaCategory(categoryName, categoryId);
 
-        startTrivia(event, category);
+            startTrivia(event, category);
+
+            // remove the ephemeral deferral to keep things clean
+            hook.deleteOriginal().queue(null, __ -> {
+            });
+        }, __ -> {
+        });
     }
 
     public static void startTrivia(StringSelectInteractionEvent event, TriviaCategory category)
@@ -279,18 +298,16 @@ public class Trivia
 
         if (Trivia.channelsRunningTrivia.contains(channel.getId()))
         {
-            // todo nicer looking
-            // todo: also what if the bot stops (database...?)
-            // todo: also what if the message is already deleted
-            Message err = event.reply("Trivia is already running here!").complete().retrieveOriginal().complete();
-            Cache.getTaskScheduler().schedule(() -> err.delete().queue(), 10, TimeUnit.SECONDS);
+            // Already running: inform ephemerally via hook (the interaction was deferred in the caller)
+            event.getHook().sendMessage(Trivia.getTriviaAlreadyRunningError())
+                    .setEphemeral(true)
+                    .queue(msg -> Cache.getTaskScheduler().schedule(() -> msg.delete().queue(), 10, TimeUnit.SECONDS));
             return;
         } else
         {
-            // todo nicer looking
-            event.reply("Starting new Trivia session!").queue();
+            // Public info that a new session is starting
+            channel.sendMessage("Starting new Trivia session!").queue();
         }
-
 
         TriviaTask triviaTask = new TriviaTask(author, channel, category,
                 Cache.getServices().databaseService(), Cache.getServices().commandService());

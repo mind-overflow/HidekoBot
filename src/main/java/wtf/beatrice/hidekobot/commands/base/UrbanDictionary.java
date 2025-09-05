@@ -119,6 +119,7 @@ public class UrbanDictionary
 
     public static void changePage(ButtonInteractionEvent event, ChangeType changeType)
     {
+        event.deferEdit().queue();
         String messageId = event.getMessageId();
         DatabaseService database = Cache.getServices().databaseService();
 
@@ -180,7 +181,9 @@ public class UrbanDictionary
         ActionRow currentRow = ActionRow.of(components);
 
         // update the message
-        event.editComponents(currentRow).setEmbeds(updatedEmbed).queue();
+        event.getHook().editOriginalEmbeds(updatedEmbed)
+                .setComponents(currentRow)
+                .queue();
         database.setUrbanPage(messageId, page);
         database.resetExpiryTimestamp(messageId);
     }

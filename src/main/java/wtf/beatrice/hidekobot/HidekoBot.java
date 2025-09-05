@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ConfigurableApplicationContext;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
 import wtf.beatrice.hidekobot.commands.message.HelloCommand;
@@ -68,6 +69,8 @@ public class HidekoBot
             return;
         }
 
+        ApplicationHome home = new ApplicationHome(HidekoBot.class);
+        System.setProperty("APP_HOME", home.getDir().getAbsolutePath());
         ConfigurableApplicationContext context = SpringApplication.run(HidekoBot.class, args);
 
         CommandService commandService = context.getBean(CommandService.class);

@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoinFlip
@@ -43,27 +44,46 @@ public class CoinFlip
 
     public static void buttonReFlip(ButtonInteractionEvent event)
     {
-        // check if the user interacting is the same one who ran the command
-        if (!(Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId())))
-        {
-            event.reply("❌ You did not run this command!").setEphemeral(true).queue();
-            return;
-        }
+        // Ack ASAP to avoid 3s timeout
+        event.deferEdit().queue(hook -> {
+            // Permission check **after** ack
+            if (!Cache.getServices().databaseService().isUserTrackedFor(event.getUser().getId(), event.getMessageId()))
+            {
+                hook.sendMessage("❌ You did not run this command!").setEphemeral(true).queue();
+                return;
+            }
 
-        // set old message's button as disabled
-        List<ActionRow> actionRows = event.getMessage().getActionRows();
-        actionRows.set(0, actionRows.get(0).asDisabled());
-        event.editComponents(actionRows).queue();
+            // Disable all components on the original message
+            List<ActionRow> oldRows = event.getMessage().getActionRows();
+            List<ActionRow> disabledRows = new ArrayList<>(oldRows.size());
+            for (ActionRow row : oldRows)
+            {
+                disabledRows.add(row.asDisabled());
+            }
+            hook.editOriginalComponents(disabledRows).queue();
 
-        // perform coin flip
-        event.getHook().sendMessage(genRandom())
-                .addActionRow(getReflipButton())
-                .queue((message) ->
-                {
-                    // set the command as expiring and restrict it to the user who ran it
-                    trackAndRestrict(message, event.getUser());
-                }, (error) -> {
-                });
+            // Send a follow-up with a fresh button
+            hook.sendMessage(genRandom())
+                    .addActionRow(getReflipButton())
+                    .queue(msg -> trackAndRestrict(msg, event.getUser()), err -> {
+                    });
+        }, failure -> {
+            // Rare: if we couldn't ack, try best-effort fallbacks
+            try
+            {
+                List<ActionRow> oldRows = event.getMessage().getActionRows();
+                List<ActionRow> disabledRows = new ArrayList<>(oldRows.size());
+                for (ActionRow row : oldRows) disabledRows.add(row.asDisabled());
+                event.getMessage().editMessageComponents(disabledRows).queue();
+            } catch (Exception ignored)
+            {
+            }
+
+            event.getChannel().sendMessage(genRandom())
+                    .addActionRow(getReflipButton())
+                    .queue(msg -> trackAndRestrict(msg, event.getUser()), err -> {
+                    });
+        });
     }
 
     public static void trackAndRestrict(Message replyMessage, User user)

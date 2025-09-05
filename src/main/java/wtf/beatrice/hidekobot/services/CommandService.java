@@ -51,9 +51,28 @@ public class CommandService
             return;
         }
 
-        // delete the message
-        event.getInteraction().getMessage().delete().queue();
-        // no need to manually untrack it from database, it will be purged on the next planned check.
+        // Acknowledge immediately so the interaction token stays valid
+        event.deferEdit().queue(hook -> {
+                    // Try deleting via the interaction webhook (works for original interaction responses)
+                    hook.deleteOriginal().queue(
+                            success -> { /* optional: databaseService.untrackExpiredMessage(event.getMessageId()); */ },
+                            failure -> {
+                                // Fallback to channel delete (works even if webhook token expired)
+                                event.getChannel().deleteMessageById(event.getMessageId()).queue(
+                                        null,
+                                        __ -> { /* ignore if already deleted */ }
+                                );
+                            }
+                    );
+                },
+                failure -> {
+                    // If we failed to acknowledge (interaction already expired), try channel delete anyway
+                    event.getChannel().deleteMessageById(event.getMessageId()).queue(
+                            null,
+                            __ -> { /* ignore if already deleted */ }
+                    );
+                }
+        );
     }
 
 
