@@ -182,11 +182,14 @@ public class UserPunishment
                 case KICK -> punishmentAction = guild.kick(mentioned);
                 case TIMEOUT ->
                 {
-                    if (args != null)
+                    // Ensure a duration argument is provided at index 1 (after mention/user)
+                    if (args == null || args.length <= 1)
                     {
-                        String durationStr = args[1];
-                        duration = FormatUtil.parseDuration(durationStr);
+                        return new MessageResponse("Sorry, but the specified duration is invalid!", null);
                     }
+
+                    String durationStr = args[1];
+                    duration = FormatUtil.parseDuration(durationStr);
 
                     boolean isDurationValid = true;
 
@@ -197,7 +200,7 @@ public class UserPunishment
                         if (minTimeoutDuration.compareTo(duration) > 0) isDurationValid = false;
                     }
 
-                    if (duration == null || !isDurationValid)
+                    if (!isDurationValid)
                     {
                         // todo nicer looking with emojis
                         return new MessageResponse("Sorry, but the specified duration is invalid!", null);
