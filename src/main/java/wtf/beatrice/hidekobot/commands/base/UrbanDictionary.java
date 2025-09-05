@@ -88,7 +88,7 @@ public class UrbanDictionary
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setTitle(term + ", on Urban Dictionary", url);
-        embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
+        embedBuilder.setAuthor(author.getName(), null, author.getAvatarUrl());
         embedBuilder.addField("\uD83D\uDCD6 Definition", search.getPlaintextMeanings().get(page), false);
         embedBuilder.addField("\uD83D\uDCAD Example", search.getPlaintextExamples().get(page), false);
         embedBuilder.addField("\uD83D\uDCCC Submission",

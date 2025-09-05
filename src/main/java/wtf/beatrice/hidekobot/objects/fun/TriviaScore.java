@@ -31,7 +31,7 @@ public class TriviaScore
     @Override
     public String toString()
     {
-        return "[" + user.getAsTag() + "," + score + "]";
+        return "[" + user.getName() + "," + score + "]";
     }
 
 }

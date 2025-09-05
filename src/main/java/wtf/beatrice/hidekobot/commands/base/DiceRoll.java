@@ -129,7 +129,7 @@ public class DiceRoll
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setColor(Cache.getBotColor());
-        embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
+        embedBuilder.setAuthor(author.getName(), null, author.getAvatarUrl());
         embedBuilder.setTitle("Dice Roll");
 
         if (RandomUtil.isRandomOrgKeyValid())

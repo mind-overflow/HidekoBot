@@ -222,7 +222,7 @@ public class UserPunishment
         }
 
         if (!reason.isEmpty() && !reasonBuilder.isEmpty())
-            punishmentAction.reason("[" + author.getAsTag() + "] " + reason);
+            punishmentAction.reason("[" + author.getName() + "] " + reason);
 
         try
         {
@@ -236,7 +236,7 @@ public class UserPunishment
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
+        embedBuilder.setAuthor(author.getName(), null, author.getAvatarUrl());
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.setTitle("User " + punishmentType.getPastTense());
 

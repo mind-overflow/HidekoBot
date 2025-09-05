@@ -61,7 +61,7 @@ public class MagicBall
         String answer = getRandomAnswer();
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
+        embedBuilder.setAuthor(author.getName(), null, author.getAvatarUrl());
         embedBuilder.setTitle("Magic Ball");
         embedBuilder.setColor(Cache.getBotColor());
         embedBuilder.addField("❓ Question", question, false);
