@@ -6,12 +6,21 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.DiceRoll;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashDiceRollCommand extends SlashCommandImpl
 {
+    private final DiceRoll diceRoll;
+
+    public SlashDiceRollCommand(@NotNull DiceRoll diceRoll)
+    {
+        this.diceRoll = diceRoll;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -37,7 +46,7 @@ public class SlashDiceRollCommand extends SlashCommandImpl
 
         String[] args = messageContent.split("\\s");
 
-        MessageResponse response = DiceRoll.buildResponse(event.getUser(), args);
+        MessageResponse response = diceRoll.buildResponse(event.getUser(), args);
 
         if (response.content() != null)
         {

@@ -8,11 +8,20 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.LoveCalculator;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashLoveCalculatorCommand extends SlashCommandImpl
 {
+    private final LoveCalculator loveCalculator;
+
+    public SlashLoveCalculatorCommand(@NotNull LoveCalculator loveCalculator)
+    {
+        this.loveCalculator = loveCalculator;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -57,7 +66,7 @@ public class SlashLoveCalculatorCommand extends SlashCommandImpl
             secondUser = event.getUser();
         }
 
-        MessageEmbed embed = LoveCalculator.buildEmbedAndCacheResult(event.getUser(), firstUser, secondUser);
+        MessageEmbed embed = loveCalculator.buildEmbedAndCacheResult(event.getUser(), firstUser, secondUser);
         event.replyEmbeds(embed).queue();
     }
 }

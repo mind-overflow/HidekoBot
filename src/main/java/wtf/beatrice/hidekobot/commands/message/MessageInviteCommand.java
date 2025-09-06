@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.Invite;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -15,8 +17,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageInviteCommand implements MessageCommand
 {
+    private final Invite invite;
+
+    public MessageInviteCommand(@Autowired Invite invite)
+    {
+        this.invite = invite;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -63,8 +72,8 @@ public class MessageInviteCommand implements MessageCommand
     {
 
 
-        MessageEmbed inviteEmbed = Invite.generateEmbed();
-        Button inviteButton = Invite.getInviteButton();
+        MessageEmbed inviteEmbed = invite.generateEmbed();
+        Button inviteButton = invite.getInviteButton();
 
         // if this is a guild, don't spam the invite in public but DM it
         if (event.getChannelType().isGuild())

@@ -7,16 +7,25 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.MagicBall;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashMagicBallCommand extends SlashCommandImpl
 {
+    private final MagicBall magicBall;
+
+    public SlashMagicBallCommand(@NotNull MagicBall magicBall)
+    {
+        this.magicBall = magicBall;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
 
-        return Commands.slash(MagicBall.getLabels().get(0),
+        return Commands.slash(magicBall.getLabels().get(0),
                         "Ask a question to the magic ball.")
                 .addOption(OptionType.STRING, "question",
                         "The question to ask.",
@@ -43,7 +52,7 @@ public class SlashMagicBallCommand extends SlashCommandImpl
             return;
         }
 
-        MessageEmbed response = MagicBall.generateEmbed(question, event.getUser());
+        MessageEmbed response = magicBall.generateEmbed(question, event.getUser());
         event.replyEmbeds(response).queue();
     }
 }

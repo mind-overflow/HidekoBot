@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.DiceRoll;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -13,8 +15,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageDiceRollCommand implements MessageCommand
 {
+    private final DiceRoll diceRoll;
+
+    public MessageDiceRollCommand(@Autowired DiceRoll diceRoll)
+    {
+        this.diceRoll = diceRoll;
+    }
+
     @Override
     public LinkedList<String> getCommandLabels()
     {
@@ -66,7 +76,7 @@ public class MessageDiceRollCommand implements MessageCommand
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
 
-        MessageResponse response = DiceRoll.buildResponse(event.getAuthor(), args);
+        MessageResponse response = diceRoll.buildResponse(event.getAuthor(), args);
 
         if (response.content() != null)
         {

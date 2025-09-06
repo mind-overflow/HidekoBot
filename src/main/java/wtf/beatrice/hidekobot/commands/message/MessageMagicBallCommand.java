@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.MagicBall;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -11,13 +13,20 @@ import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageMagicBallCommand implements MessageCommand
 {
+    private final MagicBall magicBall;
+
+    public MessageMagicBallCommand(@Autowired MagicBall magicBall)
+    {
+        this.magicBall = magicBall;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
     {
-        return MagicBall.getLabels();
+        return magicBall.getLabels();
     }
 
     @Nullable
@@ -75,6 +84,6 @@ public class MessageMagicBallCommand implements MessageCommand
         String question = questionBuilder.toString();
 
 
-        event.getChannel().sendMessageEmbeds(MagicBall.generateEmbed(question, event.getAuthor())).queue();
+        event.getChannel().sendMessageEmbeds(magicBall.generateEmbed(question, event.getAuthor())).queue();
     }
 }

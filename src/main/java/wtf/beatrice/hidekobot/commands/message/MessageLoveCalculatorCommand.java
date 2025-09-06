@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.commands.base.LoveCalculator;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -17,8 +19,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageLoveCalculatorCommand implements MessageCommand
 {
+    private final LoveCalculator loveCalculator;
+
+    public MessageLoveCalculatorCommand(@Autowired LoveCalculator loveCalculator)
+    {
+        this.loveCalculator = loveCalculator;
+    }
 
 
     @Override
@@ -91,7 +100,7 @@ public class MessageLoveCalculatorCommand implements MessageCommand
             user2 = HidekoBot.getAPI().retrieveUserById(mentionedUserId).complete();
         }
 
-        MessageEmbed embed = LoveCalculator.buildEmbedAndCacheResult(event.getAuthor(), user1, user2);
+        MessageEmbed embed = loveCalculator.buildEmbedAndCacheResult(event.getAuthor(), user1, user2);
         event.getChannel().sendMessageEmbeds(embed).queue();
 
     }

@@ -3,20 +3,17 @@ package wtf.beatrice.hidekobot.commands.base;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class LoveCalculator
 {
 
-    private LoveCalculator()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static MessageEmbed buildEmbedAndCacheResult(User author, User user1, User user2)
+    public MessageEmbed buildEmbedAndCacheResult(User author, User user1, User user2)
     {
         String userId1 = user1.getId();
         String userId2 = user2.getId();

@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -12,8 +14,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageCoinFlipCommand implements MessageCommand
 {
+
+    private final CoinFlip coinFlip;
+
+    public MessageCoinFlipCommand(@Autowired CoinFlip coinFlip)
+    {
+        this.coinFlip = coinFlip;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -60,12 +70,12 @@ public class MessageCoinFlipCommand implements MessageCommand
     {
 
         // perform coin flip
-        event.getMessage().reply(CoinFlip.genRandom())
-                .addActionRow(CoinFlip.getReflipButton())
+        event.getMessage().reply(coinFlip.genRandom())
+                .addActionRow(coinFlip.getReflipButton())
                 .queue((message) ->
                 {
                     // set the command as expiring and restrict it to the user who ran it
-                    CoinFlip.trackAndRestrict(message, event.getAuthor());
+                    coinFlip.trackAndRestrict(message, event.getAuthor());
                 }, (error) -> {
                 });
     }

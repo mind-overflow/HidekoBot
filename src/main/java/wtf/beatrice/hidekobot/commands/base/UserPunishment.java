@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
@@ -24,18 +25,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class UserPunishment
 {
-
-    private UserPunishment()
-    {
-        throw new IllegalStateException("Utility class");
-    }
 
     private static final Duration maxTimeoutDuration = Duration.of(28, ChronoUnit.DAYS);
     private static final Duration minTimeoutDuration = Duration.of(30, ChronoUnit.SECONDS);
 
-    public static void handle(SlashCommandInteractionEvent event, PunishmentType punishmentType)
+    public void handle(SlashCommandInteractionEvent event, PunishmentType punishmentType)
     {
         // this might take a sec
         event.deferReply().queue();
@@ -92,7 +89,7 @@ public class UserPunishment
             event.getHook().editOriginal(response.content()).queue();
     }
 
-    public static void handle(MessageReceivedEvent event, String[] args, PunishmentType punishmentType)
+    public void handle(MessageReceivedEvent event, String[] args, PunishmentType punishmentType)
     {
         Mentions msgMentions = event.getMessage().getMentions();
         List<IMentionable> mentions = msgMentions.getMentions();
@@ -109,11 +106,11 @@ public class UserPunishment
             event.getMessage().reply(response.content()).queue();
     }
 
-    public static MessageResponse getResponse(User author,
-                                              PunishmentType punishmentType,
-                                              MessageChannelUnion channel,
-                                              List<IMentionable> mentions,
-                                              String[] args)
+    public MessageResponse getResponse(User author,
+                                       PunishmentType punishmentType,
+                                       MessageChannelUnion channel,
+                                       List<IMentionable> mentions,
+                                       String[] args)
     {
         String punishmentTypeName = punishmentType.name().toLowerCase();
 

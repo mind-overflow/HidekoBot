@@ -9,20 +9,29 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashClearCommand extends SlashCommandImpl
 {
+    private final ClearChat clearChat;
+
+    public SlashClearCommand(@Autowired ClearChat clearChat)
+    {
+        this.clearChat = clearChat;
+    }
 
     @Override
     public CommandData getSlashCommandData()
     {
-        return Commands.slash(ClearChat.getLabel(),
-                        ClearChat.getDescription())
+        return Commands.slash(clearChat.getLabel(),
+                        clearChat.getDescription())
                 .addOption(OptionType.INTEGER, "amount", "The amount of messages to delete.")
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(ClearChat.getPermission()));
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(clearChat.getPermission()));
     }
 
     @Override
@@ -32,7 +41,7 @@ public class SlashClearCommand extends SlashCommandImpl
         event.deferReply().queue();
 
         // check if user is trying to run command in dms.
-        String error = ClearChat.checkDMs(event.getChannel());
+        String error = clearChat.checkDMs(event.getChannel());
         if (error != null)
         {
             event.getHook().editOriginal(error).queue();
@@ -46,9 +55,9 @@ public class SlashClearCommand extends SlashCommandImpl
         int toDeleteAmount = amountOption == null ? 1 : amountOption.getAsInt();
 
         // cap the amount to avoid abuse.
-        if (toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+        if (toDeleteAmount > clearChat.getMaxAmount()) toDeleteAmount = 0;
 
-        error = ClearChat.checkDeleteAmount(toDeleteAmount);
+        error = clearChat.checkDeleteAmount(toDeleteAmount);
         if (error != null)
         {
             event.getHook().editOriginal(error).queue();
@@ -60,15 +69,15 @@ public class SlashClearCommand extends SlashCommandImpl
         Message botMessage = event.getHook().editOriginal(content).complete();
 
         // actually delete the messages.
-        int deleted = ClearChat.delete(toDeleteAmount,
+        int deleted = clearChat.delete(toDeleteAmount,
                 event.getInteraction().getIdLong(),
                 event.getChannel());
 
         // get a nicely formatted message that logs the deletion of messages.
-        content = ClearChat.parseAmount(deleted);
+        content = clearChat.parseAmount(deleted);
 
         // edit the message text and attach a button.
-        Button dismiss = ClearChat.getDismissButton();
+        Button dismiss = clearChat.getDismissButton();
         botMessage = botMessage.editMessage(content).setActionRow(dismiss).complete();
 
         // add the message to database.

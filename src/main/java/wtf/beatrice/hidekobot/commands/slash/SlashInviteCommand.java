@@ -10,11 +10,19 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.Invite;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashInviteCommand extends SlashCommandImpl
 {
+    private final Invite invite;
+
+    public SlashInviteCommand(@NotNull Invite invite)
+    {
+        this.invite = invite;
+    }
 
     @Override
     public CommandData getSlashCommandData()
@@ -36,8 +44,8 @@ public class SlashInviteCommand extends SlashCommandImpl
         }
         replyCallbackAction.queue();
 
-        MessageEmbed inviteEmbed = Invite.generateEmbed();
-        Button inviteButton = Invite.getInviteButton();
+        MessageEmbed inviteEmbed = invite.generateEmbed();
+        Button inviteButton = invite.getInviteButton();
 
         WebhookMessageEditAction<Message> reply =
                 event.getHook()

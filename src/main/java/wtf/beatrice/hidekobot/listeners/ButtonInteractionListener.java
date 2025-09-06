@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.commands.base.Trivia;
@@ -16,10 +17,13 @@ public class ButtonInteractionListener extends ListenerAdapter
     private static final Logger LOGGER = LoggerFactory.getLogger(ButtonInteractionListener.class);
 
     private final CommandService commandService;
+    private final CoinFlip coinFlip;
 
-    public ButtonInteractionListener(CommandService commandService)
+    public ButtonInteractionListener(@Autowired CommandService commandService,
+                                     @Autowired CoinFlip coinFlip)
     {
         this.commandService = commandService;
+        this.coinFlip = coinFlip;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class ButtonInteractionListener extends ListenerAdapter
         {
 
             // coinflip
-            case "coinflip_reflip" -> CoinFlip.buttonReFlip(event);
+            case "coinflip_reflip" -> coinFlip.buttonReFlip(event);
 
             // generic dismiss button
             case "generic_dismiss" -> commandService.deleteUserLinkedMessage(event);

@@ -7,12 +7,21 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.ProfileImage;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashBannerCommand extends SlashCommandImpl
 {
+    private final ProfileImage profileImage;
+
+    public SlashBannerCommand(@NotNull ProfileImage profileImage)
+    {
+        this.profileImage = profileImage;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -44,13 +53,13 @@ public class SlashBannerCommand extends SlashCommandImpl
         OptionMapping sizeArg = event.getOption("size");
         if (sizeArg != null)
         {
-            resolution = ProfileImage.parseResolution(sizeArg.getAsInt());
+            resolution = profileImage.parseResolution(sizeArg.getAsInt());
         } else
         {
-            resolution = ProfileImage.parseResolution(512);
+            resolution = profileImage.parseResolution(512);
         }
 
-        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.BANNER);
+        MessageResponse response = profileImage.buildResponse(resolution, user, ProfileImage.ImageType.BANNER);
         if (response.content() != null)
         {
             event.getHook().editOriginal(response.content()).queue();

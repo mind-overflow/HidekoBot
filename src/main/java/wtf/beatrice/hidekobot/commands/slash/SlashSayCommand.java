@@ -8,11 +8,20 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashSayCommand extends SlashCommandImpl
 {
+    private final Say say;
+
+    public SlashSayCommand(@NotNull Say say)
+    {
+        this.say = say;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -22,7 +31,7 @@ public class SlashSayCommand extends SlashCommandImpl
                         "The message to send.",
                         true,
                         false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Say.getPermission()));
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(say.getPermission()));
     }
 
     @Override

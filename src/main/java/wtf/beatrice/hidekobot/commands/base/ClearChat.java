@@ -8,33 +8,30 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ClearChat
 {
-    private ClearChat()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static String getLabel()
+    public String getLabel()
     {
         return "clear";
     }
 
-    public static String getDescription()
+    public String getDescription()
     {
         return "Clear the current channel's chat.";
     }
 
-    public static Permission getPermission()
+    public Permission getPermission()
     {
         return Permission.MESSAGE_MANAGE;
     }
 
-    public static String checkDMs(Channel channel)
+    public String checkDMs(Channel channel)
     {
         if (!(channel instanceof TextChannel))
         {
@@ -44,7 +41,7 @@ public class ClearChat
         return null;
     }
 
-    public static String checkDeleteAmount(int toDeleteAmount)
+    public String checkDeleteAmount(int toDeleteAmount)
     {
         if (toDeleteAmount <= 0)
         {
@@ -54,9 +51,9 @@ public class ClearChat
         return null;
     }
 
-    public static int delete(int toDeleteAmount,
-                             long startingMessageId,
-                             MessageChannel channel)
+    public int delete(int toDeleteAmount,
+                      long startingMessageId,
+                      MessageChannel channel)
     {
         // int to keep track of how many messages we actually deleted.
         int deleted = 0;
@@ -158,13 +155,13 @@ public class ClearChat
         return deleted;
     }
 
-    public static Button getDismissButton()
+    public Button getDismissButton()
     {
         return Button.primary("generic_dismiss", "Dismiss")
                 .withEmoji(Emoji.fromUnicode("❌"));
     }
 
-    public static String parseAmount(int deleted)
+    public String parseAmount(int deleted)
     {
 
         if (deleted < 1)
@@ -180,7 +177,7 @@ public class ClearChat
     }
 
     // cap the amount to avoid abuse.
-    public static int getMaxAmount()
+    public int getMaxAmount()
     {
         return 1000;
     }

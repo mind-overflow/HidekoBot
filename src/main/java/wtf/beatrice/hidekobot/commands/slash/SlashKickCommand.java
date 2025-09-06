@@ -7,11 +7,22 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.UserPunishment;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashKickCommand extends SlashCommandImpl
 {
+
+    private final UserPunishment userPunishment;
+
+    public SlashKickCommand(@Autowired UserPunishment userPunishment)
+    {
+        this.userPunishment = userPunishment;
+    }
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -31,6 +42,6 @@ public class SlashKickCommand extends SlashCommandImpl
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        UserPunishment.handle(event, UserPunishment.PunishmentType.KICK);
+        userPunishment.handle(event, UserPunishment.PunishmentType.KICK);
     }
 }

@@ -3,18 +3,15 @@ package wtf.beatrice.hidekobot.commands.base;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.utils.ImageProxy;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 
+@Component
 public class ProfileImage
 {
 
-    private ProfileImage()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static int parseResolution(int resolution)
+    public int parseResolution(int resolution)
     {
         int[] acceptedSizes = Cache.getSupportedAvatarResolutions();
 
@@ -34,7 +31,7 @@ public class ProfileImage
         return acceptedSizes[idx];
     }
 
-    public static MessageResponse buildResponse(int resolution, User user, ImageType imageType)
+    public MessageResponse buildResponse(int resolution, User user, ImageType imageType)
     {
         String imageTypeName = imageType.name().toLowerCase();
         String resolutionString;

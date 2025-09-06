@@ -4,11 +4,20 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
+@Component
 public class SlashCoinFlipCommand extends SlashCommandImpl
 {
+    private final CoinFlip coinFlip;
+
+    public SlashCoinFlipCommand(@Autowired CoinFlip coinFlip)
+    {
+        this.coinFlip = coinFlip;
+    }
 
     @Override
     public CommandData getSlashCommandData()
@@ -21,14 +30,14 @@ public class SlashCoinFlipCommand extends SlashCommandImpl
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
         // perform coin flip
-        event.reply(CoinFlip.genRandom())
-                .addActionRow(CoinFlip.getReflipButton())
+        event.reply(coinFlip.genRandom())
+                .addActionRow(coinFlip.getReflipButton())
                 .queue((interaction) ->
                 {
                     // set the command as expiring and restrict it to the user who ran it
                     interaction.retrieveOriginal().queue((message) ->
                     {
-                        CoinFlip.trackAndRestrict(message, event.getUser());
+                        coinFlip.trackAndRestrict(message, event.getUser());
                     }, (error) -> {
                     });
                 }, (error) -> {

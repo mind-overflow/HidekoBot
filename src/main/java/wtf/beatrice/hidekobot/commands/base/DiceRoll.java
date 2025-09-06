@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.commands.base;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.fun.Dice;
@@ -12,15 +13,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class DiceRoll
 {
 
-    private DiceRoll()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static MessageResponse buildResponse(User author, String[] args)
+    public MessageResponse buildResponse(User author, String[] args)
     {
         LinkedHashMap<Dice, Integer> dicesToRoll = new LinkedHashMap<>();
         String diceRegex = "d\\d+";

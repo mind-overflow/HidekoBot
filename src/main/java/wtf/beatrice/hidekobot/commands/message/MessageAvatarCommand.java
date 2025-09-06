@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.commands.base.ProfileImage;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
@@ -16,8 +18,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageAvatarCommand implements MessageCommand
 {
+    private final ProfileImage profileImage;
+
+    public MessageAvatarCommand(@Autowired ProfileImage profileImage)
+    {
+        this.profileImage = profileImage;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -74,7 +83,7 @@ public class MessageAvatarCommand implements MessageCommand
             try
             {
                 int givenRes = Integer.parseInt(arg);
-                resolution = ProfileImage.parseResolution(givenRes);
+                resolution = profileImage.parseResolution(givenRes);
                 resFound = true;
                 break;
             } catch (NumberFormatException ignored)
@@ -84,7 +93,7 @@ public class MessageAvatarCommand implements MessageCommand
         }
 
         // fallback in case we didn't find any specified resolution
-        if (!resFound) resolution = ProfileImage.parseResolution(512);
+        if (!resFound) resolution = profileImage.parseResolution(512);
 
         // check if someone is mentioned
         Mentions mentions = event.getMessage().getMentions();
@@ -101,7 +110,7 @@ public class MessageAvatarCommand implements MessageCommand
         if (user == null) user = event.getAuthor();
 
         // send a response
-        MessageResponse response = ProfileImage.buildResponse(resolution, user, ProfileImage.ImageType.AVATAR);
+        MessageResponse response = profileImage.buildResponse(resolution, user, ProfileImage.ImageType.AVATAR);
         if (response.content() != null)
         {
             event.getMessage().reply(response.content()).queue();

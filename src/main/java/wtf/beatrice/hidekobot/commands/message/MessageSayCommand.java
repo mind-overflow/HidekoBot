@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
@@ -13,9 +15,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageSayCommand implements MessageCommand
 {
 
+    private final Say say;
+
+    public MessageSayCommand(@Autowired Say say)
+    {
+        this.say = say;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -27,7 +36,7 @@ public class MessageSayCommand implements MessageCommand
     @Override
     public List<Permission> getPermissions()
     {
-        return Collections.singletonList(Say.getPermission());
+        return Collections.singletonList(say.getPermission());
     }
 
     @Override

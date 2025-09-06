@@ -3,6 +3,7 @@ package wtf.beatrice.hidekobot.commands.base;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
@@ -11,20 +12,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MagicBall
 {
 
-    private MagicBall()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static LinkedList<String> getLabels()
+    public LinkedList<String> getLabels()
     {
         return new LinkedList<>(Arrays.asList("8ball", "8b", "eightball", "magicball"));
     }
 
-    private static final List<String> answers = new ArrayList<>(
+    private final List<String> answers = new ArrayList<>(
             Arrays.asList("It is certain.",
                     "It is decidedly so.",
                     "Without a doubt.",
@@ -46,13 +43,13 @@ public class MagicBall
                     "Outlook not so good.",
                     "Very doubtful."));
 
-    public static String getRandomAnswer()
+    public String getRandomAnswer()
     {
         int answerPos = RandomUtil.getRandomNumber(0, answers.size() - 1);
         return answers.get(answerPos);
     }
 
-    public static MessageEmbed generateEmbed(String question, User author)
+    public MessageEmbed generateEmbed(String question, User author)
     {
         // add a question mark at the end, if missing.
         // this might not always apply but it's fun

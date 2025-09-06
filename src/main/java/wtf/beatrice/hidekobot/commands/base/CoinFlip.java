@@ -6,27 +6,23 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CoinFlip
 {
-
-    private CoinFlip()
-    {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static Button getReflipButton()
+    public Button getReflipButton()
     {
         return Button.primary("coinflip_reflip", "Flip again")
                 .withEmoji(Emoji.fromUnicode("\uD83E\uDE99"));
     }
 
-    public static String genRandom()
+    public String genRandom()
     {
         int rand = RandomUtil.getRandomNumber(0, 1);
         String msg;
@@ -42,7 +38,7 @@ public class CoinFlip
         return msg;
     }
 
-    public static void buttonReFlip(ButtonInteractionEvent event)
+    public void buttonReFlip(ButtonInteractionEvent event)
     {
         // Ack ASAP to avoid 3s timeout
         event.deferEdit().queue(hook -> {
@@ -86,7 +82,7 @@ public class CoinFlip
         });
     }
 
-    public static void trackAndRestrict(Message replyMessage, User user)
+    public void trackAndRestrict(Message replyMessage, User user)
     {
         Cache.getServices().databaseService().queueDisabling(replyMessage);
         Cache.getServices().databaseService().trackRanCommandReply(replyMessage, user);

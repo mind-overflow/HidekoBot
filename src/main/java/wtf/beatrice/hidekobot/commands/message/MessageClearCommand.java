@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -15,19 +17,27 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class MessageClearCommand implements MessageCommand
 {
+
+    private final ClearChat clearChat;
+
+    public MessageClearCommand(@Autowired ClearChat clearChat)
+    {
+        this.clearChat = clearChat;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
     {
-        return new LinkedList<>(Collections.singletonList(ClearChat.getLabel()));
+        return new LinkedList<>(Collections.singletonList(clearChat.getLabel()));
     }
 
     @Override
     public List<Permission> getPermissions()
     {
-        return Collections.singletonList(ClearChat.getPermission());
+        return Collections.singletonList(clearChat.getPermission());
     }
 
     @Override
@@ -61,7 +71,7 @@ public class MessageClearCommand implements MessageCommand
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
         // check if user is trying to run command in dms.
-        String error = ClearChat.checkDMs(event.getChannel());
+        String error = clearChat.checkDMs(event.getChannel());
         if (error != null)
         {
             event.getMessage().reply(error).queue();
@@ -83,9 +93,9 @@ public class MessageClearCommand implements MessageCommand
         }
 
         // cap the amount to avoid abuse.
-        if (toDeleteAmount > ClearChat.getMaxAmount()) toDeleteAmount = 0;
+        if (toDeleteAmount > clearChat.getMaxAmount()) toDeleteAmount = 0;
 
-        error = ClearChat.checkDeleteAmount(toDeleteAmount);
+        error = clearChat.checkDeleteAmount(toDeleteAmount);
         if (error != null)
         {
             event.getMessage().reply(error).queue();
@@ -96,15 +106,15 @@ public class MessageClearCommand implements MessageCommand
         String content = "\uD83D\uDEA7 Clearing...";
         Message botMessage = event.getMessage().reply(content).complete();
 
-        int deleted = ClearChat.delete(toDeleteAmount,
+        int deleted = clearChat.delete(toDeleteAmount,
                 event.getMessageIdLong(),
                 event.getChannel());
 
         // get a nicely formatted message that logs the deletion of messages.
-        content = ClearChat.parseAmount(deleted);
+        content = clearChat.parseAmount(deleted);
 
         // edit the message text and attach a button.
-        Button dismiss = ClearChat.getDismissButton();
+        Button dismiss = clearChat.getDismissButton();
         Message finalMessage = event.getChannel().sendMessage(content).setActionRow(dismiss).complete();
 
         // add the message to database.
