@@ -11,7 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ConfigurableApplicationContext;
 import wtf.beatrice.hidekobot.commands.completer.ProfileImageCommandCompleter;
-import wtf.beatrice.hidekobot.commands.message.HelloCommand;
+import wtf.beatrice.hidekobot.commands.message.MessageAliasCommand;
+import wtf.beatrice.hidekobot.commands.message.MessageBotInfoCommand;
+import wtf.beatrice.hidekobot.commands.message.MessageHelloCommand;
+import wtf.beatrice.hidekobot.commands.message.MessageHelpCommand;
 import wtf.beatrice.hidekobot.commands.slash.*;
 import wtf.beatrice.hidekobot.datasources.ConfigurationSource;
 import wtf.beatrice.hidekobot.datasources.PropertiesSource;
@@ -159,7 +162,7 @@ public class HidekoBot
         ProfileImageCommandCompleter bannerCommandCompleter = new ProfileImageCommandCompleter(bannerCommand);
         slashCommandListener.registerCommand(bannerCommand);
         slashCommandCompletionListener.registerCommandCompleter(bannerCommandCompleter);
-        slashCommandListener.registerCommand(new BotInfoCommand());
+        slashCommandListener.registerCommand(context.getBean(SlashBotInfoCommand.class));
         slashCommandListener.registerCommand(new ClearCommand());
         slashCommandListener.registerCommand(new CoinFlipCommand());
         slashCommandListener.registerCommand(new DiceRollCommand());
@@ -176,16 +179,16 @@ public class HidekoBot
         slashCommandListener.registerCommand(new UrbanDictionaryCommand());
 
         // register message commands
-        messageCommandListener.registerCommand(new HelloCommand());
-        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AliasCommand());
+        messageCommandListener.registerCommand(new MessageHelloCommand());
+        messageCommandListener.registerCommand(context.getBean(MessageAliasCommand.class));
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.AvatarCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BanCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BannerCommand());
-        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.BotInfoCommand());
+        messageCommandListener.registerCommand(context.getBean(MessageBotInfoCommand.class));
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.CoinFlipCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.ClearCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.DiceRollCommand());
-        messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.HelpCommand());
+        messageCommandListener.registerCommand(context.getBean(MessageHelpCommand.class));
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.InviteCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.KickCommand());
         messageCommandListener.registerCommand(new wtf.beatrice.hidekobot.commands.message.LoveCalculatorCommand());

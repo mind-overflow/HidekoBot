@@ -1,17 +1,15 @@
 package wtf.beatrice.hidekobot.commands.base;
 
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.LinkedList;
 
+@Component
 public class Alias
 {
-    private Alias()
-    {
-        throw new IllegalStateException("Utility class");
-    }
 
-    public static String generateNiceAliases(MessageCommand command)
+    public String generateNiceAliases(MessageCommand command)
     {
         LinkedList<String> aliases = command.getCommandLabels();
         StringBuilder aliasesStringBuilder = new StringBuilder();

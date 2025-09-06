@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.BotInfo;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommand;
@@ -13,8 +15,17 @@ import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BotInfoCommand extends SlashCommandImpl
+@Component
+public class SlashBotInfoCommand extends SlashCommandImpl
 {
+    private final BotInfo botInfo;
+
+    public SlashBotInfoCommand(@Autowired BotInfo botInfo)
+    {
+        this.botInfo = botInfo;
+    }
+
+
     @Override
     public CommandData getSlashCommandData()
     {
@@ -37,7 +48,7 @@ public class BotInfoCommand extends SlashCommandImpl
         }
 
         // send the list
-        MessageEmbed embed = BotInfo.generateEmbed(registeredCommandNames);
+        MessageEmbed embed = botInfo.generateEmbed(registeredCommandNames);
         event.getHook().editOriginalEmbeds(embed).queue();
     }
 }

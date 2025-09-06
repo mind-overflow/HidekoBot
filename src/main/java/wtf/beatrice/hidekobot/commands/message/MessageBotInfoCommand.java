@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.BotInfo;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -14,8 +16,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BotInfoCommand implements MessageCommand
+@Component
+public class MessageBotInfoCommand implements MessageCommand
 {
+
+    private final BotInfo botInfo;
+
+    public MessageBotInfoCommand(@Autowired BotInfo botInfo)
+    {
+        this.botInfo = botInfo;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -70,7 +80,7 @@ public class BotInfoCommand implements MessageCommand
         }
 
         // send the list
-        MessageEmbed embed = BotInfo.generateEmbed(commandNames);
+        MessageEmbed embed = botInfo.generateEmbed(commandNames);
         event.getMessage().replyEmbeds(embed).queue();
     }
 }

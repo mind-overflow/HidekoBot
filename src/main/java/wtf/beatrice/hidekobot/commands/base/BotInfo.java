@@ -2,6 +2,7 @@ package wtf.beatrice.hidekobot.commands.base;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.HidekoBot;
 import wtf.beatrice.hidekobot.util.FormatUtil;
@@ -11,14 +12,11 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
+@Component
 public class BotInfo
 {
-    private BotInfo()
-    {
-        throw new IllegalStateException("Utility class");
-    }
 
-    public static MessageEmbed generateEmbed(List<String> commandLabels)
+    public MessageEmbed generateEmbed(List<String> commandLabels)
     {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Cache.getBotColor());

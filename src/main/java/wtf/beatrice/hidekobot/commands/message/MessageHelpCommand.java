@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.apache.commons.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.Alias;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -13,9 +15,16 @@ import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
 import java.util.*;
 
-public class HelpCommand implements MessageCommand
+@Component
+public class MessageHelpCommand implements MessageCommand
 {
 
+    private final Alias alias;
+
+    public MessageHelpCommand(@Autowired Alias alias)
+    {
+        this.alias = alias;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -127,7 +136,7 @@ public class HelpCommand implements MessageCommand
             if (internalUsage != null) usage += " " + internalUsage;
             usage += "`";
 
-            String aliases = Alias.generateNiceAliases(command);
+            String aliases = alias.generateNiceAliases(command);
 
             List<Permission> permissions = command.getPermissions();
             StringBuilder permissionsStringBuilder = new StringBuilder();

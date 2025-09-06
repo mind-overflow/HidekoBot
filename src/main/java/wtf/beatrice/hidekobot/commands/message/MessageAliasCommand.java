@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.Alias;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
@@ -13,8 +15,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AliasCommand implements MessageCommand
+@Component
+public class MessageAliasCommand implements MessageCommand
 {
+
+    private final Alias alias;
+
+    public MessageAliasCommand(@Autowired Alias alias)
+    {
+        this.alias = alias;
+    }
 
     @Override
     public LinkedList<String> getCommandLabels()
@@ -73,7 +83,7 @@ public class AliasCommand implements MessageCommand
             return;
         }
 
-        String aliases = Alias.generateNiceAliases(command);
+        String aliases = alias.generateNiceAliases(command);
         aliases = "Aliases for **" + command.getCommandLabels().get(0) + "**: " + aliases;
 
         event.getMessage()
