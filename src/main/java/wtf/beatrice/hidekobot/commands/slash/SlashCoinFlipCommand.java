@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class CoinFlipCommand extends SlashCommandImpl
+public class SlashCoinFlipCommand extends SlashCommandImpl
 {
 
     @Override

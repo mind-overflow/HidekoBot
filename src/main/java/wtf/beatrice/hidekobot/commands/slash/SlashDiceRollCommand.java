@@ -10,7 +10,7 @@ import wtf.beatrice.hidekobot.commands.base.DiceRoll;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class DiceRollCommand extends SlashCommandImpl
+public class SlashDiceRollCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

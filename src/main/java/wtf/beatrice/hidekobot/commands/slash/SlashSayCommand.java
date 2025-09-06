@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.Say;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class SayCommand extends SlashCommandImpl
+public class SlashSayCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

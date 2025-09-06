@@ -17,7 +17,7 @@ import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
 import java.io.IOException;
 
-public class UrbanDictionaryCommand extends SlashCommandImpl
+public class SlashUrbanDictionaryCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

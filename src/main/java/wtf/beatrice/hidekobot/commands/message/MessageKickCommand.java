@@ -13,20 +13,20 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BanCommand implements MessageCommand
+public class MessageKickCommand implements MessageCommand
 {
 
     @Override
     public LinkedList<String> getCommandLabels()
     {
-        return new LinkedList<>(Collections.singletonList("ban"));
+        return new LinkedList<>(Collections.singletonList("kick"));
     }
 
     @Nullable
     @Override
     public List<Permission> getPermissions()
     {
-        return new ArrayList<Permission>(Collections.singletonList(Permission.BAN_MEMBERS));
+        return new ArrayList<Permission>(Collections.singletonList(Permission.KICK_MEMBERS));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BanCommand implements MessageCommand
     @Override
     public String getDescription()
     {
-        return "Ban the mentioned user.";
+        return "Kick the mentioned user from the guild.";
     }
 
     @Nullable
@@ -59,6 +59,6 @@ public class BanCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        UserPunishment.handle(event, args, UserPunishment.PunishmentType.BAN);
+        UserPunishment.handle(event, args, UserPunishment.PunishmentType.KICK);
     }
 }

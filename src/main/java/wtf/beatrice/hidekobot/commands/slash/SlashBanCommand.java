@@ -10,27 +10,27 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.UserPunishment;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class KickCommand extends SlashCommandImpl
+public class SlashBanCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()
     {
 
-        return Commands.slash("kick", "Kick someone from the guild.")
+        return Commands.slash("ban", "Ban someone from the guild.")
                 .addOption(OptionType.MENTIONABLE, "target",
-                        "The member user to kick.",
+                        "The member user to ban.",
                         true,
                         false)
                 .addOption(OptionType.STRING, "reason",
                         "The reason for the punishment.",
                         false,
                         false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.KICK_MEMBERS));
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
     }
 
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        UserPunishment.handle(event, UserPunishment.PunishmentType.KICK);
+        UserPunishment.handle(event, UserPunishment.PunishmentType.BAN);
     }
 }

@@ -11,7 +11,7 @@ import wtf.beatrice.hidekobot.commands.base.Trivia;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class TriviaCommand extends SlashCommandImpl
+public class SlashTriviaCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

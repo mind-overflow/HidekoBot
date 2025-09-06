@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClearCommand implements MessageCommand
+public class MessageClearCommand implements MessageCommand
 {
 
     @Override

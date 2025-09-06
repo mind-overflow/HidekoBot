@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.LoveCalculator;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class LoveCalculatorCommand extends SlashCommandImpl
+public class SlashLoveCalculatorCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

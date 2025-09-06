@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DieCommand extends SlashCommandImpl
+public class SlashDieCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

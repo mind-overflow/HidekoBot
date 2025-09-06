@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BannerCommand implements MessageCommand
+public class MessageBannerCommand implements MessageCommand
 {
 
     @Override

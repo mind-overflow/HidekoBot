@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InviteCommand implements MessageCommand
+public class MessageInviteCommand implements MessageCommand
 {
 
     @Override

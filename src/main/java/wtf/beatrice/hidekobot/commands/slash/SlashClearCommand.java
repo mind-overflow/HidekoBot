@@ -13,7 +13,7 @@ import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.commands.base.ClearChat;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class ClearCommand extends SlashCommandImpl
+public class SlashClearCommand extends SlashCommandImpl
 {
 
     @Override

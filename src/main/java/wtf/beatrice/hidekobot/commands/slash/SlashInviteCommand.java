@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.Invite;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class InviteCommand extends SlashCommandImpl
+public class SlashInviteCommand extends SlashCommandImpl
 {
 
     @Override

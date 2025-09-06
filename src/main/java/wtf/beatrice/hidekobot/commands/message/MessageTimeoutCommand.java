@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TimeoutCommand implements MessageCommand
+public class MessageTimeoutCommand implements MessageCommand
 {
 
     @Override

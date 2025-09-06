@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.MagicBall;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class MagicBallCommand extends SlashCommandImpl
+public class SlashMagicBallCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

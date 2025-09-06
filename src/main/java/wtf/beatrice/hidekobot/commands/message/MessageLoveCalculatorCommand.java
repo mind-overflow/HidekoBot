@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LoveCalculatorCommand implements MessageCommand
+public class MessageLoveCalculatorCommand implements MessageCommand
 {
 
 

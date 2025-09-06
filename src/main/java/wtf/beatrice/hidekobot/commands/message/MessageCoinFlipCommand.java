@@ -4,27 +4,28 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.beatrice.hidekobot.commands.base.MagicBall;
+import wtf.beatrice.hidekobot.commands.base.CoinFlip;
 import wtf.beatrice.hidekobot.objects.commands.CommandCategory;
 import wtf.beatrice.hidekobot.objects.commands.MessageCommand;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MagicBallCommand implements MessageCommand
+public class MessageCoinFlipCommand implements MessageCommand
 {
 
     @Override
     public LinkedList<String> getCommandLabels()
     {
-        return MagicBall.getLabels();
+        return new LinkedList<>(Arrays.asList("coinflip", "flip", "flipcoin"));
     }
 
     @Nullable
     @Override
     public List<Permission> getPermissions()
     {
-        return null; // anyone can use it
+        return null; // null because it can be used anywhere
     }
 
     @Override
@@ -37,14 +38,14 @@ public class MagicBallCommand implements MessageCommand
     @Override
     public String getDescription()
     {
-        return "Ask a question to the Magic Ball.";
+        return "Flip a coin.";
     }
 
     @Nullable
     @Override
     public String getUsage()
     {
-        return "<question>";
+        return null;
     }
 
     @NotNull
@@ -57,24 +58,15 @@ public class MagicBallCommand implements MessageCommand
     @Override
     public void runCommand(MessageReceivedEvent event, String label, String[] args)
     {
-        if (args.length == 0)
-        {
-            event.getMessage().reply("You need to specify a question!").queue();
-            return;
-        }
 
-        StringBuilder questionBuilder = new StringBuilder();
-        for (int i = 0; i < args.length; i++)
-        {
-            String arg = args[i];
-            questionBuilder.append(arg);
-            if (i + 1 != args.length) // don't add a separator on the last iteration
-                questionBuilder.append(" ");
-        }
-
-        String question = questionBuilder.toString();
-
-
-        event.getChannel().sendMessageEmbeds(MagicBall.generateEmbed(question, event.getAuthor())).queue();
+        // perform coin flip
+        event.getMessage().reply(CoinFlip.genRandom())
+                .addActionRow(CoinFlip.getReflipButton())
+                .queue((message) ->
+                {
+                    // set the command as expiring and restrict it to the user who ran it
+                    CoinFlip.trackAndRestrict(message, event.getAuthor());
+                }, (error) -> {
+                });
     }
 }

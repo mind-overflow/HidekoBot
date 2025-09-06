@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AvatarCommand implements MessageCommand
+public class MessageAvatarCommand implements MessageCommand
 {
 
     @Override

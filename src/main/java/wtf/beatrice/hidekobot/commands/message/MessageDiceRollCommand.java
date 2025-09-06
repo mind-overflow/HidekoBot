@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DiceRollCommand implements MessageCommand
+public class MessageDiceRollCommand implements MessageCommand
 {
     @Override
     public LinkedList<String> getCommandLabels()

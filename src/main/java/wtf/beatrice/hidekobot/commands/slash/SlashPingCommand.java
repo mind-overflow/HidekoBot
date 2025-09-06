@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class PingCommand extends SlashCommandImpl
+public class SlashPingCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.Cache;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class HelpCommand extends SlashCommandImpl
+public class SlashHelpCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()

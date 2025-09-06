@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SayCommand implements MessageCommand
+public class MessageSayCommand implements MessageCommand
 {
 
 

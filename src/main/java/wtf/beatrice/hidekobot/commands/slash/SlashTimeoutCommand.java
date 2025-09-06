@@ -10,27 +10,31 @@ import org.jetbrains.annotations.NotNull;
 import wtf.beatrice.hidekobot.commands.base.UserPunishment;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class BanCommand extends SlashCommandImpl
+public class SlashTimeoutCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()
     {
 
-        return Commands.slash("ban", "Ban someone from the guild.")
+        return Commands.slash("timeout", "Timeout someone in the guild.")
                 .addOption(OptionType.MENTIONABLE, "target",
-                        "The member user to ban.",
+                        "The member user to time out.",
+                        true,
+                        false)
+                .addOption(OptionType.STRING, "duration",
+                        "The duration of the timeout.",
                         true,
                         false)
                 .addOption(OptionType.STRING, "reason",
                         "The reason for the punishment.",
                         false,
                         false)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MODERATE_MEMBERS));
     }
 
     @Override
     public void runSlashCommand(@NotNull SlashCommandInteractionEvent event)
     {
-        UserPunishment.handle(event, UserPunishment.PunishmentType.BAN);
+        UserPunishment.handle(event, UserPunishment.PunishmentType.TIMEOUT);
     }
 }

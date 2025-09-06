@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UrbanDictionaryCommand implements MessageCommand
+public class MessageUrbanDictionaryCommand implements MessageCommand
 {
 
     @Override

@@ -11,7 +11,7 @@ import wtf.beatrice.hidekobot.commands.base.ProfileImage;
 import wtf.beatrice.hidekobot.objects.MessageResponse;
 import wtf.beatrice.hidekobot.objects.commands.SlashCommandImpl;
 
-public class AvatarCommand extends SlashCommandImpl
+public class SlashAvatarCommand extends SlashCommandImpl
 {
     @Override
     public CommandData getSlashCommandData()
