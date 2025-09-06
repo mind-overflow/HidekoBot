@@ -185,7 +185,7 @@ public class UserPunishment
                     // Ensure a duration argument is provided at index 1 (after mention/user)
                     if (args == null || args.length <= 1)
                     {
-                        return new MessageResponse("Sorry, but the specified duration is invalid!", null);
+                        return new MessageResponse("Please specify a punishment duration!", null);
                     }
 
                     String durationStr = args[1];
